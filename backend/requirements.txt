@@ -1,5 +1,0 @@
-# Add backend dependencies here (example):
-# fastapi
-# uvicorn
-# psycopg[binary]
-# pgvector
