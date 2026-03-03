@@ -24,7 +24,7 @@ numpy>=1.24.0
 Pillow>=10.0.0
 pdf2image>=1.17.0
 pytesseract>=0.3.10
-
+    
 # AI / embeddings (choose one)
 openai>=1.0.0
 
@@ -33,6 +33,8 @@ httpx>=0.27.0
 
 # Migrations
 alembic>=1.13.0
+
+testing the repository 
 
 
 
