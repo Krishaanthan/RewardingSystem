@@ -1,0 +1,24 @@
+---
+description: Apply project styling to all page generation and creation
+globs: ["**/*.tsx", "**/*.css", "**/*.ts"]
+---
+
+# Styling Reference
+
+Always use the design system defined in `frontend/STYLING_REFERENCE.md` and `frontend/lib/design-tokens.ts`.
+
+## Colors
+- **Primary (red):** `#8F113B` → `brand-primary`, `text-brand-primary`, `bg-brand-primary`
+- **Secondary (white):** `#FFFFFF` → `brand-secondary`, `bg-secondary`
+- **Tertiary (grey):** `#c6c6c6` → `brand-tertiary`, `border-brand-tertiary`
+
+## Gradients
+Use tertiary color gradients on page backgrounds: `bg-gradient-tertiary` or `from-brand-tertiary/20 to-secondary`.
+
+## Fonts
+- `font-primary` – body text (Alteix Sans)
+- `font-secondary` – headings (Timeburner)
+- `font-tertiary` – labels, captions (Queensides)
+
+## Buttons
+Primary actions: `bg-brand-primary text-white` (red button).
