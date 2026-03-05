@@ -13,6 +13,7 @@ type LeaderRow = {
     dept: string;
     departmentLabel: string;
     year: string;
+    yearOfStudy: number;
     initials: string;
   };
   active: boolean;
@@ -88,18 +89,11 @@ const DEPARTMENTS_WITH_DURATION: Array<{ label: string; duration: number }> = [
   { label: "B.A. B.Ed. (ITEP)", duration: 4 }
 ];
 
-function getYearOptionsForDepartment(departmentLabel: string): string[] {
-  if (departmentLabel === "All Departments") {
-    return ["All Years", "2024", "2025", "2026", "2027", "2028"];
-  }
-  const dept = DEPARTMENTS_WITH_DURATION.find((d) => d.label === departmentLabel);
-  if (!dept) return ["All Years", "2024", "2025", "2026", "2027"];
-  const baseYear = 2024;
-  const years: string[] = ["All Years"];
-  for (let i = 0; i < dept.duration; i++) {
-    years.push(String(baseYear + i));
-  }
-  return years;
+/** Year dropdown next to department: 1–4 (year of study) and All Years. */
+const YEAR_OPTIONS = ["All Years", "1", "2", "3", "4"];
+
+function getYearOptionsForDepartment(_departmentLabel: string): string[] {
+  return YEAR_OPTIONS;
 }
 
 const MAROON = "#81113b";
@@ -375,9 +369,11 @@ export function UniversityLeaderboard() {
             className="flex items-center gap-3"
             aria-label="SEED Official Instagram"
           >
-            <div className="grid size-10 place-items-center rounded-full bg-white/10 ring-1 ring-white/20">
-              <span className="text-sm font-black tracking-wide text-white">SU</span>
-            </div>
+            <img
+              src="/sathyabama-logo.png"
+              alt="Sathyabama University"
+              className="h-10 w-10 rounded-full object-contain ring-1 ring-white/20 bg-white/10 p-0.5"
+            />
             <div className="leading-tight">
               <div className="text-sm font-semibold text-white/90">Sathyabama</div>
               <div className="text-xs font-semibold text-white/70">University</div>
