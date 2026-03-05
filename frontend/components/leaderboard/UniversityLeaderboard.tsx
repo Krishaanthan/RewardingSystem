@@ -167,7 +167,7 @@ function MedalIcon({ tone }: { tone: "silver" | "gold" | "bronze" }) {
 
 function CrownIcon() {
   return (
-    <svg width="34" height="34" viewBox="0 0 24 24" fill="none" aria-hidden>
+    <svg width="38" height="38" viewBox="0 0 24 24" fill="none" aria-hidden>
       <path
         d="M4 9l3.2 3L12 6l4.8 6L20 9l-1.2 11H5.2L4 9Z"
         fill="#f4c542"
@@ -181,6 +181,36 @@ function CrownIcon() {
         strokeWidth="1.2"
         strokeLinecap="round"
       />
+    </svg>
+  );
+}
+
+function SilverCrownIcon() {
+  return (
+    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" aria-hidden>
+      <path
+        d="M4 9l3 3 3-6 3 6 3-3 1 11H3L4 9Z"
+        fill="#e5e7eb"
+        stroke="#9ca3af"
+        strokeWidth="1.1"
+        strokeLinejoin="round"
+      />
+      <path d="M7.5 20h9" stroke="#9ca3af" strokeWidth="1.1" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function BronzeCrownIcon() {
+  return (
+    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" aria-hidden>
+      <path
+        d="M4 9l3 3 3-6 3 6 3-3 1 11H3L4 9Z"
+        fill="#f97316"
+        stroke="#c05621"
+        strokeWidth="1.1"
+        strokeLinejoin="round"
+      />
+      <path d="M7.5 20h9" stroke="#c05621" strokeWidth="1.1" strokeLinecap="round" />
     </svg>
   );
 }
@@ -454,7 +484,10 @@ export function UniversityLeaderboard() {
 
             <div className="mt-6 grid gap-4 md:grid-cols-3">
               <div className="md:order-1 md:self-end">
-                <div className="rounded-3xl border border-white/25 bg-white/15 p-5 backdrop-blur-md">
+                <div className="relative rounded-3xl border border-white/25 bg-white/15 p-5 pt-7 backdrop-blur-md">
+                  <div className="absolute -top-4 left-1/2 -translate-x-1/2">
+                    <SilverCrownIcon />
+                  </div>
                   <div className="flex items-center justify-between">
                     <MedalIcon tone="silver" />
                     <span className="text-xs font-bold uppercase tracking-widest text-white/75">2nd place</span>
@@ -478,7 +511,7 @@ export function UniversityLeaderboard() {
               </div>
 
               <div className="md:order-2">
-                <div className="relative rounded-3xl border border-white/30 bg-white/18 p-6 backdrop-blur-md shadow-2xl">
+                <div className="relative rounded-3xl border border-white/30 bg-white/18 p-6 pt-8 backdrop-blur-md shadow-2xl">
                   <div className="absolute -top-5 left-1/2 -translate-x-1/2">
                     <CrownIcon />
                   </div>
@@ -505,7 +538,10 @@ export function UniversityLeaderboard() {
               </div>
 
               <div className="md:order-3 md:self-end">
-                <div className="rounded-3xl border border-white/25 bg-white/15 p-5 backdrop-blur-md">
+                <div className="relative rounded-3xl border border-white/25 bg-white/15 p-5 pt-7 backdrop-blur-md">
+                  <div className="absolute -top-4 left-1/2 -translate-x-1/2">
+                    <BronzeCrownIcon />
+                  </div>
                   <div className="flex items-center justify-between">
                     <MedalIcon tone="bronze" />
                     <span className="text-xs font-bold uppercase tracking-widest text-white/75">3rd place</span>
