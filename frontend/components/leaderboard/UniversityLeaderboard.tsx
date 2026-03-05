@@ -363,16 +363,16 @@ export function UniversityLeaderboard() {
       <header className="sticky top-0 z-50 border-b border-white/10" style={{ backgroundColor: HEADER_BG }}>
         <nav className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
           <a
-            href="https://www.instagram.com/seed_official/"
+            href="https://www.sathyabama.ac.in/"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-3"
-            aria-label="SEED Official Instagram"
+            aria-label="Sathyabama University"
           >
             <img
               src="/sathyabama-logo.png"
               alt="Sathyabama University"
-              className="h-10 w-10 rounded-full object-contain ring-1 ring-white/20 bg-white/10 p-0.5"
+              className="h-12 w-12 shrink-0 rounded-full object-cover ring-2 ring-white/30"
             />
             <div className="leading-tight">
               <div className="text-sm font-semibold text-white/90">Sathyabama</div>
