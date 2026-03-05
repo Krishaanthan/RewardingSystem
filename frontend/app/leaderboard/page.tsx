@@ -1,5 +1,6 @@
 import { UniversityLeaderboard } from "@/components/leaderboard/UniversityLeaderboard";
 
-export default function StudentLeaderboardPage() {
+export default function LeaderboardPage() {
   return <UniversityLeaderboard />;
 }
+
