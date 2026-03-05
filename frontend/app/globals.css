@@ -2,18 +2,48 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Design tokens – see STYLING_REFERENCE.md */
 :root {
+  --color-primary: #8f113b;
+  --color-secondary: #ffffff;
+  --color-tertiary: #c6c6c6;
+  --font-primary: "Alteix Sans", sans-serif;
+  --font-secondary: "Timeburner", sans-serif;
+  --font-tertiary: "Queensides", sans-serif;
   color-scheme: light;
 }
 
+@font-face {
+  font-family: "Alteix Sans";
+  src: url("/assets/fonts/alteix-sans-font/AlteixsansRegulardemo-E4j1n.otf") format("opentype");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Timeburner";
+  src: url("/assets/fonts/timeburner-font/Timeburner-xJB8.ttf") format("truetype");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Queensides";
+  src: url("/assets/fonts/queensides-font/QueensidesMedium-x30zV.ttf") format("truetype");
+  font-display: swap;
+}
+
 body {
-  @apply bg-brand-tertiary text-brand-text font-primary;
+  @apply bg-secondary text-brand-text font-primary;
 }
 
 .card {
-  @apply rounded-2xl border border-brand-primary/10 bg-white p-5 shadow-soft;
+  @apply rounded-2xl border border-brand-tertiary bg-secondary p-5 shadow-soft;
 }
 
 .heading {
   @apply font-secondary text-brand-primary;
+}
+
+/* Tertiary gradient – use on page backgrounds */
+.bg-gradient-tertiary {
+  background: linear-gradient(to bottom right, rgba(198, 198, 198, 0.2), #ffffff);
 }
