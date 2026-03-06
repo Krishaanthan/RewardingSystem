@@ -19,9 +19,8 @@ type LeaderRow = {
   active: boolean;
   scorePts: number;
   progressPct: number;
-  metrics: {
+  taskcompleted: {
     tasks: number;
-    collabs: number;
   };
 };
 
@@ -334,23 +333,23 @@ export function UniversityLeaderboard() {
 
   const rows: LeaderRow[] = useMemo(() => {
     const raw = [
-      { rank: 4, trend: "up" as Trend, name: "Rahul Gupta", dept: "CSE", departmentLabel: "B.E. Computer Science and Engineering", year: "2024", initials: "RG", active: true, scorePts: 2650, tasks: 14, collabs: 10 },
-      { rank: 5, trend: "down" as Trend, name: "Fatima Khan", dept: "ECE", departmentLabel: "B.E. Electronics and Communication", year: "2025", initials: "FK", active: true, scorePts: 2590, tasks: 13, collabs: 9 },
-      { rank: 6, trend: "up" as Trend, name: "Karthik R", dept: "Civil", departmentLabel: "B.E. Civil Engineering", year: "2024", initials: "KR", active: true, scorePts: 2480, tasks: 12, collabs: 8 },
-      { rank: 7, trend: "down" as Trend, name: "Sneha Rao", dept: "Math", departmentLabel: "B.Sc. Mathematics", year: "2026", initials: "SR", active: true, scorePts: 2410, tasks: 11, collabs: 7 },
-      { rank: 8, trend: "up" as Trend, name: "Arjun V", dept: "Physics", departmentLabel: "B.Sc. Physics", year: "2025", initials: "AV", active: true, scorePts: 2350, tasks: 10, collabs: 6 },
-      { rank: 9, trend: "same" as Trend, name: "Meera Iyer", dept: "CSE", departmentLabel: "B.E. Computer Science and Engineering", year: "2026", initials: "MI", active: true, scorePts: 2280, tasks: 12, collabs: 8 },
-      { rank: 10, trend: "up" as Trend, name: "Varun Reddy", dept: "Mech", departmentLabel: "B.E. Mechanical Engineering", year: "2024", initials: "VR", active: true, scorePts: 2210, tasks: 11, collabs: 7 },
-      { rank: 11, trend: "down" as Trend, name: "Ananya Nair", dept: "Biotech", departmentLabel: "B.Tech Biotechnology", year: "2025", initials: "AN", active: true, scorePts: 2150, tasks: 10, collabs: 6 },
-      { rank: 12, trend: "up" as Trend, name: "Aditya Joshi", dept: "ECE", departmentLabel: "B.E. Electronics and Communication", year: "2027", initials: "AJ", active: true, scorePts: 2080, tasks: 9, collabs: 5 },
-      { rank: 13, trend: "same" as Trend, name: "Kavya Menon", dept: "B.Com", departmentLabel: "B.Com.", year: "2025", initials: "KM", active: true, scorePts: 1990, tasks: 9, collabs: 4 },
-      { rank: 14, trend: "down" as Trend, name: "Rohan Verma", dept: "IT", departmentLabel: "B.Tech Information Technology", year: "2024", initials: "RV", active: true, scorePts: 1920, tasks: 8, collabs: 6 },
-      { rank: 15, trend: "up" as Trend, name: "Divya S", dept: "BBA", departmentLabel: "B.B.A.", year: "2026", initials: "DS", active: true, scorePts: 1850, tasks: 8, collabs: 5 },
-      { rank: 16, trend: "up" as Trend, name: "Siddharth K", dept: "Chemical", departmentLabel: "B.Tech Chemical Engineering", year: "2025", initials: "SK", active: true, scorePts: 1780, tasks: 7, collabs: 4 },
-      { rank: 17, trend: "down" as Trend, name: "Neha Patel", dept: "Pharm", departmentLabel: "B.Pharm. Pharmacy", year: "2024", initials: "NP", active: true, scorePts: 1710, tasks: 7, collabs: 3 },
-      { rank: 18, trend: "same" as Trend, name: "Vikram C", dept: "Aero", departmentLabel: "B.E. Aeronautical Engineering", year: "2026", initials: "VC", active: true, scorePts: 1640, tasks: 6, collabs: 4 },
-      { rank: 19, trend: "up" as Trend, name: "Pooja R", dept: "B.Arch", departmentLabel: "B.Arch.", year: "2025", initials: "PR", active: true, scorePts: 1580, tasks: 6, collabs: 3 },
-      { rank: 20, trend: "down" as Trend, name: "Rahul M", dept: "BCA", departmentLabel: "B.C.A.", year: "2026", initials: "RM", active: true, scorePts: 1510, tasks: 5, collabs: 3 }
+      { rank: 4, trend: "up" as Trend, name: "Rahul Gupta", dept: "CSE", departmentLabel: "B.E. Computer Science and Engineering", year: "2024", initials: "RG", active: true, scorePts: 2650, tasks: 14 },
+      { rank: 5, trend: "down" as Trend, name: "Fatima Khan", dept: "ECE", departmentLabel: "B.E. Electronics and Communication", year: "2025", initials: "FK", active: true, scorePts: 2590, tasks: 13},
+      { rank: 6, trend: "up" as Trend, name: "Karthik R", dept: "Civil", departmentLabel: "B.E. Civil Engineering", year: "2024", initials: "KR", active: true, scorePts: 2480, tasks: 12 },
+      { rank: 7, trend: "down" as Trend, name: "Sneha Rao", dept: "Math", departmentLabel: "B.Sc. Mathematics", year: "2026", initials: "SR", active: true, scorePts: 2410, tasks: 11 },
+      { rank: 8, trend: "up" as Trend, name: "Arjun V", dept: "Physics", departmentLabel: "B.Sc. Physics", year: "2025", initials: "AV", active: true, scorePts: 2350, tasks: 10},
+      { rank: 9, trend: "same" as Trend, name: "Meera Iyer", dept: "CSE", departmentLabel: "B.E. Computer Science and Engineering", year: "2026", initials: "MI", active: true, scorePts: 2280, tasks: 12},
+      { rank: 10, trend: "up" as Trend, name: "Varun Reddy", dept: "Mech", departmentLabel: "B.E. Mechanical Engineering", year: "2024", initials: "VR", active: true, scorePts: 2210, tasks: 11 },
+      { rank: 11, trend: "down" as Trend, name: "Ananya Nair", dept: "Biotech", departmentLabel: "B.Tech Biotechnology", year: "2025", initials: "AN", active: true, scorePts: 2150, tasks: 10},
+      { rank: 12, trend: "up" as Trend, name: "Aditya Joshi", dept: "ECE", departmentLabel: "B.E. Electronics and Communication", year: "2027", initials: "AJ", active: true, scorePts: 2080, tasks: 9},
+      { rank: 13, trend: "same" as Trend, name: "Kavya Menon", dept: "B.Com", departmentLabel: "B.Com.", year: "2025", initials: "KM", active: true, scorePts: 1990, tasks: 9},
+      { rank: 14, trend: "down" as Trend, name: "Rohan Verma", dept: "IT", departmentLabel: "B.Tech Information Technology", year: "2024", initials: "RV", active: true, scorePts: 1920, tasks: 8},
+      { rank: 15, trend: "up" as Trend, name: "Divya S", dept: "BBA", departmentLabel: "B.B.A.", year: "2026", initials: "DS", active: true, scorePts: 1850, tasks: 8 },
+      { rank: 16, trend: "up" as Trend, name: "Siddharth K", dept: "Chemical", departmentLabel: "B.Tech Chemical Engineering", year: "2025", initials: "SK", active: true, scorePts: 1780, tasks: 7},
+      { rank: 17, trend: "down" as Trend, name: "Neha Patel", dept: "Pharm", departmentLabel: "B.Pharm. Pharmacy", year: "2024", initials: "NP", active: true, scorePts: 1710, tasks: 7},
+      { rank: 18, trend: "same" as Trend, name: "Vikram C", dept: "Aero", departmentLabel: "B.E. Aeronautical Engineering", year: "2026", initials: "VC", active: true, scorePts: 1640, tasks: 6},
+      { rank: 19, trend: "up" as Trend, name: "Pooja R", dept: "B.Arch", departmentLabel: "B.Arch.", year: "2025", initials: "PR", active: true, scorePts: 1580, tasks: 6 },
+      { rank: 20, trend: "down" as Trend, name: "Rahul M", dept: "BCA", departmentLabel: "B.C.A.", year: "2026", initials: "RM", active: true, scorePts: 1510, tasks: 5}
     ];
     return raw.map((r) => ({
       rank: r.rank,
@@ -365,7 +364,7 @@ export function UniversityLeaderboard() {
       active: r.active,
       scorePts: r.scorePts,
       progressPct: Math.round((r.scorePts / MAX_POINTS_FOR_PROGRESS) * 100),
-      metrics: { tasks: r.tasks, collabs: r.collabs }
+      taskcompleted: { tasks: r.tasks }
     }));
   }, []);
 
@@ -585,7 +584,7 @@ export function UniversityLeaderboard() {
                   <th className="py-3 pr-4">Status</th>
                   <th className="py-3 pr-4">Score</th>
                   <th className="py-3 pr-4">Progress</th>
-                  <th className="py-3 pr-4">Metrics</th>
+                  <th className="py-3 pr-4">taskcompleted</th>
                   <th className="py-3 text-right">Action</th>
                 </tr>
               </thead>
@@ -636,7 +635,7 @@ export function UniversityLeaderboard() {
                     </td>
                     <td className="py-4 pr-4">
                       <span className="text-xs font-semibold text-neutral-700">
-                        {r.metrics.tasks} Tasks / {r.metrics.collabs} Collabs
+                        {r.taskcompleted.tasks} Tasks Completed
                       </span>
                     </td>
                     <td className="py-4 text-right">
