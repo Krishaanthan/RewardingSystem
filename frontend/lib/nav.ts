@@ -2,6 +2,7 @@ export const studentNav = [
   { label: "Dashboard", href: "/student/dashboard" },
   { label: "Claim Points", href: "/student/claim-points" },
   { label: "My Ledger", href: "/student/my-ledger" },
+  { label: "Badge System", href: "/student/badge%20system" },
   { label: "Leaderboard", href: "/student/leaderboard" }
 ];
 

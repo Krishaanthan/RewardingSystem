@@ -150,14 +150,25 @@ export default function BadgeAllocationPage() {
                       }),
                     }}
                   >
-                    <div className="relative h-16 w-16 overflow-hidden rounded-lg bg-gray-100 md:h-20 md:w-20">
-                      <Image
+                    <div className="relative flex h-16 w-16 items-center justify-center overflow-hidden rounded-lg bg-gray-100 md:h-20 md:w-20">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
                         src={imgPath}
                         alt={badge.name}
-                        fill
-                        className="object-cover"
-                        unoptimized
+                        className="h-full w-full object-cover"
+                        onError={(e) => {
+                          e.currentTarget.style.display = "none";
+                          const fallback = e.currentTarget.nextElementSibling;
+                          if (fallback) (fallback as HTMLElement).style.display = "flex";
+                        }}
                       />
+                      <span
+                        className="absolute inset-0 hidden items-center justify-center text-2xl"
+                        style={{ display: "none" }}
+                        aria-hidden
+                      >
+                        {badge.emoji}
+                      </span>
                       {!earned && (
                         <div
                           className="absolute inset-0 flex items-center justify-center rounded-lg"
