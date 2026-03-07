@@ -334,22 +334,22 @@ export function UniversityLeaderboard() {
   const rows: LeaderRow[] = useMemo(() => {
     const raw = [
       { rank: 4, trend: "up" as Trend, name: "Rahul Gupta", dept: "CSE", departmentLabel: "B.E. Computer Science and Engineering", year: "2024", initials: "RG", active: true, scorePts: 2650, tasks: 14 },
-      { rank: 5, trend: "down" as Trend, name: "Fatima Khan", dept: "ECE", departmentLabel: "B.E. Electronics and Communication", year: "2025", initials: "FK", active: true, scorePts: 2590, tasks: 13},
+      { rank: 5, trend: "down" as Trend, name: "Fatima Khan", dept: "ECE", departmentLabel: "B.E. Electronics and Communication", year: "2025", initials: "FK", active: true, scorePts: 2590, tasks: 13 },
       { rank: 6, trend: "up" as Trend, name: "Karthik R", dept: "Civil", departmentLabel: "B.E. Civil Engineering", year: "2024", initials: "KR", active: true, scorePts: 2480, tasks: 12 },
       { rank: 7, trend: "down" as Trend, name: "Sneha Rao", dept: "Math", departmentLabel: "B.Sc. Mathematics", year: "2026", initials: "SR", active: true, scorePts: 2410, tasks: 11 },
-      { rank: 8, trend: "up" as Trend, name: "Arjun V", dept: "Physics", departmentLabel: "B.Sc. Physics", year: "2025", initials: "AV", active: true, scorePts: 2350, tasks: 10},
-      { rank: 9, trend: "same" as Trend, name: "Meera Iyer", dept: "CSE", departmentLabel: "B.E. Computer Science and Engineering", year: "2026", initials: "MI", active: true, scorePts: 2280, tasks: 12},
+      { rank: 8, trend: "up" as Trend, name: "Arjun V", dept: "Physics", departmentLabel: "B.Sc. Physics", year: "2025", initials: "AV", active: true, scorePts: 2350, tasks: 10 },
+      { rank: 9, trend: "same" as Trend, name: "Meera Iyer", dept: "CSE", departmentLabel: "B.E. Computer Science and Engineering", year: "2026", initials: "MI", active: true, scorePts: 2280, tasks: 12 },
       { rank: 10, trend: "up" as Trend, name: "Varun Reddy", dept: "Mech", departmentLabel: "B.E. Mechanical Engineering", year: "2024", initials: "VR", active: true, scorePts: 2210, tasks: 11 },
-      { rank: 11, trend: "down" as Trend, name: "Ananya Nair", dept: "Biotech", departmentLabel: "B.Tech Biotechnology", year: "2025", initials: "AN", active: true, scorePts: 2150, tasks: 10},
-      { rank: 12, trend: "up" as Trend, name: "Aditya Joshi", dept: "ECE", departmentLabel: "B.E. Electronics and Communication", year: "2027", initials: "AJ", active: true, scorePts: 2080, tasks: 9},
-      { rank: 13, trend: "same" as Trend, name: "Kavya Menon", dept: "B.Com", departmentLabel: "B.Com.", year: "2025", initials: "KM", active: true, scorePts: 1990, tasks: 9},
-      { rank: 14, trend: "down" as Trend, name: "Rohan Verma", dept: "IT", departmentLabel: "B.Tech Information Technology", year: "2024", initials: "RV", active: true, scorePts: 1920, tasks: 8},
+      { rank: 11, trend: "down" as Trend, name: "Ananya Nair", dept: "Biotech", departmentLabel: "B.Tech Biotechnology", year: "2025", initials: "AN", active: true, scorePts: 2150, tasks: 10 },
+      { rank: 12, trend: "up" as Trend, name: "Aditya Joshi", dept: "ECE", departmentLabel: "B.E. Electronics and Communication", year: "2027", initials: "AJ", active: true, scorePts: 2080, tasks: 9 },
+      { rank: 13, trend: "same" as Trend, name: "Kavya Menon", dept: "B.Com", departmentLabel: "B.Com.", year: "2025", initials: "KM", active: true, scorePts: 1990, tasks: 9 },
+      { rank: 14, trend: "down" as Trend, name: "Rohan Verma", dept: "IT", departmentLabel: "B.Tech Information Technology", year: "2024", initials: "RV", active: true, scorePts: 1920, tasks: 8 },
       { rank: 15, trend: "up" as Trend, name: "Divya S", dept: "BBA", departmentLabel: "B.B.A.", year: "2026", initials: "DS", active: true, scorePts: 1850, tasks: 8 },
-      { rank: 16, trend: "up" as Trend, name: "Siddharth K", dept: "Chemical", departmentLabel: "B.Tech Chemical Engineering", year: "2025", initials: "SK", active: true, scorePts: 1780, tasks: 7},
-      { rank: 17, trend: "down" as Trend, name: "Neha Patel", dept: "Pharm", departmentLabel: "B.Pharm. Pharmacy", year: "2024", initials: "NP", active: true, scorePts: 1710, tasks: 7},
-      { rank: 18, trend: "same" as Trend, name: "Vikram C", dept: "Aero", departmentLabel: "B.E. Aeronautical Engineering", year: "2026", initials: "VC", active: true, scorePts: 1640, tasks: 6},
+      { rank: 16, trend: "up" as Trend, name: "Siddharth K", dept: "Chemical", departmentLabel: "B.Tech Chemical Engineering", year: "2025", initials: "SK", active: true, scorePts: 1780, tasks: 7 },
+      { rank: 17, trend: "down" as Trend, name: "Neha Patel", dept: "Pharm", departmentLabel: "B.Pharm. Pharmacy", year: "2024", initials: "NP", active: true, scorePts: 1710, tasks: 7 },
+      { rank: 18, trend: "same" as Trend, name: "Vikram C", dept: "Aero", departmentLabel: "B.E. Aeronautical Engineering", year: "2026", initials: "VC", active: true, scorePts: 1640, tasks: 6 },
       { rank: 19, trend: "up" as Trend, name: "Pooja R", dept: "B.Arch", departmentLabel: "B.Arch.", year: "2025", initials: "PR", active: true, scorePts: 1580, tasks: 6 },
-      { rank: 20, trend: "down" as Trend, name: "Rahul M", dept: "BCA", departmentLabel: "B.C.A.", year: "2026", initials: "RM", active: true, scorePts: 1510, tasks: 5}
+      { rank: 20, trend: "down" as Trend, name: "Rahul M", dept: "BCA", departmentLabel: "B.C.A.", year: "2026", initials: "RM", active: true, scorePts: 1510, tasks: 5 }
     ];
     return raw.map((r) => ({
       rank: r.rank,
@@ -359,6 +359,7 @@ export function UniversityLeaderboard() {
         dept: r.dept,
         departmentLabel: r.departmentLabel,
         year: r.year,
+        yearOfStudy: parseInt(r.year) || new Date().getFullYear(),
         initials: r.initials
       },
       active: r.active,
@@ -388,310 +389,324 @@ export function UniversityLeaderboard() {
   }, [department, query, rows, timeRange, year]);
 
   return (
-    <div className="min-h-screen bg-neutral-50 pb-24">
-      <header className="sticky top-0 z-50 border-b border-white/10" style={{ backgroundColor: HEADER_BG }}>
-        <nav className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
-          <a
-            href="https://www.sathyabama.ac.in/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-3"
-            aria-label="Sathyabama University"
-          >
-            <img
-              src="/sathyabama-logo.png"
-              alt="Sathyabama University"
-              className="h-12 w-12 shrink-0 rounded-full object-cover ring-2 ring-white/30"
-            />
-            <div className="leading-tight">
-              <div className="text-sm font-semibold text-white/90">Sathyabama</div>
-              <div className="text-xs font-semibold text-white/70">University</div>
-            </div>
-          </a>
+    <div className="relative h-screen w-full overflow-hidden text-white font-primary bg-black">
+      {/* Background Video */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute inset-0 z-0 h-full w-full object-cover pointer-events-none"
+      >
+        <source src="/assets/Videos/Motionbg2_loop.mp4" type="video/mp4" />
+      </video>
 
-          <div className="hidden items-center gap-6 text-sm font-semibold text-white/85 md:flex">
-            <Link href="/" className="hover:text-white">
-              Home
-            </Link>
-            <Link href="/projects" className="hover:text-white">
-              Projects
-            </Link>
-            <Link href="/leaderboard" className="text-white">
-              Leaderboard
-            </Link>
-            <Link href="/community" className="hover:text-white">
-              Community
-            </Link>
-            <Link href="/profile" className="hover:text-white">
-              Profile
-            </Link>
-          </div>
+      {/* Dark overlay to ensure text readability against the red video */}
+      <div className="absolute inset-0 z-0 bg-black/30 bg-gradient-to-b from-black/40 via-transparent to-black/40 mix-blend-multiply pointer-events-none" />
 
-          <div className="flex items-center gap-2">
-            <Link
-              href="/submit-project"
-              className="rounded-full bg-white px-4 py-2 text-xs font-bold tracking-wide text-neutral-900 shadow-sm ring-1 ring-black/5 hover:bg-white/95"
+      {/* Scrollable Content Container */}
+      <div className="relative z-10 h-full w-full overflow-y-auto overflow-x-hidden [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-white/20">
+        <header className="sticky top-0 z-50 border-b border-white/10 bg-black/20 backdrop-blur-md">
+          <nav className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
+            <a
+              href="https://www.sathyabama.ac.in/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3"
+              aria-label="Sathyabama University"
             >
-              SUBMIT PROJECT
-            </Link>
-          </div>
-        </nav>
-      </header>
+              <img
+                src="/sathyabama-logo.png"
+                alt="Sathyabama University"
+                className="h-12 w-12 shrink-0 rounded-full object-cover ring-2 ring-white/30"
+              />
+              <div className="leading-tight">
+                <div className="text-sm font-semibold text-white/90">Sathyabama</div>
+                <div className="text-xs font-semibold text-white/70">University</div>
+              </div>
+            </a>
 
-      <main className="mx-auto max-w-6xl px-4">
-        <section
-          className="mt-6 overflow-hidden rounded-3xl ring-1 ring-black/5"
-          style={{
-            backgroundImage: `repeating-linear-gradient(90deg, ${MAROON} 0px, ${MAROON} 22px, ${MAROON_DARK} 22px, ${MAROON_DARK} 44px)`
-          }}
-        >
-          <div className="px-5 py-6 sm:px-8 sm:py-7">
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div className="hidden items-center gap-6 text-sm font-semibold text-white/85 md:flex">
+              <Link href="/" className="hover:text-white">
+                Home
+              </Link>
+              <Link href="/projects" className="hover:text-white">
+                Projects
+              </Link>
+              <Link href="/leaderboard" className="text-white">
+                Leaderboard
+              </Link>
+              <Link href="/community" className="hover:text-white">
+                Community
+              </Link>
+              <Link href="/profile" className="hover:text-white">
+                Profile
+              </Link>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <Link
+                href="/submit-project"
+                className="rounded-full bg-white px-4 py-2 text-xs font-bold tracking-wide text-neutral-900 shadow-sm ring-1 ring-black/5 hover:bg-white/95"
+              >
+                SUBMIT PROJECT
+              </Link>
+            </div>
+          </nav>
+        </header>
+
+        <main className="mx-auto max-w-6xl px-4 py-8">
+          <section
+            className="mt-6 overflow-hidden rounded-[2rem] border border-white/20 bg-white/5 backdrop-blur-xl shadow-[0_8px_32px_0_rgba(143,17,59,0.3)]"
+          >
+            <div className="px-5 py-6 sm:px-8 sm:py-7">
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-[0.22em] text-white/75">
+                    University Leaderboard
+                  </p>
+                  <h1 className="mt-2 text-balance text-2xl font-semibold text-white sm:text-3xl">
+                    Student Innovation Challenge 2026
+                  </h1>
+                </div>
+                <div className="flex flex-col items-start gap-3 sm:items-end">
+                  <SegmentedTabs
+                    value={timeRange}
+                    onChange={(v) => setTimeRange(v as "all" | "month")}
+                    options={[
+                      { value: "all", label: "ALL TIME" },
+                      { value: "month", label: "THIS MONTH" }
+                    ]}
+                  />
+                  <div className="flex flex-wrap items-center gap-2">
+                    <SelectPill
+                      label="DEPARTMENT"
+                      value={department}
+                      onChange={setDepartmentAndResetYear}
+                      options={departmentOptions}
+                    />
+                    <SelectPill
+                      label="YEAR"
+                      value={year}
+                      onChange={setYear}
+                      options={yearOptions}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-6 grid gap-4 md:grid-cols-3">
+                <div className="md:order-1 md:self-end">
+                  <div className="relative rounded-3xl border border-white/25 bg-white/15 p-5 pt-7 backdrop-blur-md">
+                    <div className="absolute -top-4 left-1/2 -translate-x-1/2">
+                      <SilverCrownIcon />
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <MedalIcon tone="silver" />
+                      <span className="text-xs font-bold uppercase tracking-widest text-white/75">2nd place</span>
+                    </div>
+                    <div className="mt-3 flex items-center gap-3">
+                      <div className="grid size-12 place-items-center rounded-full bg-white/20 ring-1 ring-white/25">
+                        <span className="text-sm font-black text-white">VS</span>
+                      </div>
+                      <div>
+                        <div className="text-base font-semibold text-white">Vikram Singh</div>
+                        <div className="text-xs font-semibold text-white/70">(Mechanical Eng, 2025)</div>
+                      </div>
+                    </div>
+                    <div className="mt-4">
+                      <div className="text-3xl font-semibold text-white">2,950 pts</div>
+                      <div className="mt-1 text-xs font-semibold text-white/70">
+                        16 Tasks Completed · Silver Badge
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="md:order-2">
+                  <div className="relative rounded-3xl border border-white/30 bg-white/18 p-6 pt-8 backdrop-blur-md shadow-2xl">
+                    <div className="absolute -top-5 left-1/2 -translate-x-1/2">
+                      <CrownIcon />
+                    </div>
+                    <div className="flex items-center justify-between pt-2">
+                      <MedalIcon tone="gold" />
+                      <span className="text-xs font-bold uppercase tracking-widest text-white/75">1st place</span>
+                    </div>
+                    <div className="mt-3 flex items-center gap-3">
+                      <div className="grid size-14 place-items-center rounded-full bg-white/20 ring-1 ring-white/25">
+                        <span className="text-sm font-black text-white">PS</span>
+                      </div>
+                      <div>
+                        <div className="text-lg font-semibold text-white">Priya Sharma</div>
+                        <div className="text-xs font-semibold text-white/70">(Computer Science, 2024)</div>
+                      </div>
+                    </div>
+                    <div className="mt-4">
+                      <div className="text-4xl font-semibold text-white">3,120 pts</div>
+                      <div className="mt-1 text-xs font-semibold text-white/70">
+                        18 Tasks Completed · Gold Badge
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="md:order-3 md:self-end">
+                  <div className="relative rounded-3xl border border-white/25 bg-white/15 p-5 pt-7 backdrop-blur-md">
+                    <div className="absolute -top-4 left-1/2 -translate-x-1/2">
+                      <BronzeCrownIcon />
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <MedalIcon tone="bronze" />
+                      <span className="text-xs font-bold uppercase tracking-widest text-white/75">3rd place</span>
+                    </div>
+                    <div className="mt-3 flex items-center gap-3">
+                      <div className="grid size-12 place-items-center rounded-full bg-white/20 ring-1 ring-white/25">
+                        <span className="text-sm font-black text-white">AP</span>
+                      </div>
+                      <div>
+                        <div className="text-base font-semibold text-white">Aisha Patel</div>
+                        <div className="text-xs font-semibold text-white/70">(Bio-Tech, 2026)</div>
+                      </div>
+                    </div>
+                    <div className="mt-4">
+                      <div className="text-3xl font-semibold text-white">2,880 pts</div>
+                      <div className="mt-1 text-xs font-semibold text-white/70">
+                        15 Tasks Completed · Bronze Badge
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section className="mt-8 rounded-[2rem] border border-white/20 bg-white/5 p-5 backdrop-blur-xl shadow-[0_8px_32px_0_rgba(143,17,59,0.3)] sm:p-7">
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
               <div>
-                <p className="text-xs font-bold uppercase tracking-[0.22em] text-white/75">
-                  University Leaderboard
-                </p>
-                <h1 className="mt-2 text-balance text-2xl font-semibold text-white sm:text-3xl">
-                  Student Innovation Challenge 2026
-                </h1>
+                <div className="text-xs font-bold uppercase tracking-[0.22em] text-neutral-500">List view</div>
+                <div className="mt-2 text-xl font-semibold text-neutral-900">Top contributors</div>
               </div>
-              <div className="flex flex-col items-start gap-3 sm:items-end">
-                <SegmentedTabs
-                  value={timeRange}
-                  onChange={(v) => setTimeRange(v as "all" | "month")}
-                  options={[
-                    { value: "all", label: "ALL TIME" },
-                    { value: "month", label: "THIS MONTH" }
-                  ]}
-                />
-                <div className="flex flex-wrap items-center gap-2">
-                  <SelectPill
-                    label="DEPARTMENT"
-                    value={department}
-                    onChange={setDepartmentAndResetYear}
-                    options={departmentOptions}
-                  />
-                  <SelectPill
-                    label="YEAR"
-                    value={year}
-                    onChange={setYear}
-                    options={yearOptions}
-                  />
-                </div>
-              </div>
+              <SearchButton value={query} onChange={setQuery} />
             </div>
 
-            <div className="mt-6 grid gap-4 md:grid-cols-3">
-              <div className="md:order-1 md:self-end">
-                <div className="relative rounded-3xl border border-white/25 bg-white/15 p-5 pt-7 backdrop-blur-md">
-                  <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-                    <SilverCrownIcon />
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <MedalIcon tone="silver" />
-                    <span className="text-xs font-bold uppercase tracking-widest text-white/75">2nd place</span>
-                  </div>
-                  <div className="mt-3 flex items-center gap-3">
-                    <div className="grid size-12 place-items-center rounded-full bg-white/20 ring-1 ring-white/25">
-                      <span className="text-sm font-black text-white">VS</span>
-                    </div>
-                    <div>
-                      <div className="text-base font-semibold text-white">Vikram Singh</div>
-                      <div className="text-xs font-semibold text-white/70">(Mechanical Eng, 2025)</div>
-                    </div>
-                  </div>
-                  <div className="mt-4">
-                    <div className="text-3xl font-semibold text-white">2,950 pts</div>
-                    <div className="mt-1 text-xs font-semibold text-white/70">
-                      16 Tasks Completed · Silver Badge
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="md:order-2">
-                <div className="relative rounded-3xl border border-white/30 bg-white/18 p-6 pt-8 backdrop-blur-md shadow-2xl">
-                  <div className="absolute -top-5 left-1/2 -translate-x-1/2">
-                    <CrownIcon />
-                  </div>
-                  <div className="flex items-center justify-between pt-2">
-                    <MedalIcon tone="gold" />
-                    <span className="text-xs font-bold uppercase tracking-widest text-white/75">1st place</span>
-                  </div>
-                  <div className="mt-3 flex items-center gap-3">
-                    <div className="grid size-14 place-items-center rounded-full bg-white/20 ring-1 ring-white/25">
-                      <span className="text-sm font-black text-white">PS</span>
-                    </div>
-                    <div>
-                      <div className="text-lg font-semibold text-white">Priya Sharma</div>
-                      <div className="text-xs font-semibold text-white/70">(Computer Science, 2024)</div>
-                    </div>
-                  </div>
-                  <div className="mt-4">
-                    <div className="text-4xl font-semibold text-white">3,120 pts</div>
-                    <div className="mt-1 text-xs font-semibold text-white/70">
-                      18 Tasks Completed · Gold Badge
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="md:order-3 md:self-end">
-                <div className="relative rounded-3xl border border-white/25 bg-white/15 p-5 pt-7 backdrop-blur-md">
-                  <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-                    <BronzeCrownIcon />
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <MedalIcon tone="bronze" />
-                    <span className="text-xs font-bold uppercase tracking-widest text-white/75">3rd place</span>
-                  </div>
-                  <div className="mt-3 flex items-center gap-3">
-                    <div className="grid size-12 place-items-center rounded-full bg-white/20 ring-1 ring-white/25">
-                      <span className="text-sm font-black text-white">AP</span>
-                    </div>
-                    <div>
-                      <div className="text-base font-semibold text-white">Aisha Patel</div>
-                      <div className="text-xs font-semibold text-white/70">(Bio-Tech, 2026)</div>
-                    </div>
-                  </div>
-                  <div className="mt-4">
-                    <div className="text-3xl font-semibold text-white">2,880 pts</div>
-                    <div className="mt-1 text-xs font-semibold text-white/70">
-                      15 Tasks Completed · Bronze Badge
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="mt-6 rounded-3xl bg-white p-5 shadow-soft ring-1 ring-black/5 sm:p-7">
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-            <div>
-              <div className="text-xs font-bold uppercase tracking-[0.22em] text-neutral-500">List view</div>
-              <div className="mt-2 text-xl font-semibold text-neutral-900">Top contributors</div>
-            </div>
-            <SearchButton value={query} onChange={setQuery} />
-          </div>
-
-          <div className="mt-5 overflow-x-auto">
-            <table className="min-w-[920px] table-auto text-left text-sm">
-              <thead>
-                <tr className="border-b border-neutral-200 text-xs font-bold uppercase tracking-wider text-neutral-500">
-                  <th className="py-3 pr-4">Rank</th>
-                  <th className="py-3 pr-4">User</th>
-                  <th className="py-3 pr-4">Status</th>
-                  <th className="py-3 pr-4">Score</th>
-                  <th className="py-3 pr-4">Progress</th>
-                  <th className="py-3 pr-4">taskcompleted</th>
-                  <th className="py-3 text-right">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filtered.map((r) => (
-                  <tr key={r.rank} className="border-b border-neutral-100 last:border-none">
-                    <td className="py-4 pr-4">
-                      <div className="flex items-center gap-2">
-                        <span className="text-sm font-semibold text-neutral-900">{r.rank}</span>
-                        {trendBadge(r.trend)}
-                      </div>
-                    </td>
-                    <td className="py-4 pr-4">
-                      <div className="flex items-center gap-3">
-                        <InitialAvatar initials={r.user.initials} />
-                        <div>
-                          <div className="font-semibold text-neutral-900">
-                            {r.user.name} <span className="text-neutral-400">({r.user.dept}, {String(r.user.year).slice(-2)})</span>
-                          </div>
-                          <div className="text-xs font-semibold text-neutral-500">
-                            {r.user.dept} · {r.user.year}
+            <div className="mt-5 overflow-x-auto">
+              <table className="min-w-[920px] table-auto text-left text-sm">
+                <thead>
+                  <tr className="border-b border-neutral-200 text-xs font-bold uppercase tracking-wider text-neutral-500">
+                    <th className="py-3 pr-4">Rank</th>
+                    <th className="py-3 pr-4">User</th>
+                    <th className="py-3 pr-4">Status</th>
+                    <th className="py-3 pr-4">Score</th>
+                    <th className="py-3 pr-4">Progress</th>
+                    <th className="py-3 pr-4">taskcompleted</th>
+                    <th className="py-3 text-right">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filtered.map((r) => (
+                    <tr key={r.rank} className="border-b border-neutral-100 last:border-none">
+                      <td className="py-4 pr-4">
+                        <div className="flex items-center gap-2">
+                          <span className="text-sm font-semibold text-neutral-900">{r.rank}</span>
+                          {trendBadge(r.trend)}
+                        </div>
+                      </td>
+                      <td className="py-4 pr-4">
+                        <div className="flex items-center gap-3">
+                          <InitialAvatar initials={r.user.initials} />
+                          <div>
+                            <div className="font-semibold text-neutral-900">
+                              {r.user.name} <span className="text-neutral-400">({r.user.dept}, {String(r.user.year).slice(-2)})</span>
+                            </div>
+                            <div className="text-xs font-semibold text-neutral-500">
+                              {r.user.dept} · {r.user.year}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </td>
-                    <td className="py-4 pr-4">
-                      <div className="inline-flex items-center gap-2">
-                        <span className={["size-2 rounded-full", r.active ? "bg-emerald-500" : "bg-neutral-300"].join(" ")} />
-                        <span className="text-xs font-semibold text-neutral-600">{r.active ? "Active" : "Idle"}</span>
-                      </div>
-                    </td>
-                    <td className="py-4 pr-4">
-                      <span className="font-semibold text-neutral-900">{r.scorePts.toLocaleString()} pts</span>
-                    </td>
-                    <td className="py-4 pr-4">
-                      <div className="flex items-center gap-3">
-                        <div className="h-2 w-40 overflow-hidden rounded-full bg-neutral-200">
-                          <div
-                            className="h-full"
-                            style={{
-                              width: `${clampPct(r.progressPct)}%`,
-                              backgroundColor: PROGRESS_BAR_FILL
-                            }}
-                          />
+                      </td>
+                      <td className="py-4 pr-4">
+                        <div className="inline-flex items-center gap-2">
+                          <span className={["size-2 rounded-full", r.active ? "bg-emerald-500" : "bg-neutral-300"].join(" ")} />
+                          <span className="text-xs font-semibold text-neutral-600">{r.active ? "Active" : "Idle"}</span>
                         </div>
-                        <span className="text-xs font-semibold text-neutral-600">{clampPct(r.progressPct)}%</span>
-                      </div>
-                    </td>
-                    <td className="py-4 pr-4">
-                      <span className="text-xs font-semibold text-neutral-700">
-                        {r.taskcompleted.tasks} Tasks Completed
-                      </span>
-                    </td>
-                    <td className="py-4 text-right">
-                      <button
-                        type="button"
-                        className="rounded-full px-4 py-2 text-xs font-bold text-white hover:brightness-110"
-                        style={{ backgroundColor: MAROON }}
-                      >
-                        View
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+                      </td>
+                      <td className="py-4 pr-4">
+                        <span className="font-semibold text-neutral-900">{r.scorePts.toLocaleString()} pts</span>
+                      </td>
+                      <td className="py-4 pr-4">
+                        <div className="flex items-center gap-3">
+                          <div className="h-2 w-40 overflow-hidden rounded-full bg-neutral-200">
+                            <div
+                              className="h-full"
+                              style={{
+                                width: `${clampPct(r.progressPct)}%`,
+                                backgroundColor: PROGRESS_BAR_FILL
+                              }}
+                            />
+                          </div>
+                          <span className="text-xs font-semibold text-neutral-600">{clampPct(r.progressPct)}%</span>
+                        </div>
+                      </td>
+                      <td className="py-4 pr-4">
+                        <span className="text-xs font-semibold text-neutral-700">
+                          {r.taskcompleted.tasks} Tasks Completed
+                        </span>
+                      </td>
+                      <td className="py-4 text-right">
+                        <button
+                          type="button"
+                          className="rounded-full px-4 py-2 text-xs font-bold text-white hover:brightness-110"
+                          style={{ backgroundColor: MAROON }}
+                        >
+                          View
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
 
-                {filtered.length === 0 ? (
-                  <tr>
-                    <td colSpan={7} className="py-10 text-center text-sm font-semibold text-neutral-500">
-                      No matches. Try a different search or filter.
-                    </td>
-                  </tr>
-                ) : null}
-              </tbody>
-            </table>
-          </div>
-        </section>
-      </main>
-
-      <footer className="fixed bottom-5 left-1/2 z-40 w-[min(980px,calc(100vw-2rem))] -translate-x-1/2 rounded-2xl px-4 py-3 shadow-2xl ring-1 ring-black/10">
-        <div
-          className="rounded-2xl px-4 py-3 text-white"
-          style={{
-            background: `linear-gradient(180deg, ${MAROON} 0%, ${MAROON_DARK} 100%)`
-          }}
-        >
-          <div className="flex flex-col gap-2 text-xs font-semibold sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-              <span className="rounded-full bg-white/10 px-2 py-1 text-[11px] font-bold tracking-widest">
-                MY RANK
-              </span>
-              <span className="text-white/85">
-                YOUR RANK: <span className="text-white">152</span>
-              </span>
-              <span className="text-white/85">
-                SCORE: <span className="text-white">980 pts</span>
-              </span>
-              <span className="text-white/85">
-                PROGRESS: <span className="text-white">54%</span>
-              </span>
+                  {filtered.length === 0 ? (
+                    <tr>
+                      <td colSpan={7} className="py-10 text-center text-sm font-semibold text-neutral-500">
+                        No matches. Try a different search or filter.
+                      </td>
+                    </tr>
+                  ) : null}
+                </tbody>
+              </table>
             </div>
+          </section>
+        </main>
 
-            <div className="text-white/85">
-              PROFILE <span className="text-white">(Aman J.)</span>
+        <footer className="fixed bottom-5 left-1/2 z-40 w-[min(980px,calc(100vw-2rem))] -translate-x-1/2 rounded-2xl px-4 py-3 shadow-[0_8px_32px_0_rgba(143,17,59,0.4)] border border-white/20 backdrop-blur-xl">
+          <div
+            className="rounded-2xl px-4 py-3 text-white"
+            style={{
+              background: `linear-gradient(180deg, ${MAROON} 0%, ${MAROON_DARK} 100%)`
+            }}
+          >
+            <div className="flex flex-col gap-2 text-xs font-semibold sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+                <span className="rounded-full bg-white/10 px-2 py-1 text-[11px] font-bold tracking-widest">
+                  MY RANK
+                </span>
+                <span className="text-white/85">
+                  YOUR RANK: <span className="text-white">152</span>
+                </span>
+                <span className="text-white/85">
+                  SCORE: <span className="text-white">980 pts</span>
+                </span>
+                <span className="text-white/85">
+                  PROGRESS: <span className="text-white">54%</span>
+                </span>
+              </div>
+
+              <div className="text-white/85">
+                PROFILE <span className="text-white">(Aman J.)</span>
+              </div>
             </div>
           </div>
-        </div>
-      </footer>
+        </footer>
+      </div>
     </div>
   );
 }
