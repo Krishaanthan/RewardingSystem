@@ -10,9 +10,9 @@ const config: Config = {
     extend: {
       colors: {
         brand: {
-          primary: "#8F113B",
-          secondary: "#FFFFFF",
-          tertiary: "#c6c6c6",
+          primary: "#722F37",
+          secondary: "#F4C542",
+          tertiary: "#FFFFFF",
           text: "#1F2937"
         },
         // Shorthand aliases – keep in sync with brand.* values above
@@ -22,15 +22,10 @@ const config: Config = {
       },
       fontFamily: {
         primary: ["var(--font-primary)", "sans-serif"],
-        secondary: ["var(--font-secondary)", "sans-serif"],
-        tertiary: ["var(--font-tertiary)", "sans-serif"]
-      },
-      backgroundImage: {
-        "gradient-tertiary": "linear-gradient(to bottom right, rgba(198, 198, 198, 0.2), #ffffff)",
-        "gradient-tertiary-subtle": "linear-gradient(135deg, rgba(198, 198, 198, 0.3) 0%, transparent 100%)"
+        secondary: ["var(--font-secondary)", "serif"]
       },
       boxShadow: {
-        soft: "0 10px 30px -10px rgba(143, 17, 59, 0.25)"
+        soft: "0 10px 30px -10px rgba(114, 47, 55, 0.25)"
       }
     }
   },
