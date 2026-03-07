@@ -1,0 +1,134 @@
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useState, useRef, useEffect } from "react";
+
+export default function StudentNavbar() {
+    const pathname = usePathname();
+    const [isProfileOpen, setIsProfileOpen] = useState(false);
+    const dropdownRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+                setIsProfileOpen(false);
+            }
+        }
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
+
+    const navItems = [
+        { name: "Home", path: "/student/home" },
+        { name: "Claim Points", path: "/student/claim-points" },
+        { name: "Dashboard", path: "/student/dashboard" },
+        { name: "Leaderboard", path: "/student/leaderboard" },
+    ];
+
+    return (
+        <nav className="fixed left-0 right-0 top-0 z-[100] flex items-center justify-between border-b border-white/20 bg-black/40 px-6 py-4 font-primary text-white backdrop-blur-xl">
+            {/* Brand & Links */}
+            <div className="flex items-center gap-10">
+                <Link href="/student/home" className="flex items-center gap-2 text-xl font-bold tracking-wide">
+                    <div className="h-6 w-1 rounded-full bg-[#ff4d79]"></div>
+                    RDSYS
+                </Link>
+                <div className="hidden items-center gap-2 md:flex">
+                    {navItems.map((item) => {
+                        const isActive =
+                            pathname === item.path ||
+                            (item.path === "/student/claim-points" && pathname === "/student/submission-statuses");
+                        return (
+                            <Link
+                                key={item.name}
+                                href={item.path}
+                                className={`rounded-full px-5 py-2 text-sm font-medium transition-all ${isActive
+                                        ? "border border-white/30 bg-white/10 text-white shadow-[0_0_15px_rgba(255,255,255,0.1)]"
+                                        : "text-white/70 hover:bg-white/5 hover:text-white"
+                                    }`}
+                            >
+                                {item.name}
+                            </Link>
+                        );
+                    })}
+                </div>
+            </div>
+
+            {/* Profile Section */}
+            <div className="relative" ref={dropdownRef}>
+                <button
+                    onClick={() => setIsProfileOpen(!isProfileOpen)}
+                    className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/10 backdrop-blur-md transition-colors hover:bg-white/20"
+                    aria-label="Profile menu"
+                >
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="h-5 w-5 text-white/90"
+                    >
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
+                        />
+                    </svg>
+                </button>
+
+                <div
+                    className={`absolute right-0 mt-3 w-48 origin-top-right rounded-2xl border border-white/20 bg-[#6b0a23]/95 p-1.5 shadow-2xl backdrop-blur-xl transition-all duration-200 ease-in-out ${isProfileOpen ? "scale-100 opacity-100" : "pointer-events-none scale-95 opacity-0"
+                        }`}
+                >
+                    <div className="flex flex-col text-sm text-white/90">
+                        <Link
+                            href="/student/profile"
+                            onClick={() => setIsProfileOpen(false)}
+                            className="flex items-center gap-3 rounded-xl px-4 py-3 transition-colors hover:bg-white/15"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth={2}
+                                stroke="currentColor"
+                                className="h-4 w-4 opacity-70"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
+                                />
+                            </svg>
+                            Your Profile
+                        </Link>
+                        <div className="my-1 h-px w-full bg-white/10" />
+                        <Link
+                            href="/logout"
+                            onClick={() => setIsProfileOpen(false)}
+                            className="flex items-center gap-3 rounded-xl px-4 py-3 text-rose-300 transition-colors hover:bg-white/15 hover:text-rose-200"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth={2}
+                                stroke="currentColor"
+                                className="h-4 w-4 opacity-70"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"
+                                />
+                            </svg>
+                            Logout
+                        </Link>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    );
+}
