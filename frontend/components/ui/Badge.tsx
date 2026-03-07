@@ -8,7 +8,11 @@ type BadgeVariant =
   | "status-approved"
   | "status-pending"
   | "status-rejected"
-  | "status-deduction";
+  | "status-deduction"
+  | "ledger-approved"
+  | "ledger-pending"
+  | "ledger-completed"
+  | "ledger-rejected";
 
 const variantStyles: Record<BadgeVariant, string> = {
   // Existing variants used across the app
@@ -25,7 +29,13 @@ const variantStyles: Record<BadgeVariant, string> = {
   "status-approved": "bg-emerald-50 text-emerald-700",
   "status-pending": "bg-slate-100 text-slate-600",
   "status-rejected": "bg-slate-100 text-slate-700",
-  "status-deduction": "bg-rose-50 text-rose-700"
+  "status-deduction": "bg-rose-50 text-rose-700",
+
+  // New ledger-specific variants matching the mockup
+  "ledger-approved": "bg-emerald-100 text-emerald-600 border border-emerald-200 uppercase",
+  "ledger-pending": "bg-amber-50 text-amber-600 border border-amber-200 uppercase",
+  "ledger-completed": "bg-slate-100 text-slate-600 border border-slate-200 uppercase",
+  "ledger-rejected": "bg-rose-100 text-rose-600 border border-rose-200 uppercase"
 };
 
 export function Badge({
