@@ -18,8 +18,8 @@ export function PortalLayout({
   children: ReactNode;
 }) {
   return (
-    <div className="min-h-screen bg-brand-primary/5">
-      <header className="border-b border-brand-primary/10 bg-white">
+    <div className="min-h-screen bg-gradient-to-b from-brand-tertiary/20 to-secondary">
+      <header className="border-b border-brand-tertiary bg-secondary">
         <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-4 md:flex-row md:items-center md:justify-between">
           <div>
             <h1 className="heading text-2xl">{title}</h1>
@@ -30,7 +30,7 @@ export function PortalLayout({
               <Link
                 key={item.href}
                 href={item.href}
-                className="rounded-lg border border-brand-primary/20 px-3 py-2 text-sm font-medium text-brand-primary transition hover:bg-brand-primary hover:text-white"
+                className="rounded-lg border border-brand-tertiary px-3 py-2 text-sm font-medium text-brand-primary transition hover:bg-brand-primary hover:text-white"
               >
                 {item.label}
               </Link>

@@ -14,7 +14,11 @@ const config: Config = {
           secondary: "#FFFFFF",
           tertiary: "#c6c6c6",
           text: "#1F2937"
-        }
+        },
+        // Shorthand aliases – keep in sync with brand.* values above
+        primary: "#8F113B",
+        secondary: "#FFFFFF",
+        tertiary: "#c6c6c6"
       },
       fontFamily: {
         primary: ["var(--font-primary)", "sans-serif"],

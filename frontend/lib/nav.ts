@@ -1,8 +1,6 @@
 export const studentNav = [
-  { label: "Dashboard", href: "/student/dashboard" },
   { label: "Claim Points", href: "/student/claim-points" },
-  { label: "My Ledger", href: "/student/my-ledger" },
-  { label: "Leaderboard", href: "/student/leaderboard" }
+  { label: "Submission Statuses", href: "/student/submission-statuses" }
 ];
 
 export const facultyNav = [
