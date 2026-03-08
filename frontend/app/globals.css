@@ -6,23 +6,7 @@
   color-scheme: light;
 }
 
-@font-face {
-  font-family: "Alteix Sans";
-  src: url("/assets/fonts/alteix-sans-font/AlteixsansRegulardemo-E4j1n.otf") format("opentype");
-  font-display: swap;
-}
 
-@font-face {
-  font-family: "Timeburner";
-  src: url("/assets/fonts/timeburner-font/Timeburner-xJB8.ttf") format("truetype");
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Queensides";
-  src: url("/assets/fonts/queensides-font/QueensidesMedium-x30zV.ttf") format("truetype");
-  font-display: swap;
-}
 body {
   @apply bg-white;
 }

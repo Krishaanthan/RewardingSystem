@@ -4,8 +4,6 @@
 import Link from "next/link";
 import { FacultyAuthLayout } from "@/components/auth/FacultyAuthLayout";
 
-const PRIMARY = "#8F113B";
-const SECONDARY = "#ffffff";
 
 export default function FacultyLoginPage() {
   return (
@@ -18,7 +16,7 @@ export default function FacultyLoginPage() {
         <div>
           <label
             htmlFor="faculty-id"
-            className="mb-1.5 block text-sm text-gray-700"
+            className="mb-1.5 block text-sm text-white/90"
             style={{ fontFamily: '"League Spartan", system-ui, sans-serif' }}
           >
             Faculty ID / Email
@@ -28,7 +26,7 @@ export default function FacultyLoginPage() {
             name="facultyId"
             type="text"
             autoComplete="username email"
-            className="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 outline-none transition focus:border-[#8F113B] focus:ring-2 focus:ring-[#8F113B]"
+            className="block w-full rounded-xl border border-white/20 bg-white/10 px-4 py-3 text-white/90 outline-none transition placeholder:text-white/40 focus:border-white/50 focus:ring-1 focus:ring-white/50"
             placeholder="Enter faculty ID or email"
           />
         </div>
@@ -36,7 +34,7 @@ export default function FacultyLoginPage() {
         <div>
           <label
             htmlFor="password"
-            className="mb-1.5 block text-sm text-gray-700"
+            className="mb-1.5 block text-sm text-white/90"
             style={{ fontFamily: '"League Spartan", system-ui, sans-serif' }}
           >
             Password
@@ -46,33 +44,29 @@ export default function FacultyLoginPage() {
             name="password"
             type="password"
             autoComplete="current-password"
-            className="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 outline-none transition focus:border-[#8F113B] focus:ring-2 focus:ring-[#8F113B]"
+            className="block w-full rounded-xl border border-white/20 bg-white/10 px-4 py-3 text-white/90 outline-none transition placeholder:text-white/40 focus:border-white/50 focus:ring-1 focus:ring-white/50"
             placeholder="Enter password"
           />
         </div>
 
         <button
           type="submit"
-          className="mt-2 flex w-full justify-center rounded-lg px-4 py-2.5 text-sm font-semibold text-white transition hover:opacity-90"
-          style={{
-            fontFamily: '"League Spartan", system-ui, sans-serif',
-            backgroundColor: PRIMARY,
-            color: SECONDARY
-          }}
+          className="group mt-2 flex w-full items-center justify-center gap-2 rounded-xl bg-[#8F113B] px-4 py-3.5 font-semibold text-white transition-all hover:bg-[#a61a49] hover:shadow-[0_0_20px_rgba(143,17,59,0.5)] focus:outline-none focus:ring-2 focus:ring-[#8F113B] focus:ring-offset-2 focus:ring-offset-black/50"
+          style={{ fontFamily: '"League Spartan", system-ui, sans-serif' }}
         >
           Login
         </button>
 
         <p
-          className="text-center text-xs text-gray-600"
+          className="text-center text-xs text-white/60"
           style={{ fontFamily: '"Canva Sans", system-ui, sans-serif' }}
         >
           New Faculty?{" "}
-          <Link href="#" className="font-semibold text-[#8F113B] hover:underline">
+          <Link href="#" className="font-semibold text-[#ff4d79] hover:underline">
             Contact Admin
           </Link>
           {" · "}
-          <Link href="#" className="font-semibold text-[#8F113B] hover:underline">
+          <Link href="#" className="font-semibold text-[#ff4d79] hover:underline">
             Forgot Password? Reset Here
           </Link>
         </p>

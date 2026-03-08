@@ -1,16 +1,21 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { Inter, Playfair_Display } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
-const inter = Inter({
-  subsets: ["latin"],
+const swansea = localFont({
+  src: "../assets/fonts/swansea-font-prm/Swansea-q3pd.ttf",
   variable: "--font-primary"
 });
 
-const playfair = Playfair_Display({
-  subsets: ["latin"],
+const timeburner = localFont({
+  src: "../assets/fonts/timeburner-font/TimeburnerBold-peGR.ttf",
   variable: "--font-secondary"
+});
+
+const alteix = localFont({
+  src: "../assets/fonts/alteix-sans-sec/AlteixsansRegulardemo-E4j1n.otf",
+  variable: "--font-tertiary"
 });
 
 export const metadata: Metadata = {
@@ -25,7 +30,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} ${playfair.variable}`}>{children}</body>
+      <body className={`${swansea.variable} ${timeburner.variable} ${alteix.variable}`}>{children}</body>
     </html>
   );
 }

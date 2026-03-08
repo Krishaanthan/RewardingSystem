@@ -10,15 +10,18 @@ const config: Config = {
     extend: {
       colors: {
         brand: {
-          primary: "#722F37",
-          secondary: "#F4C542",
-          tertiary: "#FFFFFF",
-          text: "#1F2937"
+          primary: "#831238",
+          secondary: "#FFFFFF",
+          tertiary: "#FBEFF1",
+          text: "#14110F"
         },
         // Shorthand aliases – keep in sync with brand.* values above
-        primary: "#8F113B",
+        primary: "#831238",
         secondary: "#FFFFFF",
-        tertiary: "#c6c6c6"
+        tertiary: "#FBEFF1",
+        black: "#14110F",
+        grey: "#F5F5F5",
+        accent: "#FBEFF1"
       },
       fontFamily: {
         primary: ["var(--font-primary)", "sans-serif"],
