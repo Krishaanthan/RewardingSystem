@@ -1,0 +1,5 @@
+﻿.next/types/validator.ts(96,39): error TS2307: Cannot find module '../../app/community/page.js' or its corresponding type declarations.
+.next/types/validator.ts(150,39): error TS2307: Cannot find module '../../app/leaderboard/page.js' or its corresponding type declarations.
+.next/types/validator.ts(168,39): error TS2307: Cannot find module '../../app/profile/page.js' or its corresponding type declarations.
+.next/types/validator.ts(177,39): error TS2307: Cannot find module '../../app/projects/page.js' or its corresponding type declarations.
+.next/types/validator.ts(240,39): error TS2307: Cannot find module '../../app/submit-project/page.js' or its corresponding type declarations.

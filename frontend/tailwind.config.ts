@@ -14,6 +14,9 @@ const config: Config = {
           secondary: "#FFFFFF",
           tertiary: "#c6c6c6",
           text: "#1F2937"
+        },
+        maroon: {
+          800: "#800000"
         }
       },
       fontFamily: {
