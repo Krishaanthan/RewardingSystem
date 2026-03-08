@@ -565,3 +565,90 @@ export function StudentBadges() {
         </div>
     );
 }
+
+export function MyLedger() {
+    const transactions = [
+        { date: "Mar 7", activity: "Hackathon Winner", points: 50 },
+        { date: "Mar 5", activity: "Library Contribution", points: 10 },
+        { date: "Mar 4", activity: "Event Participation", points: 20 },
+        { date: "Mar 2", activity: "Quiz Champion", points: 30 },
+        { date: "Feb 28", activity: "Course Redemption", points: -100 },
+        { date: "Feb 24", activity: "Login Bonus", points: 50 },
+    ];
+
+    return (
+        <div className="bg-white/80 backdrop-blur-md rounded-xl p-5 shadow-sm border border-white/60 h-full flex flex-col">
+            <div className="flex items-center justify-between mb-3">
+                <h2 className="text-[1.1rem] font-bold text-gray-900 tracking-tight">My Ledger</h2>
+                <Wallet className="h-4 w-4 text-maroon-800" />
+            </div>
+
+            <div className="flex-1 flex flex-col gap-1.5 overflow-auto">
+                {transactions.map((tx, i) => (
+                    <div key={i} className="flex items-center justify-between px-3 py-2 rounded-lg bg-gray-50/60 border border-gray-100 hover:bg-gray-50 transition-colors group">
+                        <div className="flex items-center gap-2.5">
+                            <div className={`w-1.5 h-6 rounded-full flex-shrink-0 ${tx.points > 0 ? "bg-green-400" : "bg-maroon-800"}`} />
+                            <div>
+                                <p className="text-xs font-bold text-gray-800 leading-tight">{tx.activity}</p>
+                                <p className="text-[10px] text-gray-400 font-medium">{tx.date}</p>
+                            </div>
+                        </div>
+                        <span className={`text-xs font-extrabold ${tx.points > 0 ? "text-green-600" : "text-maroon-800"}`}>
+                            {tx.points > 0 ? `+${tx.points}` : tx.points}
+                        </span>
+                    </div>
+                ))}
+            </div>
+
+            <div className="mt-3 pt-3 border-t border-gray-100 flex items-center justify-between">
+                <span className="text-xs text-gray-500 font-medium">Net Balance</span>
+                <span className="text-sm font-extrabold text-maroon-800">+6,040 pts</span>
+            </div>
+        </div>
+    );
+}
+
+export function ClaimPoints() {
+    const categories = [
+        { label: "Academic", pts: 200, icon: "🎓", ready: true },
+        { label: "Events", pts: 75, icon: "🎤", ready: true },
+        { label: "Volunteering", pts: 50, icon: "🤝", ready: false },
+        { label: "Library", pts: 30, icon: "📚", ready: true },
+    ];
+
+    const claimable = categories.filter(c => c.ready).reduce((a, c) => a + c.pts, 0);
+
+    return (
+        <div className="bg-white/80 backdrop-blur-md rounded-xl p-5 shadow-sm border border-white/60 h-full flex flex-col">
+            <div className="flex items-center justify-between mb-3">
+                <h2 className="text-[1.1rem] font-bold text-gray-900 tracking-tight">Claim Points</h2>
+                <Star className="h-4 w-4 text-maroon-800 fill-current" />
+            </div>
+
+            {/* Claimable total */}
+            <div className="mb-3 bg-maroon-800/5 rounded-xl p-3 border border-maroon-800/10 text-center">
+                <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Available to Claim</p>
+                <p className="text-3xl font-extrabold text-maroon-800 tracking-tight mt-0.5">{claimable}</p>
+                <p className="text-[10px] text-gray-400 font-medium mt-0.5">points</p>
+            </div>
+
+            {/* Categories */}
+            <div className="flex-1 grid grid-cols-2 gap-2 mb-3">
+                {categories.map((c) => (
+                    <div key={c.label} className={`flex flex-col items-center justify-center p-2.5 rounded-xl border text-center transition-all ${c.ready ? "bg-green-50/60 border-green-200 hover:bg-green-50" : "bg-gray-50/50 border-gray-100 opacity-50"}`}>
+                        <span className="text-lg mb-1">{c.icon}</span>
+                        <p className="text-[10px] font-bold text-gray-700">{c.label}</p>
+                        <p className={`text-xs font-extrabold mt-0.5 ${c.ready ? "text-green-600" : "text-gray-400"}`}>+{c.pts}</p>
+                    </div>
+                ))}
+            </div>
+
+            {/* Claim button */}
+            <button className="w-full flex items-center justify-center gap-2 rounded-xl bg-maroon-800 hover:bg-maroon-900 text-white font-bold text-sm py-3 transition-all shadow-sm active:scale-[0.98]">
+                <Star className="h-4 w-4 fill-white" />
+                Claim {claimable} Points
+            </button>
+        </div>
+    );
+}
+
