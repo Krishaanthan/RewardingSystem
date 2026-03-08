@@ -1,0 +1,13 @@
+components/leaderboard/UniversityLeaderboard.tsx(539,21): error TS2657: JSX expressions must have one parent element.
+components/leaderboard/UniversityLeaderboard.tsx(569,27): error TS17002: Expected corresponding JSX closing tag for 'td'.
+components/leaderboard/UniversityLeaderboard.tsx(570,25): error TS17002: Expected corresponding JSX closing tag for 'tr'.
+components/leaderboard/UniversityLeaderboard.tsx(583,21): error TS1005: ')' expected.
+components/leaderboard/UniversityLeaderboard.tsx(583,23): error TS17002: Expected corresponding JSX closing tag for 'tbody'.
+components/leaderboard/UniversityLeaderboard.tsx(584,21): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/leaderboard/UniversityLeaderboard.tsx(593,19): error TS17002: Expected corresponding JSX closing tag for 'table'.
+components/leaderboard/UniversityLeaderboard.tsx(594,17): error TS17002: Expected corresponding JSX closing tag for 'div'.
+components/leaderboard/UniversityLeaderboard.tsx(595,15): error TS17002: Expected corresponding JSX closing tag for 'section'.
+components/leaderboard/UniversityLeaderboard.tsx(596,13): error TS17002: Expected corresponding JSX closing tag for 'main'.
+components/leaderboard/UniversityLeaderboard.tsx(598,11): error TS17002: Expected corresponding JSX closing tag for 'div'.
+components/leaderboard/UniversityLeaderboard.tsx(606,5): error TS1005: ')' expected.
+components/leaderboard/UniversityLeaderboard.tsx(607,3): error TS1109: Expression expected.

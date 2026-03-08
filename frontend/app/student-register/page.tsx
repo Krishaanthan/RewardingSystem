@@ -115,8 +115,7 @@ export default function StudentRegisterPage() {
         <div>
           <label
             htmlFor="registration"
-            className="mb-1.5 block text-sm text-white/90"
-            style={{ fontFamily: '"League Spartan", system-ui, sans-serif' }}
+            className="mb-1.5 block text-sm text-black font-primary"
           >
             Registration Number
           </label>
@@ -125,7 +124,7 @@ export default function StudentRegisterPage() {
             name="registration"
             type="text"
             autoComplete="off"
-            className="block w-full rounded-xl border border-white/20 bg-white/10 px-4 py-3 text-white/90 outline-none transition placeholder:text-white/40 focus:border-white/50 focus:ring-1 focus:ring-white/50"
+            className="block w-full rounded-xl border border-black/20 bg-white/40 px-4 py-3 text-black outline-none transition placeholder:text-black/40 focus:border-black/50 focus:ring-1 focus:ring-black/50"
             placeholder="Enter registration number"
           />
         </div>
@@ -133,8 +132,7 @@ export default function StudentRegisterPage() {
         <div>
           <label
             htmlFor="name"
-            className="mb-1.5 block text-sm text-white/90"
-            style={{ fontFamily: '"League Spartan", system-ui, sans-serif' }}
+            className="mb-1.5 block text-sm text-black font-primary"
           >
             Full Name
           </label>
@@ -143,7 +141,7 @@ export default function StudentRegisterPage() {
             name="name"
             type="text"
             autoComplete="name"
-            className="block w-full rounded-xl border border-white/20 bg-white/10 px-4 py-3 text-white/90 outline-none transition placeholder:text-white/40 focus:border-white/50 focus:ring-1 focus:ring-white/50"
+            className="block w-full rounded-xl border border-black/20 bg-white/40 px-4 py-3 text-black outline-none transition placeholder:text-black/40 focus:border-black/50 focus:ring-1 focus:ring-black/50"
             placeholder="Enter full name"
           />
         </div>
@@ -152,8 +150,7 @@ export default function StudentRegisterPage() {
           <div>
             <label
               htmlFor="department"
-              className="mb-1.5 block text-sm text-white/90"
-              style={{ fontFamily: '"League Spartan", system-ui, sans-serif' }}
+              className="mb-1.5 block text-sm text-black font-primary"
             >
               Department
             </label>
@@ -164,11 +161,11 @@ export default function StudentRegisterPage() {
                 setSelectedDepartmentName(event.target.value);
                 setSelectedYear("");
               }}
-              className="bg-white/10 border-white/20 text-white/90"
+              className="bg-white/40 border-black/20 text-black focus:ring-black/50 transition-all focus:border-black/50"
             >
-              <option value="">Select Department</option>
+              <option value="" className="bg-[#FBEFF1] text-black">Select Department</option>
               {DEPARTMENTS.map((dept) => (
-                <option key={dept.name} value={dept.name}>
+                <option key={dept.name} value={dept.name} className="bg-[#FBEFF1] text-black">
                   {dept.name}
                 </option>
               ))}
@@ -178,8 +175,7 @@ export default function StudentRegisterPage() {
           <div>
             <label
               htmlFor="year"
-              className="mb-1.5 block text-sm text-white/90"
-              style={{ fontFamily: '"League Spartan", system-ui, sans-serif' }}
+              className="mb-1.5 block text-sm text-black font-primary"
             >
               Year
             </label>
@@ -188,11 +184,11 @@ export default function StudentRegisterPage() {
               value={selectedYear}
               onChange={(event) => setSelectedYear(event.target.value)}
               disabled={!selectedDepartment}
-              className="bg-white/10 border-white/20 text-white/90"
+              className="bg-white/40 border-black/20 text-black focus:ring-black/50 transition-all focus:border-black/50"
             >
-              <option value="">Select Year</option>
+              <option value="" className="bg-[#FBEFF1] text-black">Select Year</option>
               {availableYears.map((year) => (
-                <option key={year} value={year}>
+                <option key={year} value={year} className="bg-[#FBEFF1] text-black">
                   {year}
                 </option>
               ))}
@@ -204,8 +200,7 @@ export default function StudentRegisterPage() {
           <div>
             <label
               htmlFor="section"
-              className="mb-1.5 block text-sm text-white/90"
-              style={{ fontFamily: '"League Spartan", system-ui, sans-serif' }}
+              className="mb-1.5 block text-sm text-black font-primary"
             >
               Section
             </label>
@@ -214,7 +209,7 @@ export default function StudentRegisterPage() {
               name="section"
               type="text"
               autoComplete="off"
-              className="block w-full rounded-xl border border-white/20 bg-white/10 px-4 py-3 text-white/90 outline-none transition placeholder:text-white/40 focus:border-white/50 focus:ring-1 focus:ring-white/50"
+              className="block w-full rounded-xl border border-black/20 bg-white/40 px-4 py-3 text-black outline-none transition placeholder:text-black/40 focus:border-black/50 focus:ring-1 focus:ring-black/50"
               placeholder="e.g. A"
             />
           </div>
@@ -222,8 +217,7 @@ export default function StudentRegisterPage() {
           <div>
             <label
               htmlFor="password"
-              className="mb-1.5 block text-sm text-white/90"
-              style={{ fontFamily: '"League Spartan", system-ui, sans-serif' }}
+              className="mb-1.5 block text-sm text-black font-primary"
             >
               Password
             </label>
@@ -232,7 +226,7 @@ export default function StudentRegisterPage() {
               name="password"
               type="password"
               autoComplete="new-password"
-              className="block w-full rounded-xl border border-white/20 bg-white/10 px-4 py-3 text-white/90 outline-none transition placeholder:text-white/40 focus:border-white/50 focus:ring-1 focus:ring-white/50"
+              className="block w-full rounded-xl border border-black/20 bg-white/40 px-4 py-3 text-black outline-none transition placeholder:text-black/40 focus:border-black/50 focus:ring-1 focus:ring-black/50"
               placeholder="Create a password"
             />
           </div>
@@ -240,18 +234,16 @@ export default function StudentRegisterPage() {
 
         <button
           type="submit"
-          className="group mt-2 flex w-full items-center justify-center gap-2 rounded-xl bg-[#8F113B] px-4 py-3.5 font-semibold text-white transition-all hover:bg-[#a61a49] hover:shadow-[0_0_20px_rgba(143,17,59,0.5)] focus:outline-none focus:ring-2 focus:ring-[#8F113B] focus:ring-offset-2 focus:ring-offset-black/50"
-          style={{ fontFamily: '"League Spartan", system-ui, sans-serif' }}
+          className="group mt-2 flex w-full items-center justify-center gap-2 rounded-xl bg-[#8F113B] px-4 py-3.5 font-semibold text-white transition-all hover:bg-[#a61a49] hover:shadow-[0_0_20px_rgba(131,18,56,0.5)] focus:outline-none focus:ring-2 focus:ring-[#8F113B] focus:ring-offset-2 focus:ring-offset-white/50 font-primary"
         >
           Create Account
         </button>
 
         <p
-          className="text-center text-xs text-white/60"
-          style={{ fontFamily: '"Canva Sans", system-ui, sans-serif' }}
+          className="text-center text-xs text-black/60 font-primary"
         >
           Already have an account?{" "}
-          <Link href="/student-login" className="font-semibold text-[#ff4d79] hover:underline">
+          <Link href="/student-login" className="font-semibold text-[#8F113B] hover:underline">
             Student Login
           </Link>
         </p>

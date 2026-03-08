@@ -28,8 +28,7 @@ export default function ClaimPointsPage() {
   const rule = selectedActivity ? rulesByActivity[selectedActivity] : null;
 
   return (
-    <div className="relative h-screen w-full overflow-hidden text-black font-primary bg-tertiary">
-      
+    <div className="relative h-screen w-full overflow-hidden text-black font-primary bg-white">
 
       {/* Scrollable Content Container */}
       <div className="relative z-10 h-full w-full overflow-y-auto overflow-x-hidden [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-black/20">
@@ -64,7 +63,7 @@ export default function ClaimPointsPage() {
           </div>
 
           {/* Form Card */}
-          <main className="mx-auto mt-12 w-full max-w-3xl rounded-[2rem] border border-black/20 bg-white/40 p-8 backdrop-blur-xl shadow-[0_8px_32px_0_rgba(143,17,59,0.3)]">
+          <main className="mx-auto mt-12 w-full max-w-3xl rounded-[2rem] border border-black/20 bg-white/40 p-8 backdrop-blur-xl shadow-[0_8px_32px_0_rgba(131,18,56,0.5)]">
 
             <div className="mb-8 flex items-center gap-3">
               <div className="h-8 w-1 rounded-full bg-primary"></div>
@@ -196,7 +195,7 @@ export default function ClaimPointsPage() {
                 <button
                   type="submit"
                   disabled={!selectedActivity || !rule}
-                  className="group flex items-center gap-2 rounded-xl bg-primary px-8 py-3.5 font-semibold text-secondary transition-all hover:bg-primary/80 hover:shadow-[0_0_20px_rgba(143,17,59,0.5)] focus:outline-none focus:ring-2 focus:ring-[#8F113B] focus:ring-offset-2 focus:ring-offset-black/50 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none"
+                  className="group flex items-center gap-2 rounded-xl bg-primary px-8 py-3.5 font-semibold text-secondary transition-all hover:bg-primary/80 hover:shadow-[0_0_20px_rgba(131,18,56,0.5)] focus:outline-none focus:ring-2 focus:ring-[#8F113B] focus:ring-offset-2 focus:ring-offset-black/50 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none"
                 >
                   Submit Claim
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="h-4 w-4 transition-transform group-hover:translate-x-1">

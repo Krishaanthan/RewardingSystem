@@ -1,55 +1,135 @@
 import Link from "next/link";
+import React from "react";
 
 type CtaLink = {
   label: string;
   href: string;
 };
 
+type PortalId = "student" | "faculty" | "admin";
+
+const PORTALS: { id: PortalId; label: string; href: string }[] = [
+  { id: "student", label: "Student Portal", href: "/student-login" },
+  { id: "faculty", label: "Faculty Portal", href: "/faculty-login" },
+  { id: "admin", label: "Admin Portal", href: "/admin-login" }
+];
+
 export function AuthLayout({
   title,
   subtitle,
   fields,
   buttonLabel,
-  links
+  links,
+  activePortal
 }: {
   title: string;
   subtitle: string;
   fields: string[];
   buttonLabel: string;
   links: CtaLink[];
+  activePortal?: PortalId;
 }) {
+  const currentPortal = activePortal || "admin";
   return (
-    <main className="flex min-h-screen items-center justify-center bg-gradient-to-br from-brand-primary/10 to-brand-secondary/20 px-4 py-10">
-      <section className="w-full max-w-md rounded-3xl border border-brand-primary/10 bg-white p-6 shadow-soft sm:p-8">
-        <h1 className="heading text-3xl">{title}</h1>
-        <p className="mt-2 text-sm text-brand-text/70">{subtitle}</p>
+    <div className="relative min-h-screen w-full overflow-hidden text-black font-primary bg-white">
+      <div className="absolute inset-0 z-0 bg-white/60 bg-gradient-to-b from-white/80 via-transparent to-white/80 mix-blend-screen pointer-events-none" />
 
-        <form className="mt-6 space-y-4">
-          {fields.map((field) => (
-            <label key={field} className="block">
-              <span className="mb-2 block text-sm font-medium text-brand-text">{field}</span>
-              <input
-                className="w-full rounded-xl border border-brand-primary/20 px-4 py-2.5 outline-none ring-brand-secondary focus:ring-2"
-                placeholder={`Enter ${field.toLowerCase()}`}
-              />
-            </label>
-          ))}
-          <button
-            type="button"
-            className="w-full rounded-xl bg-brand-primary px-4 py-2.5 font-semibold text-white transition hover:opacity-90"
-          >
-            {buttonLabel}
-          </button>
-        </form>
+      <div className="relative z-10 h-full w-full overflow-y-auto overflow-x-hidden [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-black/20">
+        <section
+          className="relative min-h-screen isolate bg-cover bg-center bg-no-repeat flex flex-col justify-center"
+          style={{
+            backgroundImage: 'url("/assets/images/sist-admin-block.png")',
+            backgroundSize: "cover",
+            backgroundPosition: "center"
+          }}
+        >
+          <div className="relative z-10 mx-auto flex w-full max-w-6xl flex-col justify-center px-4 py-12 lg:items-center lg:px-6">
+            <div className="w-full max-w-md">
+              <div className="relative">
+                <div className="absolute -inset-1 rounded-2xl bg-[#8F113B]/20 blur-xl opacity-60 transition-opacity" />
+                <div className="relative rounded-[2rem] border border-black/20 bg-white/40 p-8 backdrop-blur-xl shadow-[0_8px_32px_0_rgba(131,18,56,0.5)]">
+                  <div className="mb-6 space-y-1">
+                    <h2 className="text-2xl font-semibold text-[#8F113B] font-primary">
+                      {title}
+                    </h2>
+                    {subtitle ? (
+                      <p className="text-sm text-black/70 font-primary">
+                        {subtitle}
+                      </p>
+                    ) : null}
+                  </div>
 
-        <div className="mt-6 flex flex-wrap gap-3 text-sm">
-          {links.map((link) => (
-            <Link key={link.href} href={link.href} className="text-brand-primary underline">
-              {link.label}
-            </Link>
-          ))}
-        </div>
-      </section>
-    </main>
+                  <form className="space-y-5">
+                    {fields.map((field) => (
+                      <div key={field}>
+                        <label className="mb-1.5 block text-sm text-black font-primary">
+                          {field}
+                        </label>
+                        <input
+                          type={field.toLowerCase().includes("password") ? "password" : "text"}
+                          className="block w-full rounded-xl border border-black/20 bg-white/40 px-4 py-3 text-black outline-none transition placeholder:text-black/40 focus:border-black/50 focus:ring-1 focus:ring-black/50 font-primary"
+                          placeholder={`Enter ${field.toLowerCase()}`}
+                        />
+                      </div>
+                    ))}
+
+                    <button
+                      type="button"
+                      className="group mt-2 flex w-full items-center justify-center gap-2 rounded-xl bg-[#8F113B] px-4 py-3.5 font-semibold text-white transition-all hover:bg-[#a61a49] hover:shadow-[0_0_20px_rgba(131,18,56,0.5)] focus:outline-none focus:ring-2 focus:ring-[#8F113B] focus:ring-offset-2 focus:ring-offset-white/50 font-primary"
+                    >
+                      {buttonLabel}
+                    </button>
+
+                    <p className="mt-4 flex flex-col items-center gap-2 text-center text-xs text-black/60 font-primary">
+                      {links.map((link) => (
+                        <Link key={link.href} href={link.href} className="font-semibold text-[#8F113B] hover:underline">
+                          {link.label}
+                        </Link>
+                      ))}
+                    </p>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="bg-white/50 backdrop-blur-md pb-12 pt-16 border-t border-black/10">
+          <div className="mx-auto flex max-w-3xl items-center justify-center gap-10 px-4 sm:gap-14">
+            {PORTALS.map((portal) => {
+              const isActive = portal.id === currentPortal;
+
+              return (
+                <Link
+                  key={portal.id}
+                  href={portal.href}
+                  className="flex flex-col items-center gap-3 text-center transition-opacity hover:opacity-80 font-primary"
+                >
+                  <span
+                    className={[
+                      "flex h-16 w-16 items-center justify-center rounded-full border border-black/20 transition-colors backdrop-blur-sm",
+                      isActive
+                        ? "bg-[#8F113B] text-white shadow-[0_0_20px_rgba(131,18,56,0.5)]"
+                        : "bg-white/40 text-black/50 hover:bg-white/60"
+                    ].join(" ")}
+                  >
+                    <span
+                      className={isActive ? "text-lg font-semibold" : "text-lg font-medium text-black/50"}
+                    >
+                      {portal.label.charAt(0)}
+                    </span>
+                  </span>
+                  <span
+                    className={isActive ? "text-xs font-semibold text-black" : "text-xs font-medium text-black/50"}
+                  >
+                    {portal.label}
+                  </span>
+                </Link>
+              );
+            })}
+          </div>
+        </section>
+      </div>
+    </div>
   );
 }

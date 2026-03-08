@@ -111,7 +111,7 @@ function clampPct(value: number) {
 function trendBadge(trend: Trend) {
   if (trend === "up") {
     return (
-      <span className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-700">
+      <span className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-600">
         <span aria-hidden>▲</span>
         <span>UP</span>
       </span>
@@ -119,19 +119,19 @@ function trendBadge(trend: Trend) {
   }
   if (trend === "down") {
     return (
-      <span className="inline-flex items-center gap-1 text-xs font-semibold text-rose-700">
+      <span className="inline-flex items-center gap-1 text-xs font-semibold text-rose-600">
         <span aria-hidden>▼</span>
         <span>DOWN</span>
       </span>
     );
   }
 
-  return <span className="text-xs font-semibold text-neutral-500">—</span>;
+  return <span className="text-xs font-semibold text-black/70">—</span>;
 }
 
 function InitialAvatar({ initials }: { initials: string }) {
   return (
-    <div className="grid size-10 place-items-center rounded-full bg-white/90 text-xs font-black tracking-wide text-neutral-800 ring-1 ring-black/5">
+    <div className="grid size-10 place-items-center rounded-full bg-white/60 text-xs font-black tracking-wide text-black border border-black/20">
       {initials}
     </div>
   );
@@ -224,7 +224,7 @@ function SegmentedTabs({
   options: Array<{ value: string; label: string }>;
 }) {
   return (
-    <div className="inline-flex rounded-full bg-neutral-100 p-1 ring-1 ring-black/5">
+    <div className="inline-flex rounded-md bg-[#f5f5f5] p-1">
       {options.map((opt) => {
         const active = opt.value === value;
         return (
@@ -234,7 +234,7 @@ function SegmentedTabs({
             onClick={() => onChange(opt.value)}
             className={[
               "rounded-full px-3 py-1.5 text-xs font-semibold transition",
-              active ? "bg-[#81113b] text-black shadow-sm" : "text-neutral-400 hover:bg-white hover:text-neutral-500"
+              active ? "bg-white text-black shadow-sm font-bold" : "text-black/60 hover:bg-black/5"
             ].join(" ")}
           >
             {opt.label}
@@ -257,10 +257,10 @@ function SelectPill({
   options: string[];
 }) {
   return (
-    <label className="inline-flex items-center gap-2 rounded-full border border-neutral-200 bg-white px-3 py-1.5 text-xs font-semibold text-neutral-700 shadow-sm">
-      <span className="tracking-wide text-neutral-500">{label}</span>
+    <label className="inline-flex items-center gap-2 rounded-md bg-[#f5f5f5] px-4 py-2.5 text-xs font-bold text-black">
+      <span className="tracking-wide text-black">{label}</span>
       <select
-        className="bg-transparent text-neutral-900 outline-none"
+        className="bg-transparent text-black outline-none"
         value={value}
         onChange={(e) => onChange(e.target.value)}
       >
@@ -282,8 +282,8 @@ function SearchButton({
   onChange: (v: string) => void;
 }) {
   return (
-    <div className="flex w-full max-w-md items-stretch overflow-hidden rounded-full bg-white shadow-sm ring-1 ring-black/5">
-      <div className="grid place-items-center pl-4 text-neutral-500" aria-hidden>
+    <div className="flex w-full max-w-md items-stretch overflow-hidden rounded-md bg-[#f5f5f5]">
+      <div className="grid place-items-center pl-4 text-black/70" aria-hidden>
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
           <path
             d="M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z"
@@ -297,7 +297,7 @@ function SearchButton({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder="Search students or projects…"
-        className="w-full bg-transparent px-3 py-2 text-sm text-neutral-900 outline-none placeholder:text-neutral-400"
+        className="w-full bg-transparent px-3 py-2 text-sm text-black outline-none placeholder:text-black/50"
       />
       <button
         type="button"
@@ -389,83 +389,21 @@ export function UniversityLeaderboard() {
   }, [department, query, rows, timeRange, year]);
 
   return (
-    <div className="relative h-screen w-full overflow-hidden text-white font-primary bg-black">
-      {/* Background Video */}
-      <video
-        autoPlay
-        loop
-        muted
-        playsInline
-        className="absolute inset-0 z-0 h-full w-full object-cover pointer-events-none"
-      >
-        <source src="/assets/Videos/Motionbg2_loop.mp4" type="video/mp4" />
-      </video>
-
-      {/* Dark overlay to ensure text readability against the red video */}
-      <div className="absolute inset-0 z-0 bg-black/30 bg-gradient-to-b from-black/40 via-transparent to-black/40 mix-blend-multiply pointer-events-none" />
+    <div className="relative h-screen w-full overflow-hidden text-black font-primary bg-white">
 
       {/* Scrollable Content Container */}
-      <div className="relative z-10 h-full w-full overflow-y-auto overflow-x-hidden [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-white/20">
-        <header className="sticky top-0 z-50 border-b border-white/10 bg-black/20 backdrop-blur-md">
-          <nav className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
-            <a
-              href="https://www.sathyabama.ac.in/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-3"
-              aria-label="Sathyabama University"
-            >
-              <img
-                src="/sathyabama-logo.png"
-                alt="Sathyabama University"
-                className="h-12 w-12 shrink-0 rounded-full object-cover ring-2 ring-white/30"
-              />
-              <div className="leading-tight">
-                <div className="text-sm font-semibold text-white/90">Sathyabama</div>
-                <div className="text-xs font-semibold text-white/70">University</div>
-              </div>
-            </a>
-
-            <div className="hidden items-center gap-6 text-sm font-semibold text-white/85 md:flex">
-              <Link href="/" className="hover:text-white">
-                Home
-              </Link>
-              <Link href="/projects" className="hover:text-white">
-                Projects
-              </Link>
-              <Link href="/leaderboard" className="text-white">
-                Leaderboard
-              </Link>
-              <Link href="/community" className="hover:text-white">
-                Community
-              </Link>
-              <Link href="/profile" className="hover:text-white">
-                Profile
-              </Link>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <Link
-                href="/submit-project"
-                className="rounded-full bg-white px-4 py-2 text-xs font-bold tracking-wide text-neutral-900 shadow-sm ring-1 ring-black/5 hover:bg-white/95"
-              >
-                SUBMIT PROJECT
-              </Link>
-            </div>
-          </nav>
-        </header>
-
-        <main className="mx-auto max-w-6xl px-4 py-8">
+      <div className="relative z-10 h-full w-full overflow-y-auto overflow-x-hidden [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-black/20">
+        <main className="mx-auto max-w-6xl px-4 pb-8 pt-20 font-primary">
           <section
-            className="mt-6 overflow-hidden rounded-[2rem] border border-white/20 bg-white/5 backdrop-blur-xl shadow-[0_8px_32px_0_rgba(143,17,59,0.3)]"
+            className="mt-6"
           >
             <div className="px-5 py-6 sm:px-8 sm:py-7">
               <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                 <div>
-                  <p className="text-xs font-bold uppercase tracking-[0.22em] text-white/75">
+                  <p className="text-xs font-bold uppercase tracking-[0.22em] text-black/75">
                     University Leaderboard
                   </p>
-                  <h1 className="mt-2 text-balance text-2xl font-semibold text-white sm:text-3xl">
+                  <h1 className="mt-2 text-balance text-2xl font-semibold text-black sm:text-3xl">
                     Student Innovation Challenge 2026
                   </h1>
                 </div>
@@ -495,83 +433,77 @@ export function UniversityLeaderboard() {
                 </div>
               </div>
 
-              <div className="mt-6 grid gap-4 md:grid-cols-3">
+              <div className="mt-12 grid gap-4 md:grid-cols-3">
                 <div className="md:order-1 md:self-end">
-                  <div className="relative rounded-3xl border border-white/25 bg-white/15 p-5 pt-7 backdrop-blur-md">
+                  <div className="relative rounded-2xl bg-[#f5f5f5] p-5 pt-7 pb-8">
                     <div className="absolute -top-4 left-1/2 -translate-x-1/2">
                       <SilverCrownIcon />
                     </div>
                     <div className="flex items-center justify-between">
-                      <MedalIcon tone="silver" />
-                      <span className="text-xs font-bold uppercase tracking-widest text-white/75">2nd place</span>
+
                     </div>
                     <div className="mt-3 flex items-center gap-3">
-                      <div className="grid size-12 place-items-center rounded-full bg-white/20 ring-1 ring-white/25">
-                        <span className="text-sm font-black text-white">VS</span>
+                      <div className="mx-auto w-24 h-24 rounded-full border-4 border-white overflow-hidden bg-[#f5f5f5] shadow-sm">
+                        <img src="https://i.pravatar.cc/150?u=vikram" alt="Vikram" className="w-full h-full object-cover" />
                       </div>
                       <div>
-                        <div className="text-base font-semibold text-white">Vikram Singh</div>
-                        <div className="text-xs font-semibold text-white/70">(Mechanical Eng, 2025)</div>
+                        <div className="text-lg font-bold text-black mt-4 text-center">Vikram Singh</div>
+                        <div className="text-[10px] uppercase font-bold text-black/50 tracking-widest text-center mt-1">MECHANICAL ENG · 2025</div>
                       </div>
                     </div>
                     <div className="mt-4">
-                      <div className="text-3xl font-semibold text-white">2,950 pts</div>
-                      <div className="mt-1 text-xs font-semibold text-white/70">
-                        16 Tasks Completed · Silver Badge
+                      <div className="text-3xl font-black text-black text-center mt-6">2950 <span className="text-[11px] font-bold tracking-widest text-black/40">PTS</span></div>
+                      <div className="hidden">
                       </div>
                     </div>
                   </div>
                 </div>
 
                 <div className="md:order-2">
-                  <div className="relative rounded-3xl border border-white/30 bg-white/18 p-6 pt-8 backdrop-blur-md shadow-2xl">
+                  <div className="relative rounded-2xl bg-[#831238] p-6 pt-10 pb-12 shadow-2xl">
                     <div className="absolute -top-5 left-1/2 -translate-x-1/2">
                       <CrownIcon />
                     </div>
                     <div className="flex items-center justify-between pt-2">
-                      <MedalIcon tone="gold" />
-                      <span className="text-xs font-bold uppercase tracking-widest text-white/75">1st place</span>
+
                     </div>
                     <div className="mt-3 flex items-center gap-3">
-                      <div className="grid size-14 place-items-center rounded-full bg-white/20 ring-1 ring-white/25">
-                        <span className="text-sm font-black text-white">PS</span>
+                      <div className="mx-auto w-32 h-32 rounded-full border-4 border-[#831238] overflow-hidden bg-white shadow-lg">
+                        <span className="text-sm font-black text-black">PS</span>
                       </div>
                       <div>
-                        <div className="text-lg font-semibold text-white">Priya Sharma</div>
-                        <div className="text-xs font-semibold text-white/70">(Computer Science, 2024)</div>
+                        <div className="text-2xl font-bold text-white mt-4 text-center">Priya Sharma</div>
+                        <div className="text-[10px] uppercase font-bold text-white/70 text-center tracking-widest mt-1">(Computer Science, 2024)</div>
                       </div>
                     </div>
                     <div className="mt-4">
-                      <div className="text-4xl font-semibold text-white">3,120 pts</div>
-                      <div className="mt-1 text-xs font-semibold text-white/70">
-                        18 Tasks Completed · Gold Badge
+                      <div className="text-4xl font-black text-white text-center mt-6 tracking-tight"><span className="bg-black/20 rounded-full px-5 py-2 inline-flex items-baseline gap-1">3120 <span className="text-sm font-bold tracking-widest">PTS</span></span></div>
+                      <div className="hidden">
                       </div>
                     </div>
                   </div>
                 </div>
 
                 <div className="md:order-3 md:self-end">
-                  <div className="relative rounded-3xl border border-white/25 bg-white/15 p-5 pt-7 backdrop-blur-md">
+                  <div className="relative rounded-2xl bg-[#f5f5f5] p-5 pt-7 pb-8">
                     <div className="absolute -top-4 left-1/2 -translate-x-1/2">
                       <BronzeCrownIcon />
                     </div>
                     <div className="flex items-center justify-between">
-                      <MedalIcon tone="bronze" />
-                      <span className="text-xs font-bold uppercase tracking-widest text-white/75">3rd place</span>
+
                     </div>
                     <div className="mt-3 flex items-center gap-3">
-                      <div className="grid size-12 place-items-center rounded-full bg-white/20 ring-1 ring-white/25">
-                        <span className="text-sm font-black text-white">AP</span>
+                      <div className="mx-auto w-24 h-24 rounded-full border-4 border-white overflow-hidden bg-[#f5f5f5] shadow-sm">
+                        <img src="https://i.pravatar.cc/150?u=aisha" alt="Aisha" className="w-full h-full object-cover" />
                       </div>
                       <div>
-                        <div className="text-base font-semibold text-white">Aisha Patel</div>
-                        <div className="text-xs font-semibold text-white/70">(Bio-Tech, 2026)</div>
+                        <div className="text-lg font-bold text-black mt-4 text-center">Aisha Patel</div>
+                        <div className="text-[10px] uppercase font-bold text-black/50 tracking-widest text-center mt-1">BIO-TECH · 2026</div>
                       </div>
                     </div>
                     <div className="mt-4">
-                      <div className="text-3xl font-semibold text-white">2,880 pts</div>
-                      <div className="mt-1 text-xs font-semibold text-white/70">
-                        15 Tasks Completed · Bronze Badge
+                      <div className="text-3xl font-black text-black text-center mt-6">2880 <span className="text-[11px] font-bold tracking-widest text-black/40">PTS</span></div>
+                      <div className="hidden">
                       </div>
                     </div>
                   </div>
@@ -580,11 +512,11 @@ export function UniversityLeaderboard() {
             </div>
           </section>
 
-          <section className="mt-8 rounded-[2rem] border border-white/20 bg-white/5 p-5 backdrop-blur-xl shadow-[0_8px_32px_0_rgba(143,17,59,0.3)] sm:p-7">
+          <section className="mt-8 pt-10">
             <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
               <div>
-                <div className="text-xs font-bold uppercase tracking-[0.22em] text-neutral-500">List view</div>
-                <div className="mt-2 text-xl font-semibold text-neutral-900">Top contributors</div>
+                <div className="text-xs font-bold uppercase tracking-[0.22em] text-black/70">List view</div>
+                <div className="mt-2 text-xl font-semibold text-black">Top contributors</div>
               </div>
               <SearchButton value={query} onChange={setQuery} />
             </div>
@@ -592,10 +524,9 @@ export function UniversityLeaderboard() {
             <div className="mt-5 overflow-x-auto">
               <table className="min-w-[920px] table-auto text-left text-sm">
                 <thead>
-                  <tr className="border-b border-neutral-200 text-xs font-bold uppercase tracking-wider text-neutral-500">
+                  <tr className="border-b border-neutral-200 text-xs font-bold uppercase tracking-wider text-black/70">
                     <th className="py-3 pr-4">Rank</th>
                     <th className="py-3 pr-4">User</th>
-                    <th className="py-3 pr-4">Status</th>
                     <th className="py-3 pr-4">Score</th>
                     <th className="py-3 pr-4">Progress</th>
                     <th className="py-3 pr-4">taskcompleted</th>
@@ -604,10 +535,10 @@ export function UniversityLeaderboard() {
                 </thead>
                 <tbody>
                   {filtered.map((r) => (
-                    <tr key={r.rank} className="border-b border-neutral-100 last:border-none">
+                    <tr key={r.rank} className="border-b border-black/10 last:border-none">
                       <td className="py-4 pr-4">
                         <div className="flex items-center gap-2">
-                          <span className="text-sm font-semibold text-neutral-900">{r.rank}</span>
+                          <span className="text-base font-bold text-black/50">#{r.rank.toString().padStart(2, "0")}</span>
                           {trendBadge(r.trend)}
                         </div>
                       </td>
@@ -615,42 +546,27 @@ export function UniversityLeaderboard() {
                         <div className="flex items-center gap-3">
                           <InitialAvatar initials={r.user.initials} />
                           <div>
-                            <div className="font-semibold text-neutral-900">
-                              {r.user.name} <span className="text-neutral-400">({r.user.dept}, {String(r.user.year).slice(-2)})</span>
-                            </div>
-                            <div className="text-xs font-semibold text-neutral-500">
-                              {r.user.dept} · {r.user.year}
-                            </div>
+                            <div className="text-sm font-bold text-black">{r.user.name}</div><div className="text-[10px] font-bold uppercase tracking-wider text-black/50">{r.user.dept} · {r.user.year}</div>
                           </div>
                         </div>
                       </td>
                       <td className="py-4 pr-4">
-                        <div className="inline-flex items-center gap-2">
-                          <span className={["size-2 rounded-full", r.active ? "bg-emerald-500" : "bg-neutral-300"].join(" ")} />
-                          <span className="text-xs font-semibold text-neutral-600">{r.active ? "Active" : "Idle"}</span>
-                        </div>
-                      </td>
-                      <td className="py-4 pr-4">
-                        <span className="font-semibold text-neutral-900">{r.scorePts.toLocaleString()} pts</span>
+                        <span className="text-base font-black text-[#831238]">{r.scorePts} <span className="text-[10px] text-black/40 tracking-widest font-bold">PTS</span></span>
                       </td>
                       <td className="py-4 pr-4">
                         <div className="flex items-center gap-3">
-                          <div className="h-2 w-40 overflow-hidden rounded-full bg-neutral-200">
-                            <div
-                              className="h-full"
-                              style={{
-                                width: `${clampPct(r.progressPct)}%`,
-                                backgroundColor: PROGRESS_BAR_FILL
-                              }}
-                            />
+                          <div>
+                            <div className="h-2.5 w-40 overflow-hidden rounded-full bg-[#f5f5f5]">
+                              <div className="h-full" style={{ width: `${clampPct(r.progressPct)}%`, backgroundColor: PROGRESS_BAR_FILL }} />
+                            </div>
+                            <div className="text-[10px] font-bold mt-1.5 uppercase text-black">
+                              {clampPct(r.progressPct)}% COMPLETE
+                            </div>
                           </div>
-                          <span className="text-xs font-semibold text-neutral-600">{clampPct(r.progressPct)}%</span>
                         </div>
                       </td>
                       <td className="py-4 pr-4">
-                        <span className="text-xs font-semibold text-neutral-700">
-                          {r.taskcompleted.tasks} Tasks Completed
-                        </span>
+                        <span className="text-sm font-bold text-black/80">{r.taskcompleted.tasks}/50</span>
                       </td>
                       <td className="py-4 text-right">
                         <button
@@ -666,7 +582,7 @@ export function UniversityLeaderboard() {
 
                   {filtered.length === 0 ? (
                     <tr>
-                      <td colSpan={7} className="py-10 text-center text-sm font-semibold text-neutral-500">
+                      <td colSpan={7} className="py-10 text-center text-sm font-semibold text-black/70">
                         No matches. Try a different search or filter.
                       </td>
                     </tr>
@@ -675,35 +591,12 @@ export function UniversityLeaderboard() {
               </table>
             </div>
           </section>
+          <div className="flex justify-center mt-12 mb-32"><button className="px-6 py-2.5 rounded-lg border-2 border-[#831238] text-[#831238] font-bold hover:bg-[#831238] hover:text-white transition">Load More Rankings</button></div>
         </main>
 
-        <footer className="fixed bottom-5 left-1/2 z-40 w-[min(980px,calc(100vw-2rem))] -translate-x-1/2 rounded-2xl px-4 py-3 shadow-[0_8px_32px_0_rgba(143,17,59,0.4)] border border-white/20 backdrop-blur-xl">
-          <div
-            className="rounded-2xl px-4 py-3 text-white"
-            style={{
-              background: `linear-gradient(180deg, ${MAROON} 0%, ${MAROON_DARK} 100%)`
-            }}
-          >
-            <div className="flex flex-col gap-2 text-xs font-semibold sm:flex-row sm:items-center sm:justify-between">
-              <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-                <span className="rounded-full bg-white/10 px-2 py-1 text-[11px] font-bold tracking-widest">
-                  MY RANK
-                </span>
-                <span className="text-white/85">
-                  YOUR RANK: <span className="text-white">152</span>
-                </span>
-                <span className="text-white/85">
-                  SCORE: <span className="text-white">980 pts</span>
-                </span>
-                <span className="text-white/85">
-                  PROGRESS: <span className="text-white">54%</span>
-                </span>
-              </div>
-
-              <div className="text-white/85">
-                PROFILE <span className="text-white">(Aman J.)</span>
-              </div>
-            </div>
+        <footer className="fixed bottom-0 left-0 z-50 w-full bg-[#14110F] py-4 shadow-xl border-t border-white/10">
+          <div className="mx-auto max-w-6xl px-4 flex justify-between items-center text-white">
+            <div className="flex w-full items-center justify-between"><div className="flex items-center gap-12"><div className="flex flex-col"><span className="text-[10px] font-bold tracking-widest text-white/50 uppercase">MY RANK</span><span className="text-2xl font-black text-white">#152</span></div><div className="flex flex-col"><span className="text-[10px] font-bold tracking-widest text-white/50 uppercase">SCORE</span><span className="text-xl font-black text-white">980 <span className="text-xs text-white/50">PTS</span></span></div><div className="flex flex-col"><span className="text-[10px] font-bold tracking-widest text-white/50 uppercase">PROGRESS</span><div className="flex items-center gap-3"><div className="w-24 h-2 bg-white/10 rounded-full"><div className="h-full bg-[#831238] w-[54%] rounded-full"></div></div><span className="text-xs font-bold">54%</span></div></div></div><div className="flex items-center gap-4"><div className="flex flex-col text-right"><span className="text-[10px] tracking-widest font-bold text-white/50 uppercase">ACTIVE PROFILE</span><span className="font-bold">Aman J.</span></div><div className="w-10 h-10 rounded-full bg-white/10 border border-white/20 p-1"><div className="w-full h-full rounded-full bg-[#ffb5a7]"></div></div></div></div>
           </div>
         </footer>
       </div>

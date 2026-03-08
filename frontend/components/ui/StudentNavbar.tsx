@@ -7,6 +7,9 @@ import { useState, useRef, useEffect } from "react";
 export default function StudentNavbar() {
     const pathname = usePathname();
     const [isProfileOpen, setIsProfileOpen] = useState(false);
+    const [isVisible, setIsVisible] = useState(true);
+    const [lastScrollY, setLastScrollY] = useState(0);
+
     const dropdownRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -16,8 +19,25 @@ export default function StudentNavbar() {
             }
         }
         document.addEventListener("mousedown", handleClickOutside);
-        return () => document.removeEventListener("mousedown", handleClickOutside);
-    }, []);
+
+        const handleScroll = () => {
+            const currentScrollY = window.scrollY;
+            if (currentScrollY > lastScrollY && currentScrollY > 50) {
+                // Scrolling down past threshold
+                setIsVisible(false);
+            } else if (currentScrollY < lastScrollY) {
+                // Scrolling up
+                setIsVisible(true);
+            }
+            setLastScrollY(currentScrollY);
+        };
+        window.addEventListener("scroll", handleScroll, { passive: true });
+
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+            window.removeEventListener("scroll", handleScroll);
+        };
+    }, [lastScrollY]);
 
     const navItems = [
         { name: "Home", path: "/student/home" },
@@ -27,7 +47,10 @@ export default function StudentNavbar() {
     ];
 
     return (
-        <nav className="fixed left-0 right-0 top-0 z-[100] flex items-center justify-between bg-transparent px-6 h-20 font-sans">
+        <nav
+            className={`fixed left-0 right-0 top-0 z-[100] flex items-center justify-between bg-white px-6 h-20 font-sans transition-transform duration-300 ${isVisible ? "translate-y-0" : "-translate-y-full"
+                }`}
+        >
             {/* Brand */}
             <div className="flex items-center">
                 <Link href="/student/home" className="flex items-center">
