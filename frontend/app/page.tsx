@@ -9,7 +9,8 @@ import {
   Leaderboard,
   RecentCertificates,
   ActiveProjectTimeline,
-  UpcomingDeadlines
+  UpcomingDeadlines,
+  StudentBadges
 } from "@/components/DashboardWidgets";
 
 export default function DashboardPage() {
@@ -53,21 +54,32 @@ export default function DashboardPage() {
       </header>
 
       {/* Main Content - Bento Grid */}
-      <main className="mx-auto max-w-7xl p-6">
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4 lg:grid-rows-[auto_auto_auto]">
+      <main className="mx-auto max-w-[1600px] p-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 auto-rows-max">
+          {/* Top Row */}
           <PointsOverview />
           <CreditProgress />
           <ActiveLedger />
+          <div className="flex flex-col gap-6">
+            <AcademicRank />
+            <QuickActions />
+          </div>
 
+          {/* Middle Row */}
           <SkillPaths />
-          <AcademicRank />
-
-          <RecentCertificates />
+          <StudentBadges />
           <Leaderboard />
-          <QuickActions />
 
-          <ActiveProjectTimeline />
-          <UpcomingDeadlines />
+          {/* Bottom Row */}
+          <RecentCertificates />
+          <div className="xl:col-span-4 grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="lg:col-span-2">
+              <ActiveProjectTimeline />
+            </div>
+            <div className="lg:col-span-1">
+              <UpcomingDeadlines />
+            </div>
+          </div>
         </div>
       </main>
     </div>
