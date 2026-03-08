@@ -15,9 +15,9 @@ import {
 
 export default function DashboardPage() {
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-900 font-sans selection:bg-maroon-800/10">
+    <div className="min-h-screen bg-[#fdfaf5] text-gray-800 font-sans selection:bg-maroon-800/10">
       {/* Top Navigation */}
-      <header className="sticky top-0 z-50 flex items-center justify-between px-6 py-4 bg-gray-50/80 backdrop-blur-md border-b border-gray-200/50">
+      <header className="sticky top-0 z-50 flex items-center justify-between px-6 py-4 bg-[#fdfaf5]/80 backdrop-blur-md border-b border-gray-200/50">
         <div className="flex items-center gap-4">
           <div className="h-10 w-10 overflow-hidden rounded-full border border-gray-200 shadow-sm">
             <img
