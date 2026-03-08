@@ -13,7 +13,7 @@ import {
 
 export default function StudentDashboardPage() {
   return (
-    <div className="min-h-screen bg-[#fdfaf5] font-sans">
+    <div className="min-h-screen bg-gradient-to-br from-rose-100/70 via-[#fdf6f9] to-indigo-50/50 font-sans">
       <main className="max-w-[1400px] mx-auto px-8 py-10">
 
         {/* Page heading */}
