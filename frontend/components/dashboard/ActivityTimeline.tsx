@@ -21,7 +21,7 @@ export function ActivityTimeline() {
           <div key={i} className="flex gap-4 group">
             {/* Timeline line + dot */}
             <div className="flex flex-col items-center">
-              <div className="w-9 h-9 flex items-center justify-center rounded-full bg-gray-50 border border-gray-200 text-lg flex-shrink-0 group-hover:border-red-200 transition-colors">
+              <div className="w-9 h-9 flex items-center justify-center rounded-full bg-gray-50 border border-gray-200 text-lg flex-shrink-0 group-hover:border-primary-200 transition-colors">
                 {ev.emoji}
               </div>
               {i < events.length - 1 && <div className="w-px flex-1 bg-gray-100 my-1" />}
@@ -32,7 +32,7 @@ export function ActivityTimeline() {
                 <p className="text-sm font-semibold text-gray-800 leading-tight">{ev.label}</p>
                 <p className="text-xs text-gray-400 font-medium mt-0.5">{ev.date}</p>
               </div>
-              <span className={`text-sm font-extrabold ml-2 ${ev.positive ? "text-green-600" : "text-red-600"}`}>
+              <span className={`text-sm font-extrabold ml-2 ${ev.positive ? "text-green-600" : "text-primary"}`}>
                 {ev.points}
               </span>
             </div>

@@ -26,7 +26,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
     return (
       <div className="bg-white border border-gray-100 rounded-xl shadow-lg px-4 py-2.5">
         <p className="text-xs text-gray-500 font-medium mb-1">{label}</p>
-        <p className="text-base font-bold text-red-600">{payload[0].value.toLocaleString()} pts</p>
+        <p className="text-base font-bold text-primary">{payload[0].value.toLocaleString()} pts</p>
       </div>
     );
   }
@@ -44,8 +44,8 @@ export function PointsChart() {
         <AreaChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
           <defs>
             <linearGradient id="redGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#DC2626" stopOpacity={0.2} />
-              <stop offset="100%" stopColor="#DC2626" stopOpacity={0} />
+              <stop offset="0%" stopColor="#831238" stopOpacity={0.2} />
+              <stop offset="100%" stopColor="#831238" stopOpacity={0} />
             </linearGradient>
           </defs>
           <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" vertical={false} />
@@ -61,15 +61,15 @@ export function PointsChart() {
             tick={{ fontSize: 12, fill: "#9ca3af" }}
             tickFormatter={(v) => `${(v / 1000).toFixed(0)}k`}
           />
-          <Tooltip content={<CustomTooltip />} cursor={{ stroke: "#DC2626", strokeWidth: 1, strokeDasharray: "4 4" }} />
+          <Tooltip content={<CustomTooltip />} cursor={{ stroke: "#831238", strokeWidth: 1, strokeDasharray: "4 4" }} />
           <Area
             type="monotone"
             dataKey="points"
-            stroke="#DC2626"
+            stroke="#831238"
             strokeWidth={2.5}
             fill="url(#redGradient)"
-            dot={{ fill: "#DC2626", r: 4, strokeWidth: 2, stroke: "#fff" }}
-            activeDot={{ r: 6, fill: "#DC2626", stroke: "#fff", strokeWidth: 2 }}
+            dot={{ fill: "#831238", r: 4, strokeWidth: 2, stroke: "#fff" }}
+            activeDot={{ r: 6, fill: "#831238", stroke: "#fff", strokeWidth: 2 }}
           />
         </AreaChart>
       </ResponsiveContainer>

@@ -15,10 +15,10 @@ export function NotificationsPanel() {
         <div>
           <h3 className="text-lg font-bold text-gray-800">Notifications</h3>
           <p className="text-sm text-gray-500 mt-0.5">
-            <span className="text-red-600 font-bold">{notifications.filter(n => n.unread).length} unread</span>
+            <span className="text-primary font-bold">{notifications.filter(n => n.unread).length} unread</span>
           </p>
         </div>
-        <button className="text-xs font-semibold text-red-600 hover:text-red-700 transition-colors">
+        <button className="text-xs font-semibold text-primary hover:text-primary-700 transition-colors">
           Mark all read
         </button>
       </div>
@@ -27,12 +27,12 @@ export function NotificationsPanel() {
           <div
             key={n.id}
             className={`relative flex items-start gap-3.5 p-3.5 rounded-xl border transition-all duration-150 cursor-pointer ${
-              n.unread ? "bg-red-50/50 border-red-100 hover:bg-red-50" : "bg-gray-50/50 border-gray-100 hover:bg-gray-50"
+              n.unread ? "bg-primary-50/50 border-primary-100 hover:bg-primary-50" : "bg-gray-50/50 border-gray-100 hover:bg-gray-50"
             }`}
           >
             {/* Unread dot */}
             {n.unread && (
-              <span className="absolute top-3 right-3 h-2 w-2 rounded-full bg-red-600 ring-2 ring-white" />
+              <span className="absolute top-3 right-3 h-2 w-2 rounded-full bg-primary ring-2 ring-white" />
             )}
             <span className="text-xl flex-shrink-0">{n.emoji}</span>
             <div className="flex-1 min-w-0">

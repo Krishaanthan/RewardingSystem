@@ -35,7 +35,7 @@ export function SuccessModal({ isOpen, onClose }: SuccessModalProps) {
         {/* OK Button */}
         <button
           onClick={onClose}
-          className="w-full bg-red-600 hover:bg-red-700 text-white font-bold text-sm rounded-xl py-3 transition-all duration-200 shadow-sm shadow-red-500/20 active:scale-[0.98]"
+          className="w-full bg-primary hover:bg-primary-700 text-white font-bold text-sm rounded-xl py-3 transition-all duration-200 shadow-sm shadow-primary-500/20 active:scale-[0.98]"
         >
           OK
         </button>

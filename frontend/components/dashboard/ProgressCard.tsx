@@ -23,7 +23,7 @@ export function ProgressCard() {
         {/* Progress numbers */}
         <div className="flex justify-between items-end mb-3">
           <div>
-            <span className="text-3xl font-extrabold text-red-600">{current}</span>
+            <span className="text-3xl font-extrabold text-primary">{current}</span>
             <span className="text-lg text-gray-400 ml-1">/ {total} pts</span>
           </div>
           <span className="text-sm font-bold text-gray-500">{pct}%</span>
@@ -32,7 +32,7 @@ export function ProgressCard() {
         {/* Red progress bar */}
         <div className="h-3 w-full bg-gray-100 rounded-full overflow-hidden">
           <div
-            className="h-full bg-red-600 rounded-full transition-all duration-700"
+            className="h-full bg-primary rounded-full transition-all duration-700"
             style={{ width: `${pct}%` }}
           />
         </div>
@@ -50,7 +50,7 @@ export function ProgressCard() {
         ].map((m) => (
           <div
             key={m.label}
-            className={`rounded-lg p-2 text-center border text-xs font-semibold ${m.done ? "bg-red-50 border-red-200 text-red-600" : "bg-gray-50 border-gray-200 text-gray-400"
+            className={`rounded-lg p-2 text-center border text-xs font-semibold ${m.done ? "bg-primary-50 border-primary-200 text-primary" : "bg-gray-50 border-gray-200 text-gray-400"
               }`}
           >
             {m.label}

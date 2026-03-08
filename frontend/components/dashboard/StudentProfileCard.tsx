@@ -11,9 +11,9 @@ export function StudentProfileCard() {
           <img
             src="https://api.dicebear.com/7.x/notionists/svg?seed=Alex&backgroundColor=fee2e2"
             alt="Student Avatar"
-            className="w-16 h-16 rounded-full border-2 border-red-100 object-cover"
+            className="w-16 h-16 rounded-full border-2 border-primary-100 object-cover"
           />
-          <span className="absolute -bottom-1 -right-1 bg-red-600 text-white text-[10px] font-bold rounded-full px-1.5 py-0.5 ring-2 ring-white">
+          <span className="absolute -bottom-1 -right-1 bg-primary text-white text-[10px] font-bold rounded-full px-1.5 py-0.5 ring-2 ring-white">
             5th
           </span>
         </div>
@@ -28,8 +28,8 @@ export function StudentProfileCard() {
       {/* Stats */}
       <div className="flex flex-col gap-3">
         <div className="flex items-center gap-3">
-          <div className="p-2 bg-red-50 rounded-lg">
-            <GraduationCap className="h-4 w-4 text-red-600" />
+          <div className="p-2 bg-primary-50 rounded-lg">
+            <GraduationCap className="h-4 w-4 text-primary" />
           </div>
           <div>
             <p className="text-[11px] text-gray-400 uppercase tracking-widest font-semibold">Department</p>
@@ -51,7 +51,7 @@ export function StudentProfileCard() {
           </div>
           <div>
             <p className="text-[11px] text-gray-400 uppercase tracking-widest font-semibold">Total Points</p>
-            <p className="text-xl font-extrabold text-red-600 tracking-tight">14,500</p>
+            <p className="text-xl font-extrabold text-primary tracking-tight">14,500</p>
           </div>
         </div>
       </div>
