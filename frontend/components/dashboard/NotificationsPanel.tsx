@@ -10,7 +10,7 @@ const notifications = [
 
 export function NotificationsPanel() {
   return (
-    <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-sm border border-white/60 p-6 transition-all duration-200 hover:shadow-md h-full flex flex-col">
+    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 transition-all duration-200 hover:shadow-md h-full flex flex-col">
       <div className="flex items-center justify-between mb-5">
         <div>
           <h3 className="text-lg font-bold text-gray-800">Notifications</h3>

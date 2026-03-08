@@ -4,7 +4,7 @@ import { GraduationCap, Star, Award } from "lucide-react";
 
 export function StudentProfileCard() {
   return (
-    <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-sm border border-white/60 p-6 flex flex-col gap-5 transition-all duration-200 hover:shadow-md group h-full">
+    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col gap-5 transition-all duration-200 hover:shadow-md group h-full">
       {/* Avatar */}
       <div className="flex items-center gap-4">
         <div className="relative">

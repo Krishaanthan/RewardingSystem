@@ -8,7 +8,7 @@ export function ProgressCard() {
   const pct = Math.round((current / total) * 100);
 
   return (
-    <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-sm border border-white/60 p-6 transition-all duration-200 hover:shadow-md h-full flex flex-col justify-between">
+    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 transition-all duration-200 hover:shadow-md h-full flex flex-col justify-between">
       <div>
         <div className="flex items-center gap-3 mb-6">
           <div className="p-2.5 bg-amber-50 rounded-xl border border-amber-200">

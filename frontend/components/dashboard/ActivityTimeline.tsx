@@ -11,7 +11,7 @@ const events = [
 
 export function ActivityTimeline() {
   return (
-    <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-sm border border-white/60 p-6 transition-all duration-200 hover:shadow-md h-full">
+    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 transition-all duration-200 hover:shadow-md h-full">
       <div className="mb-5">
         <h3 className="text-lg font-bold text-gray-800">Activity Timeline</h3>
         <p className="text-sm text-gray-500 mt-0.5">Your recent point activity</p>

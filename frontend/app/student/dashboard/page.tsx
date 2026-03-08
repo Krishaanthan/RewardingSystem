@@ -4,17 +4,16 @@ import { StudentProfileCard } from "@/components/dashboard/StudentProfileCard";
 import { PointsChart } from "@/components/charts/PointsChart";
 import { ProgressCard } from "@/components/dashboard/ProgressCard";
 import { ActivityTimeline } from "@/components/dashboard/ActivityTimeline";
+import { StudentLedger } from "@/components/dashboard/StudentLedger";
 import {
   StudentBadges,
   Leaderboard,
   RecentCertificates,
-  MyLedger,
-  ClaimPoints,
 } from "@/components/DashboardWidgets";
 
 export default function StudentDashboardPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-rose-100/70 via-[#fdf6f9] to-indigo-50/50 font-sans">
+    <div className="min-h-screen bg-[#fdfaf5] font-sans">
       <main className="max-w-[1400px] mx-auto px-8 py-10">
 
         {/* Page heading */}
@@ -25,7 +24,7 @@ export default function StudentDashboardPage() {
 
         <div className="grid grid-cols-12 gap-5">
 
-          {/* Row 1 — Profile (3) + Chart (9) */}
+          {/* Row 1 — Profile (3 cols) + Chart (9 cols) */}
           <div className="col-span-12 lg:col-span-3">
             <StudentProfileCard />
           </div>
@@ -33,7 +32,7 @@ export default function StudentDashboardPage() {
             <PointsChart />
           </div>
 
-          {/* Row 2 — Badges (4) + Progress (4) + Leaderboard (4) */}
+          {/* Row 2 — Badges (4 cols) + Progress (4 cols) + Leaderboard (4 cols) */}
           <div className="col-span-12 md:col-span-6 lg:col-span-4">
             <StudentBadges />
           </div>
@@ -49,15 +48,12 @@ export default function StudentDashboardPage() {
             <RecentCertificates />
           </div>
 
-          {/* Row 4 — Activity Timeline (4) + My Ledger (4) + Claim Points (4) */}
-          <div className="col-span-12 md:col-span-6 lg:col-span-4">
+          {/* Row 4 — Activity Timeline (6 cols) + Ledger (6 cols) */}
+          <div className="col-span-12 md:col-span-6">
             <ActivityTimeline />
           </div>
-          <div className="col-span-12 md:col-span-6 lg:col-span-4">
-            <MyLedger />
-          </div>
-          <div className="col-span-12 md:col-span-12 lg:col-span-4">
-            <ClaimPoints />
+          <div className="col-span-12 md:col-span-6">
+            <StudentLedger />
           </div>
 
         </div>
