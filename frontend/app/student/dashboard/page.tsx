@@ -704,16 +704,6 @@ function CertificatesPanel() {
   );
 }
 
-/* ══════════════════════════════════════════════════════════════════════════
-   NAV + APP SHELL
-══════════════════════════════════════════════════════════════════════════ */
-const navLinks = [
-  { label: "Dashboard",  id: "dashboard"  },
-  { label: "Analytics",  id: "analytics"  },
-  { label: "Challenges", id: "challenges" },
-  { label: "Courses",    id: "courses"    },
-  { label: "Messages",   id: "messages"   },
-];
 
 export default function App() {
   const [activeNav, setActiveNav] = useState("dashboard");
@@ -806,39 +796,6 @@ export default function App() {
         ::-webkit-scrollbar-thumb { background: #E8C0CC; border-radius: 99px; }
       `}</style>
 
-      {/* ── STICKY HEADER ── */}
-      <header style={{
-        position: "sticky", top: 0, zIndex: 100,
-        background: "rgba(245,236,232,0.82)",
-        backdropFilter: "blur(22px) saturate(1.6)",
-        WebkitBackdropFilter: "blur(22px) saturate(1.6)",
-        borderBottom: "1px solid rgba(131,18,56,0.1)",
-        padding: "0 40px",
-        display: "flex", alignItems: "center", height: 58, gap: 32
-      }}>
-        {/* Logo */}
-        <div style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer" }} onClick={goBack}>
-          <div style={{ width: 32, height: 32, borderRadius: 10, background: `linear-gradient(135deg, ${P}, ${PD})`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 15, boxShadow: `0 2px 10px rgba(131,18,56,0.32)` }}>🎓</div>
-          <span style={{ fontSize: 16, fontWeight: 800, color: TXT, letterSpacing: -0.4 }}>EduRewards</span>
-        </div>
-
-        {/* Nav */}
-        <nav style={{ display: "flex", gap: 4, flex: 1 }}>
-          {navLinks.map(n => (
-            <button key={n.id} onClick={() => { setActiveNav(n.id); goBack(); }} style={{ background: activeNav === n.id && page === "dashboard" ? PL : "transparent", color: activeNav === n.id && page === "dashboard" ? P : TSUB, border: `1px solid ${activeNav === n.id && page === "dashboard" ? PB : "transparent"}`, borderRadius: 9, padding: "6px 14px", fontSize: 13, fontWeight: 600, cursor: "pointer", transition: "all 0.15s", fontFamily: "inherit" }}>{n.label}</button>
-          ))}
-        </nav>
-
-        {/* Right */}
-        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          {page !== "dashboard" && (
-            <div style={{ background: PL, border: `1px solid ${PB}`, borderRadius: 20, padding: "4px 13px", fontSize: 12, fontWeight: 600, color: P }}>
-              {breadcrumbs[page]}
-            </div>
-          )}
-          <div style={{ width: 36, height: 36, borderRadius: "50%", background: `linear-gradient(135deg, ${P}, ${PM})`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 800, color: "#fff", cursor: "pointer", boxShadow: `0 3px 10px rgba(131,18,56,0.3)` }}>JS</div>
-        </div>
-      </header>
 
       {/* ── MAIN ── */}
       <main style={{ maxWidth: 1200, margin: "0 auto", padding: "32px 40px 72px" }}>
