@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import { motion } from "framer-motion";
 
 type Trend = "up" | "down" | "same";
 
@@ -390,7 +391,15 @@ export function UniversityLeaderboard() {
 
   return (
     <div className="relative h-screen w-full overflow-hidden text-black font-primary bg-white">
-
+      <style>{`
+        .podium-card {
+          transition: box-shadow 0.22s ease, transform 0.22s ease;
+        }
+        .podium-card:hover {
+          box-shadow: 0 16px 44px 0 rgba(131, 18, 56, 0.45);
+          transform: translateY(-4px) scale(1.02);
+        }
+      `}</style>
       {/* Scrollable Content Container */}
       <div className="relative z-10 h-full w-full overflow-y-auto overflow-x-hidden [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-black/20">
         <main className="mx-auto max-w-6xl px-4 pb-8 pt-20 font-primary">
@@ -434,8 +443,8 @@ export function UniversityLeaderboard() {
               </div>
 
               <div className="mt-12 grid gap-4 md:grid-cols-3">
-                <div className="md:order-1 md:self-end">
-                  <div className="relative rounded-2xl bg-[#f5f5f5] p-5 pt-7 pb-8">
+                <motion.div initial={{ y: 50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.2 }} className="md:order-1 md:self-end">
+                  <div className="relative rounded-2xl bg-[#f5f5f5] p-5 pt-7 pb-8 podium-card">
                     <div className="absolute -top-4 left-1/2 -translate-x-1/2">
                       <SilverCrownIcon />
                     </div>
@@ -457,10 +466,10 @@ export function UniversityLeaderboard() {
                       </div>
                     </div>
                   </div>
-                </div>
+                </motion.div>
 
-                <div className="md:order-2">
-                  <div className="relative rounded-2xl bg-[#831238] p-6 pt-10 pb-12 shadow-2xl">
+                <motion.div initial={{ y: 50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.1 }} className="md:order-2">
+                  <div className="relative rounded-2xl bg-[#831238] p-6 pt-10 pb-12 shadow-2xl podium-card">
                     <div className="absolute -top-5 left-1/2 -translate-x-1/2">
                       <CrownIcon />
                     </div>
@@ -482,10 +491,10 @@ export function UniversityLeaderboard() {
                       </div>
                     </div>
                   </div>
-                </div>
+                </motion.div>
 
-                <div className="md:order-3 md:self-end">
-                  <div className="relative rounded-2xl bg-[#f5f5f5] p-5 pt-7 pb-8">
+                <motion.div initial={{ y: 50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.3 }} className="md:order-3 md:self-end">
+                  <div className="relative rounded-2xl bg-[#f5f5f5] p-5 pt-7 pb-8 podium-card">
                     <div className="absolute -top-4 left-1/2 -translate-x-1/2">
                       <BronzeCrownIcon />
                     </div>
@@ -507,7 +516,7 @@ export function UniversityLeaderboard() {
                       </div>
                     </div>
                   </div>
-                </div>
+                </motion.div>
               </div>
             </div>
           </section>
@@ -534,8 +543,14 @@ export function UniversityLeaderboard() {
                   </tr>
                 </thead>
                 <tbody>
-                  {filtered.map((r) => (
-                    <tr key={r.rank} className="border-b border-black/10 last:border-none">
+                  {filtered.map((r, index) => (
+                    <motion.tr
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.4 + (0.05 * Math.min(index, 10)) }}
+                      key={r.rank}
+                      className="border-b border-black/10 last:border-none hover:bg-black/5 transition-colors"
+                    >
                       <td className="py-4 pr-4">
                         <div className="flex items-center gap-2">
                           <span className="text-base font-bold text-black/50">#{r.rank.toString().padStart(2, "0")}</span>
@@ -557,7 +572,7 @@ export function UniversityLeaderboard() {
                         <div className="flex items-center gap-3">
                           <div>
                             <div className="h-2.5 w-40 overflow-hidden rounded-full bg-[#f5f5f5]">
-                              <div className="h-full" style={{ width: `${clampPct(r.progressPct)}%`, backgroundColor: PROGRESS_BAR_FILL }} />
+                              <motion.div initial={{ width: 0 }} animate={{ width: `${clampPct(r.progressPct)}%` }} transition={{ delay: 0.8, duration: 1 }} className="h-full" style={{ backgroundColor: PROGRESS_BAR_FILL }} />
                             </div>
                             <div className="text-[10px] font-bold mt-1.5 uppercase text-black">
                               {clampPct(r.progressPct)}% COMPLETE
@@ -571,13 +586,13 @@ export function UniversityLeaderboard() {
                       <td className="py-4 text-right">
                         <button
                           type="button"
-                          className="rounded-full px-4 py-2 text-xs font-bold text-white hover:brightness-110"
+                          className="rounded-full px-4 py-2 text-xs font-bold text-white hover:brightness-110 hover:scale-[1.05] transition-transform"
                           style={{ backgroundColor: MAROON }}
                         >
                           View
                         </button>
                       </td>
-                    </tr>
+                    </motion.tr>
                   ))}
 
                   {filtered.length === 0 ? (

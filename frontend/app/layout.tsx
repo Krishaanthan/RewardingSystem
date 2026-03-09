@@ -4,17 +4,17 @@ import localFont from "next/font/local";
 import "./globals.css";
 
 const swansea = localFont({
-  src: "../assets/fonts/swansea-font-prm/Swansea-q3pd.ttf",
+  src: "../public/assets/fonts/swansea-font-prm/Swansea-q3pd.ttf",
   variable: "--font-primary"
 });
 
 const timeburner = localFont({
-  src: "../assets/fonts/timeburner-font/TimeburnerBold-peGR.ttf",
+  src: "../public/assets/fonts/timeburner-font/TimeburnerBold-peGR.ttf",
   variable: "--font-secondary"
 });
 
 const alteix = localFont({
-  src: "../assets/fonts/alteix-sans-sec/AlteixsansRegulardemo-E4j1n.otf",
+  src: "../public/assets/fonts/alteix-sans-sec/AlteixsansRegulardemo-E4j1n.otf",
   variable: "--font-tertiary"
 });
 

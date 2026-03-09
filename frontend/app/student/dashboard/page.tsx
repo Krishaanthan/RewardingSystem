@@ -82,7 +82,7 @@ const claimableTasks = [
 /* ══════════════════════════════════════════════════════════════════════════
    PRIMITIVE COMPONENTS
 ══════════════════════════════════════════════════════════════════════════ */
-function Card({ children, style = {}, onClick }) {
+function Card({ children, style = {}, onClick }: any) {
   return (
     <div
       className={onClick ? "card card-btn" : "card"}
@@ -94,7 +94,7 @@ function Card({ children, style = {}, onClick }) {
   );
 }
 
-function Label({ children, style = {} }) {
+function Label({ children, style = {} }: any) {
   return (
     <div style={{
       fontSize: 10.5, fontWeight: 700, letterSpacing: "0.09em",
@@ -103,7 +103,8 @@ function Label({ children, style = {} }) {
   );
 }
 
-const ChartTip = ({ active, payload, label }) => {
+const ChartTip = (props: any) => {
+  const { active, payload, label } = props;
   if (!active || !payload?.length) return null;
   return (
     <div style={{ background: "#fff", border: `1px solid ${PB}`, borderRadius: 10, padding: "8px 14px", boxShadow: `0 4px 20px rgba(131,18,56,0.12)`, fontSize: 13, fontWeight: 600 }}>
@@ -113,7 +114,7 @@ const ChartTip = ({ active, payload, label }) => {
   );
 };
 
-function BackBtn({ onBack }) {
+function BackBtn({ onBack }: any) {
   return (
     <button onClick={onBack} className="back-btn">
       ← Back to Dashboard
@@ -126,8 +127,8 @@ function BackBtn({ onBack }) {
 ══════════════════════════════════════════════════════════════════════════ */
 
 /* ── BADGES PAGE ─────────────────────────────────────────────────────────── */
-function BadgesPage({ onBack }) {
-  const [hov, setHov] = useState(null);
+function BadgesPage({ onBack }: any) {
+  const [hov, setHov] = useState<any>(null);
   const earned = badges.filter(b => b.earned);
   const locked = badges.filter(b => !b.earned);
 
@@ -184,7 +185,7 @@ function BadgesPage({ onBack }) {
 }
 
 /* ── MY LEDGER PAGE ──────────────────────────────────────────────────────── */
-function LedgerPage({ onBack }) {
+function LedgerPage({ onBack }: any) {
   const [filter, setFilter] = useState("all");
   const rows = filter === "all" ? ledgerData : ledgerData.filter(r => r.type === filter);
   const totalIn = ledgerData.filter(r => r.points > 0).reduce((a, r) => a + r.points, 0);
@@ -249,11 +250,11 @@ function LedgerPage({ onBack }) {
 }
 
 /* ── CLAIM POINTS PAGE ───────────────────────────────────────────────────── */
-function ClaimPointsPage({ onBack }) {
-  const [claimed, setClaimed] = useState([]);
-  const [toast, setToast] = useState(null);
+function ClaimPointsPage({ onBack }: any) {
+  const [claimed, setClaimed] = useState<any[]>([]);
+  const [toast, setToast] = useState<any>(null);
 
-  const claim = (task) => {
+  const claim = (task: any) => {
     if (claimed.includes(task.id) || task.done) return;
     setClaimed(prev => [...prev, task.id]);
     setToast(task);
@@ -319,7 +320,7 @@ function ClaimPointsPage({ onBack }) {
 }
 
 /* ── LEADERBOARD PAGE ────────────────────────────────────────────────────── */
-function LeaderboardPage({ onBack }) {
+function LeaderboardPage({ onBack }: any) {
   const top3 = leaderboardData.slice(0, 3);
   const rest = leaderboardData.slice(3);
   const podium = [top3[1], top3[0], top3[2]];
@@ -456,8 +457,8 @@ function PointsChart() {
 }
 
 /* ── Badges Grid (dashboard widget — clickable, goes to badges page) ──────── */
-function BadgesWidget({ onNavigate }) {
-  const [hov, setHov] = useState(null);
+function BadgesWidget({ onNavigate }: any) {
+  const [hov, setHov] = useState<any>(null);
   return (
     <Card onClick={onNavigate} style={{ cursor: "pointer", position: "relative", overflow: "hidden" }}>
       {/* top accent */}
@@ -559,7 +560,7 @@ function ProgressCard() {
 }
 
 /* ── My Ledger Widget ────────────────────────────────────────────────────── */
-function MyLedgerWidget({ onNavigate }) {
+function MyLedgerWidget({ onNavigate }: any) {
   const recent = ledgerData.slice(0, 3);
   return (
     <Card onClick={onNavigate} style={{ position: "relative", overflow: "hidden" }}>
@@ -596,7 +597,7 @@ function MyLedgerWidget({ onNavigate }) {
 }
 
 /* ── Claim Points Widget ─────────────────────────────────────────────────── */
-function ClaimWidget({ onNavigate }) {
+function ClaimWidget({ onNavigate }: any) {
   const pending = claimableTasks.filter(t => !t.done);
   const pts = pending.reduce((a, t) => a + t.pts, 0);
   return (
@@ -620,12 +621,12 @@ function ClaimWidget({ onNavigate }) {
 }
 
 /* ── Leaderboard Widget ──────────────────────────────────────────────────── */
-function LeaderboardWidget({ onNavigate }) {
+function LeaderboardWidget({ onNavigate }: any) {
   const top3 = leaderboardData.slice(0, 3);
   const podium = [top3[1], top3[0], top3[2]];
   const PC = ["#A8A8A8", "#C9A84C", "#A0714F"];
   const medals = ["🥈", "🥇", "🥉"];
-  const user = leaderboardData.find(s => s.isUser);
+  const user: any = leaderboardData.find(s => s.isUser);
 
   return (
     <Card onClick={onNavigate} style={{ padding: 0, overflow: "hidden" }}>
@@ -676,7 +677,7 @@ function LeaderboardWidget({ onNavigate }) {
 
 /* ── Certificates ────────────────────────────────────────────────────────── */
 function CertificatesPanel() {
-  const [hov, setHov] = useState(null);
+  const [hov, setHov] = useState<any>(null);
   return (
     <Card>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 18 }}>
@@ -709,7 +710,7 @@ export default function App() {
   const [activeNav, setActiveNav] = useState("dashboard");
   const [page, setPage] = useState("dashboard");
 
-  const goTo = (p) => { setPage(p); window.scrollTo({ top: 0, behavior: "smooth" }); };
+  const goTo = (p: any) => { setPage(p); window.scrollTo({ top: 0, behavior: "smooth" }); };
   const goBack = () => goTo("dashboard");
 
   const breadcrumbs = {
