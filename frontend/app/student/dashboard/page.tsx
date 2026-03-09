@@ -32,51 +32,51 @@ const pointsData = [
 ];
 
 const badges = [
-  { icon: "🏆", name: "Top Scorer",   desc: "Highest marks in term",    earned: true  },
-  { icon: "🔥", name: "7-Day Streak", desc: "7 days consecutive login",  earned: true  },
-  { icon: "📚", name: "Bookworm",     desc: "Read 10 library books",     earned: true  },
-  { icon: "⚡", name: "Speed Run",    desc: "Fastest quiz completion",   earned: true  },
-  { icon: "🌟", name: "Star Student", desc: "Nominated by teachers",     earned: false },
-  { icon: "🎯", name: "Bullseye",     desc: "Perfect score on a test",   earned: false },
+  { icon: "🏆", name: "Top Scorer", desc: "Highest marks in term", earned: true },
+  { icon: "🔥", name: "7-Day Streak", desc: "7 days consecutive login", earned: true },
+  { icon: "📚", name: "Bookworm", desc: "Read 10 library books", earned: true },
+  { icon: "⚡", name: "Speed Run", desc: "Fastest quiz completion", earned: true },
+  { icon: "🌟", name: "Star Student", desc: "Nominated by teachers", earned: false },
+  { icon: "🎯", name: "Bullseye", desc: "Perfect score on a test", earned: false },
 ];
 
 const ledgerData = [
-  { date: "Mar 08", activity: "Math Quiz Bonus",          points: +50,  type: "credit" },
-  { date: "Mar 07", activity: "Science Project",          points: +120, type: "credit" },
-  { date: "Mar 06", activity: "Redeemed Gift Card",       points: -200, type: "debit"  },
-  { date: "Mar 05", activity: "Attendance Streak",        points: +30,  type: "credit" },
-  { date: "Mar 04", activity: "Peer Tutor Award",         points: +75,  type: "credit" },
-  { date: "Mar 03", activity: "Late Submission Penalty",  points: -10,  type: "debit"  },
-  { date: "Mar 02", activity: "Reading Challenge",        points: +80,  type: "credit" },
-  { date: "Mar 01", activity: "Hackathon Winner",         points: +50,  type: "credit" },
-  { date: "Feb 28", activity: "Library Contribution",     points: +10,  type: "credit" },
-  { date: "Feb 27", activity: "Event Participation",      points: +20,  type: "credit" },
+  { date: "Mar 08", activity: "Math Quiz Bonus", points: +50, type: "credit" },
+  { date: "Mar 07", activity: "Science Project", points: +120, type: "credit" },
+  { date: "Mar 06", activity: "Redeemed Gift Card", points: -200, type: "debit" },
+  { date: "Mar 05", activity: "Attendance Streak", points: +30, type: "credit" },
+  { date: "Mar 04", activity: "Peer Tutor Award", points: +75, type: "credit" },
+  { date: "Mar 03", activity: "Late Submission Penalty", points: -10, type: "debit" },
+  { date: "Mar 02", activity: "Reading Challenge", points: +80, type: "credit" },
+  { date: "Mar 01", activity: "Hackathon Winner", points: +50, type: "credit" },
+  { date: "Feb 28", activity: "Library Contribution", points: +10, type: "credit" },
+  { date: "Feb 27", activity: "Event Participation", points: +20, type: "credit" },
 ];
 
 const leaderboardData = [
   { rank: 1, name: "Alex Johnson", points: 20000, initials: "AJ", dept: "Computer Science", badges: 8 },
-  { rank: 2, name: "Ealca",        points: 16000, initials: "EA", dept: "Mathematics",       badges: 6 },
-  { rank: 3, name: "Ahoky",        points: 15800, initials: "AH", dept: "Physics",           badges: 6 },
-  { rank: 4, name: "Jordan Smith", points: 14200, initials: "JS", dept: "Computer Science",  badges: 4, isUser: true },
-  { rank: 5, name: "Alex",         points: 12660, initials: "AL", dept: "Chemistry",         badges: 4, relPoints: "+10170" },
-  { rank: 6, name: "Lena Park",    points: 11400, initials: "LP", dept: "Biology",           badges: 3 },
-  { rank: 7, name: "Sam Rivera",   points: 10900, initials: "SR", dept: "History",           badges: 3 },
-  { rank: 8, name: "Priya Nair",   points:  9800, initials: "PN", dept: "Economics",         badges: 2 },
+  { rank: 2, name: "Ealca", points: 16000, initials: "EA", dept: "Mathematics", badges: 6 },
+  { rank: 3, name: "Ahoky", points: 15800, initials: "AH", dept: "Physics", badges: 6 },
+  { rank: 4, name: "Jordan Smith", points: 14200, initials: "JS", dept: "Computer Science", badges: 4, isUser: true },
+  { rank: 5, name: "Alex", points: 12660, initials: "AL", dept: "Chemistry", badges: 4, relPoints: "+10170" },
+  { rank: 6, name: "Lena Park", points: 11400, initials: "LP", dept: "Biology", badges: 3 },
+  { rank: 7, name: "Sam Rivera", points: 10900, initials: "SR", dept: "History", badges: 3 },
+  { rank: 8, name: "Priya Nair", points: 9800, initials: "PN", dept: "Economics", badges: 2 },
 ];
 
 const certificates = [
-  { title: "ADVANCE CERTIFICATE",  subject: "Frontend Developer", level: 3, id: "c1" },
-  { title: "ADVANCE CERTIFICATE",  subject: "Frontend Developer", level: 2, id: "c2" },
-  { title: "ADVANCED CERTIFICATE", subject: "Backend Developer",  level: 3, id: "c3" },
+  { title: "ADVANCE CERTIFICATE", subject: "Frontend Developer", level: 3, id: "c1" },
+  { title: "ADVANCE CERTIFICATE", subject: "Frontend Developer", level: 2, id: "c2" },
+  { title: "ADVANCED CERTIFICATE", subject: "Backend Developer", level: 3, id: "c3" },
 ];
 
 const claimableTasks = [
-  { id: 1, title: "Complete Math Quiz",        pts: 50,  deadline: "Today",   icon: "📝", done: false },
-  { id: 2, title: "Submit Science Report",     pts: 120, deadline: "Mar 10",  icon: "🔬", done: false },
-  { id: 3, title: "Attend Workshop",           pts: 40,  deadline: "Mar 12",  icon: "🎯", done: true  },
-  { id: 4, title: "Peer Review Assignment",    pts: 30,  deadline: "Mar 14",  icon: "👥", done: false },
-  { id: 5, title: "Library Reading Challenge", pts: 80,  deadline: "Mar 15",  icon: "📚", done: true  },
-  { id: 6, title: "Hackathon Participation",   pts: 200, deadline: "Mar 20",  icon: "💻", done: false },
+  { id: 1, title: "Complete Math Quiz", pts: 50, deadline: "Today", icon: "📝", done: false },
+  { id: 2, title: "Submit Science Report", pts: 120, deadline: "Mar 10", icon: "🔬", done: false },
+  { id: 3, title: "Attend Workshop", pts: 40, deadline: "Mar 12", icon: "🎯", done: true },
+  { id: 4, title: "Peer Review Assignment", pts: 30, deadline: "Mar 14", icon: "👥", done: false },
+  { id: 5, title: "Library Reading Challenge", pts: 80, deadline: "Mar 15", icon: "📚", done: true },
+  { id: 6, title: "Hackathon Participation", pts: 200, deadline: "Mar 20", icon: "💻", done: false },
 ];
 
 /* ══════════════════════════════════════════════════════════════════════════
@@ -142,8 +142,8 @@ function BadgesPage({ onBack }) {
       {/* Summary */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 16, marginBottom: 28 }}>
         {[
-          { label: "Earned",   value: `${earned.length}`,           color: P,    bg: PL,    br: PB   },
-          { label: "Locked",   value: `${locked.length}`,           color: CGD,  bg: "#F9FAFB", br: CG },
+          { label: "Earned", value: `${earned.length}`, color: P, bg: PL, br: PB },
+          { label: "Locked", value: `${locked.length}`, color: CGD, bg: "#F9FAFB", br: CG },
           { label: "Progress", value: `${earned.length}/${badges.length}`, color: GRN, bg: GRNB, br: GRNBR },
         ].map(s => (
           <div key={s.label} style={{ background: s.bg, border: `1px solid ${s.br}`, borderRadius: 14, padding: "18px 22px" }}>
@@ -187,7 +187,7 @@ function BadgesPage({ onBack }) {
 function LedgerPage({ onBack }) {
   const [filter, setFilter] = useState("all");
   const rows = filter === "all" ? ledgerData : ledgerData.filter(r => r.type === filter);
-  const totalIn  = ledgerData.filter(r => r.points > 0).reduce((a, r) => a + r.points, 0);
+  const totalIn = ledgerData.filter(r => r.points > 0).reduce((a, r) => a + r.points, 0);
   const totalOut = ledgerData.filter(r => r.points < 0).reduce((a, r) => a + r.points, 0);
 
   return (
@@ -200,9 +200,9 @@ function LedgerPage({ onBack }) {
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 16, marginBottom: 22 }}>
         {[
-          { label: "Balance",      value: "2,310 pts", color: P,   bg: PL,   br: PB    },
+          { label: "Balance", value: "2,310 pts", color: P, bg: PL, br: PB },
           { label: "Total Earned", value: `+${totalIn} pts`, color: GRN, bg: GRNB, br: GRNBR },
-          { label: "Total Spent",  value: `${totalOut} pts`, color: RED, bg: "#FEF2F2", br: "#FECACA" },
+          { label: "Total Spent", value: `${totalOut} pts`, color: RED, bg: "#FEF2F2", br: "#FECACA" },
         ].map(s => (
           <div key={s.label} style={{ background: s.bg, border: `1px solid ${s.br}`, borderRadius: 14, padding: "18px 22px" }}>
             <div style={{ fontSize: 11, fontWeight: 600, color: CGD, textTransform: "uppercase", letterSpacing: "0.07em", marginBottom: 6 }}>{s.label}</div>
@@ -212,7 +212,7 @@ function LedgerPage({ onBack }) {
       </div>
 
       <div style={{ display: "flex", gap: 8, marginBottom: 18 }}>
-        {[["all","All"],["credit","Earned"],["debit","Spent"]].map(([v, l]) => (
+        {[["all", "All"], ["credit", "Earned"], ["debit", "Spent"]].map(([v, l]) => (
           <button key={v} onClick={() => setFilter(v)} style={{ padding: "7px 18px", borderRadius: 10, border: "none", fontSize: 13, fontWeight: 600, cursor: "pointer", background: filter === v ? P : "rgba(255,255,255,0.85)", color: filter === v ? "#fff" : TSUB, boxShadow: filter === v ? `0 2px 12px rgba(131,18,56,0.3)` : "0 1px 4px rgba(0,0,0,0.06)", transition: "all 0.15s", fontFamily: "inherit" }}>{l}</button>
         ))}
       </div>
@@ -221,7 +221,7 @@ function LedgerPage({ onBack }) {
         <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 14 }}>
           <thead>
             <tr style={{ borderBottom: `2px solid ${PL}` }}>
-              {["Date","Activity","Type","Points"].map(h => (
+              {["Date", "Activity", "Type", "Points"].map(h => (
                 <th key={h} style={{ textAlign: h === "Points" ? "right" : "left", padding: "0 0 14px", color: CGD, fontWeight: 700, fontSize: 11, letterSpacing: "0.07em", textTransform: "uppercase" }}>{h}</th>
               ))}
             </tr>
@@ -273,9 +273,9 @@ function ClaimPointsPage({ onBack }) {
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 16, marginBottom: 24 }}>
         {[
-          { label: "Available to Claim", value: `${totalPts} pts`,          color: P,   bg: PL,   br: PB    },
-          { label: "Already Claimed",    value: `${claimed.length} tasks`,  color: GRN, bg: GRNB, br: GRNBR },
-          { label: "Total Tasks",        value: `${claimableTasks.length}`, color: TXT, bg: "rgba(255,255,255,0.85)", br: CG },
+          { label: "Available to Claim", value: `${totalPts} pts`, color: P, bg: PL, br: PB },
+          { label: "Already Claimed", value: `${claimed.length} tasks`, color: GRN, bg: GRNB, br: GRNBR },
+          { label: "Total Tasks", value: `${claimableTasks.length}`, color: TXT, bg: "rgba(255,255,255,0.85)", br: CG },
         ].map(s => (
           <div key={s.label} style={{ background: s.bg, border: `1px solid ${s.br}`, borderRadius: 14, padding: "18px 22px" }}>
             <div style={{ fontSize: 11, fontWeight: 600, color: CGD, textTransform: "uppercase", letterSpacing: "0.07em", marginBottom: 6 }}>{s.label}</div>
@@ -320,11 +320,11 @@ function ClaimPointsPage({ onBack }) {
 
 /* ── LEADERBOARD PAGE ────────────────────────────────────────────────────── */
 function LeaderboardPage({ onBack }) {
-  const top3   = leaderboardData.slice(0, 3);
-  const rest   = leaderboardData.slice(3);
+  const top3 = leaderboardData.slice(0, 3);
+  const rest = leaderboardData.slice(3);
   const podium = [top3[1], top3[0], top3[2]];
-  const PC = ["#A8A8A8","#C9A84C","#A0714F"];
-  const medals = ["🥈","🥇","🥉"];
+  const PC = ["#A8A8A8", "#C9A84C", "#A0714F"];
+  const medals = ["🥈", "🥇", "🥉"];
 
   return (
     <div className="page-in">
@@ -412,7 +412,7 @@ function StudentProfileCard() {
 
         {/* Stats */}
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 2, background: "#F0E8EC", borderRadius: 14, overflow: "hidden", width: "100%", marginTop: 6 }}>
-          {[["#4","Rank"],["2,310","Points"],["4","Badges"]].map(([val, lbl]) => (
+          {[["#4", "Rank"], ["2,310", "Points"], ["4", "Badges"]].map(([val, lbl]) => (
             <div key={lbl} style={{ background: "#fff", padding: "14px 8px", textAlign: "center" }}>
               <div style={{ fontSize: 22, fontWeight: 800, color: P, letterSpacing: -0.5 }}>{val}</div>
               <div style={{ fontSize: 11, color: CGD, marginTop: 2 }}>{lbl}</div>
@@ -621,11 +621,11 @@ function ClaimWidget({ onNavigate }) {
 
 /* ── Leaderboard Widget ──────────────────────────────────────────────────── */
 function LeaderboardWidget({ onNavigate }) {
-  const top3   = leaderboardData.slice(0, 3);
+  const top3 = leaderboardData.slice(0, 3);
   const podium = [top3[1], top3[0], top3[2]];
-  const PC     = ["#A8A8A8","#C9A84C","#A0714F"];
-  const medals = ["🥈","🥇","🥉"];
-  const user   = leaderboardData.find(s => s.isUser);
+  const PC = ["#A8A8A8", "#C9A84C", "#A0714F"];
+  const medals = ["🥈", "🥇", "🥉"];
+  const user = leaderboardData.find(s => s.isUser);
 
   return (
     <Card onClick={onNavigate} style={{ padding: 0, overflow: "hidden" }}>
@@ -688,7 +688,7 @@ function CertificatesPanel() {
           <div key={cert.id} onMouseEnter={() => setHov(i)} onMouseLeave={() => setHov(null)} style={{ position: "relative", border: `2px solid ${hov === i ? P : PB}`, borderRadius: 13, padding: "20px 18px 30px", background: hov === i ? PL : "#fff", cursor: "pointer", transition: "all 0.2s", transform: hov === i ? "translateY(-2px)" : "none", boxShadow: hov === i ? `0 8px 24px rgba(131,18,56,0.14)` : `0 2px 8px rgba(0,0,0,0.04)` }}>
             <div style={{ textAlign: "center", marginBottom: 13 }}>
               <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-                <path d="M12 2L3 6v6c0 5.25 3.75 10.15 9 11.25C17.25 22.15 21 17.25 21 12V6L12 2z" fill="none" stroke={P} strokeWidth="1.8" strokeLinejoin="round"/>
+                <path d="M12 2L3 6v6c0 5.25 3.75 10.15 9 11.25C17.25 22.15 21 17.25 21 12V6L12 2z" fill="none" stroke={P} strokeWidth="1.8" strokeLinejoin="round" />
               </svg>
             </div>
             <div style={{ textAlign: "center" }}>
@@ -709,14 +709,14 @@ export default function App() {
   const [activeNav, setActiveNav] = useState("dashboard");
   const [page, setPage] = useState("dashboard");
 
-  const goTo  = (p) => { setPage(p); window.scrollTo({ top: 0, behavior: "smooth" }); };
+  const goTo = (p) => { setPage(p); window.scrollTo({ top: 0, behavior: "smooth" }); };
   const goBack = () => goTo("dashboard");
 
   const breadcrumbs = {
     leaderboard: "🏆 Leaderboard",
-    ledger:      "📋 My Ledger",
-    claim:       "🎁 Claim Points",
-    badges:      "🏅 My Badges",
+    ledger: "📋 My Ledger",
+    claim: "🎁 Claim Points",
+    badges: "🏅 My Badges",
   };
 
   return (
@@ -798,7 +798,7 @@ export default function App() {
 
 
       {/* ── MAIN ── */}
-      <main style={{ maxWidth: 1200, margin: "0 auto", padding: "32px 40px 72px" }}>
+      <main style={{ maxWidth: 1200, margin: "0 auto", padding: "112px 40px 72px" }}>
 
         {/* ────────── DASHBOARD ────────── */}
         {page === "dashboard" && (
@@ -811,9 +811,9 @@ export default function App() {
             {/* Stat row — 3 cards (no Active Streak) */}
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 16, marginBottom: 20 }}>
               {[
-                { label: "Total Points",  value: "2,310", sub: "↑ +390 this week",  subC: GRN,  icon: "⭐" },
-                { label: "Current Rank",  value: "#4",    sub: "↑ Up 2 positions",  subC: GRN,  icon: "📈" },
-                { label: "Badges Earned", value: "4 / 6", sub: "2 more to unlock",  subC: CGD, icon: "🏅" },
+                { label: "Total Points", value: "2,310", sub: "↑ +390 this week", subC: GRN, icon: "⭐" },
+                { label: "Current Rank", value: "#4", sub: "↑ Up 2 positions", subC: GRN, icon: "📈" },
+                { label: "Badges Earned", value: "4 / 6", sub: "2 more to unlock", subC: CGD, icon: "🏅" },
               ].map(s => (
                 <div key={s.label} className="card" style={{ padding: "20px 22px" }}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 10 }}>
@@ -841,7 +841,7 @@ export default function App() {
             {/* Row 3: My Ledger + Claim Points */}
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 18, marginBottom: 18 }}>
               <MyLedgerWidget onNavigate={() => goTo("ledger")} />
-              <ClaimWidget    onNavigate={() => goTo("claim")}  />
+              <ClaimWidget onNavigate={() => goTo("claim")} />
             </div>
 
             {/* Row 4: Leaderboard (full width, clickable) */}
@@ -855,10 +855,10 @@ export default function App() {
         )}
 
         {/* ────────── SUB PAGES ────────── */}
-        {page === "badges"      && <BadgesPage      onBack={goBack} />}
+        {page === "badges" && <BadgesPage onBack={goBack} />}
         {page === "leaderboard" && <LeaderboardPage onBack={goBack} />}
-        {page === "ledger"      && <LedgerPage      onBack={goBack} />}
-        {page === "claim"       && <ClaimPointsPage onBack={goBack} />}
+        {page === "ledger" && <LedgerPage onBack={goBack} />}
+        {page === "claim" && <ClaimPointsPage onBack={goBack} />}
 
       </main>
     </>
