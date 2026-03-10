@@ -66,7 +66,7 @@ export default function FacultyAuditLog() {
       <main className="flex-1 flex flex-col h-full overflow-hidden">
         {/* Header */}
         <header className="h-24 bg-white border-b border-[#E5E7EB] px-8 flex flex-col justify-center shadow-sm z-0 relative">
-          <h1 className="text-3xl font-secondary font-bold text-[#B22222] tracking-tight">AI Audit Log</h1>
+          <h1 className="text-3xl font-secondary font-bold text-[#B22222] tracking-tight">Audit-Log</h1>
           <p className="text-[#808080] text-sm mt-1 font-medium flex items-center gap-1.5">
             <Icons.CheckCircle />
             Automatically approved submissions available for faculty review.
