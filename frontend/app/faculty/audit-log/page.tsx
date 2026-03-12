@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
+import { facultyNav } from "@/lib/nav";
 // We use inline SVGs as icons to avoid external dependencies.
 
 export default function FacultyAuditLog() {
@@ -60,339 +62,287 @@ export default function FacultyAuditLog() {
   };
 
   return (
-    <div className="flex h-screen bg-[#F9FAFB] font-primary relative overflow-hidden">
-
-      {/* Main Content */}
-      <main className="flex-1 flex flex-col h-full overflow-hidden">
-        {/* Header */}
-        <header className="h-24 bg-white border-b border-[#E5E7EB] px-8 flex flex-col justify-center shadow-sm z-0 relative">
-          <h1 className="text-3xl font-secondary font-bold text-[#B22222] tracking-tight">Audit-Log</h1>
-          <p className="text-[#808080] text-sm mt-1 font-medium flex items-center gap-1.5">
-            <Icons.CheckCircle />
-            Automatically approved submissions available for faculty review.
-          </p>
-        </header>
-
-        {/* Content Area */}
-        <div className="flex-1 overflow-auto p-8">
-
-          {/* Overview Section */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-            <div className="bg-white p-6 rounded-xl shadow-soft border border-[#E5E7EB] flex items-center gap-4 hover:shadow-md transition-shadow">
-              <div className="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center shadow-inner">
-                <Icons.Audit />
-              </div>
-              <div>
-                <p className="text-sm text-[#808080] font-medium">Total Submissions</p>
-                <p className="text-2xl font-bold text-gray-900">{mockSubmissions.length}</p>
-              </div>
-            </div>
-
-            <div className="bg-white p-6 rounded-xl shadow-soft border border-[#E5E7EB] flex gap-4 hover:shadow-md transition-shadow md:col-span-1">
-              <div className="w-12 h-12 bg-amber-50 text-amber-500 rounded-full flex items-center justify-center shadow-inner shrink-0 mt-1">
-                <Icons.ShieldCheck />
-              </div>
-              <div className="w-full">
-                <p className="text-sm text-[#808080] font-medium mb-2">Badges Awarded</p>
-                <div className="flex flex-col gap-2 text-sm text-gray-900">
-                  <div className="flex justify-between items-center border-b border-[#E5E7EB] pb-1">
-                    <span className="font-semibold text-amber-500">Gold</span>
-                    <span className="bg-amber-100 text-amber-800 px-2 py-0.5 rounded text-xs font-bold">{mockSubmissions.filter(s => s.badgeAllocated === 'Gold' && s.status === 'Auto Approved').length}</span>
-                  </div>
-                  <div className="flex justify-between items-center border-b border-[#E5E7EB] pb-1">
-                    <span className="font-semibold text-slate-500">Silver</span>
-                    <span className="bg-slate-100 text-slate-800 px-2 py-0.5 rounded text-xs font-bold">{mockSubmissions.filter(s => s.badgeAllocated === 'Silver' && s.status === 'Auto Approved').length}</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="font-semibold text-orange-700">Bronze</span>
-                    <span className="bg-orange-100 text-orange-800 px-2 py-0.5 rounded text-xs font-bold">{mockSubmissions.filter(s => s.badgeAllocated === 'Bronze' && s.status === 'Auto Approved').length}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white p-6 rounded-xl shadow-soft border border-[#E5E7EB] flex items-center gap-4 hover:shadow-md transition-shadow">
-              <div className="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center shadow-inner">
-                <Icons.CheckCircle />
-              </div>
-              <div>
-                <p className="text-sm text-[#808080] font-medium">AI Approved</p>
-                <p className="text-2xl font-bold text-gray-900">{mockSubmissions.filter(s => s.status === 'Auto Approved').length}</p>
-              </div>
-            </div>
-
-            <div className="bg-white p-6 rounded-xl shadow-soft border border-[#E5E7EB] flex items-center gap-4 hover:shadow-md transition-shadow">
-              <div className="w-12 h-12 bg-rose-50 text-rose-600 rounded-full flex items-center justify-center shadow-inner">
-                <Icons.Search />
-              </div>
-              <div>
-                <p className="text-sm text-[#808080] font-medium">Manual Review Needed</p>
-                <p className="text-2xl font-bold text-gray-900">{mockSubmissions.filter(s => s.status === 'Manual Review').length}</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Filters Bar */}
-          <div className="bg-white p-4 rounded-xl shadow-soft border border-[#E5E7EB] mb-6 flex flex-wrap gap-4 items-center justify-between">
-            <div className="relative flex-1 min-w-[240px] max-w-sm">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-[#808080]">
-                <Icons.Search />
-              </div>
-              <input
-                type="text"
-                placeholder="Search by Student Name..."
-                className="w-full pl-10 pr-4 py-2 border border-[#E5E7EB] rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 transition-colors text-gray-900 text-sm placeholder:text-[#808080]"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-            </div>
-
-            <div className="flex flex-wrap gap-3">
-              <select
-                className="py-2 pl-3 pr-8 border border-[#E5E7EB] rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 appearance-none bg-white text-sm text-gray-700 font-medium header-select"
-                value={filterActivity}
-                onChange={(e) => setFilterActivity(e.target.value)}
-              >
-                <option value="All">All Activities</option>
-                <option value="Swayam / NPTEL Course">Swayam / NPTEL Course</option>
-                <option value="Coursera Course">Coursera Course</option>
-                <option value="Volunteering">Volunteering</option>
-                <option value="Hackathon Participation">Hackathon Participation</option>
-                <option value="Winning Hackathon">Winning Hackathon</option>
-                <option value="Conducting Workshop">Conducting Workshop</option>
-                <option value="Organizing Event">Organizing Event</option>
-                <option value="Other College Event">Other College Event</option>
-                <option value="Cultural Participation">Cultural Participation</option>
-                <option value="Sports Activities">Sports Activities</option>
-                <option value="NCC / NSS Activities">NCC / NSS Activities</option>
-                <option value="Conducting Coding Contest">Conducting Coding Contest</option>
-                <option value="Global Certificate">Global Certificate</option>
-                <option value="Club Activities">Club Activities</option>
-                <option value="Student Chapter Activity">Student Chapter Activity</option>
-              </select>
-
-              <select
-                className="py-2 pl-3 pr-8 border border-[#E5E7EB] rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 appearance-none bg-white text-sm text-gray-700 font-medium header-select"
-                value={filterBadge}
-                onChange={(e) => setFilterBadge(e.target.value)}
-              >
-                <option value="All">All Badge Levels</option>
-                <option value="Gold">Gold</option>
-                <option value="Silver">Silver</option>
-                <option value="Bronze">Bronze</option>
-                <option value="None">None</option>
-              </select>
-
-              <select
-                className="py-2 pl-3 pr-8 border border-[#E5E7EB] rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 appearance-none bg-white text-sm text-gray-700 font-medium header-select"
-                value={filterDate}
-                onChange={(e) => setFilterDate(e.target.value)}
-              >
-                <option value="All">All Dates</option>
-                <option value="Last 7 Days">Last 7 Days</option>
-                <option value="Last 30 Days">Last 30 Days</option>
-              </select>
-            </div>
-          </div>
-
-          {/* Table Card */}
-          <div className="bg-white rounded-xl shadow-soft border border-[#E5E7EB] overflow-hidden">
-            <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse">
-                <thead>
-                  <tr className="bg-gray-50 border-b border-[#E5E7EB] text-xs uppercase tracking-wider text-[#808080] font-semibold">
-                    <th className="p-4 w-10"></th>
-                    <th className="p-4">Student Name</th>
-                    <th className="p-4">Activity Type</th>
-                    <th className="p-4">Points</th>
-                    <th className="p-4">Badge</th>
-                    <th className="p-4">AI Decision</th>
-                    <th className="p-4">Date</th>
-                    <th className="p-4 text-center">Proof</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-[#E5E7EB]">
-                  {filteredSubmissions.length > 0 ? (
-                    filteredSubmissions.map((sub) => (
-                      <React.Fragment key={sub.id}>
-                        <tr
-                          className="hover:bg-gray-50/50 transition-colors group"
-                        >
-                          <td className="p-4 text-center">
-                            <button
-                              onClick={() => setExpandedRow(expandedRow === sub.id ? null : sub.id)}
-                              className="text-[#808080] hover:text-indigo-600 transition-colors p-1 rounded-md hover:bg-indigo-50"
-                            >
-                              {expandedRow === sub.id ? <Icons.ChevronUp /> : <Icons.ChevronDown />}
-                            </button>
-                          </td>
-                          <td className="p-4 font-medium text-gray-900">{sub.studentName}</td>
-                          <td className="p-4 text-sm text-gray-700">{sub.activityType}</td>
-                          <td className="p-4 font-semibold text-indigo-600">
-                            {sub.status === 'Auto Approved' ? `+${sub.pointsAwarded}` : <span className="text-[#808080] text-xs font-medium px-2 py-1 bg-gray-100 rounded border border-gray-200">Pending</span>}
-                          </td>
-                          <td className="p-4">
-                            {sub.status === 'Auto Approved' ? (
-                              sub.badgeAllocated !== "None" ? (
-                                <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold border ${sub.badgeAllocated === 'Gold' ? 'bg-amber-100 text-amber-800 border-amber-200' :
-                                  sub.badgeAllocated === 'Silver' ? 'bg-slate-100 text-slate-800 border-slate-200' :
-                                    'bg-orange-100 text-orange-800 border-orange-200'
-                                  }`}>
-                                  {sub.badgeAllocated}
-                                </span>
-                              ) : (
-                                <span className="text-[#808080] text-sm">-</span>
-                              )
-                            ) : (
-                              <span className="text-[#808080] text-xs font-medium px-2 py-1 bg-gray-100 rounded border border-gray-200">Pending</span>
-                            )}
-                          </td>
-                          <td className="p-4">
-                            <div className={`flex items-center gap-1.5 text-xs font-semibold py-1.5 px-3 rounded-full w-max shadow-sm border ${sub.status === 'Auto Approved'
-                              ? 'text-emerald-700 bg-emerald-50 border-emerald-200'
-                              : 'text-rose-700 bg-rose-50 border-rose-200'
-                              }`}>
-                              <span className={`w-1.5 h-1.5 rounded-full animate-pulse ${sub.status === 'Auto Approved' ? 'bg-emerald-500' : 'bg-rose-500'
-                                }`}></span>
-                              {sub.status}
-                            </div>
-                          </td>
-                          <td className="p-4 text-sm text-[#808080]">{sub.date}</td>
-                          <td className="p-4 text-center">
-                            <button
-                              onClick={() => setPreviewProof(sub.proofUrl)}
-                              className="inline-flex items-center justify-center gap-2 px-3 py-1.5 bg-gray-50 hover:bg-indigo-600 text-[#808080] hover:text-white border border-[#E5E7EB] hover:border-indigo-600 rounded-lg text-xs font-medium transition-all shadow-sm"
-                            >
-                              <Icons.Eye />
-                              View
-                            </button>
-                          </td>
-                        </tr>
-                        {/* Expanded Row */}
-                        {expandedRow === sub.id && (
-                          <tr className="bg-[#F9FAFB] border-b border-[#E5E7EB]">
-                            <td colSpan={8} className="p-6">
-                              <div className="flex gap-8 bg-white p-5 rounded-xl border border-[#E5E7EB] shadow-sm">
-                                <div className="flex-1 space-y-4">
-                                  <div>
-                                    <h4 className="text-xs font-bold text-[#808080] uppercase tracking-wider mb-1">Submission Description</h4>
-                                    <p className="text-sm text-gray-800">{sub.description}</p>
-                                  </div>
-                                  <div className="grid grid-cols-2 gap-4">
-                                    <div>
-                                      <h4 className="text-xs font-bold text-[#808080] uppercase tracking-wider mb-1">Submission ID</h4>
-                                      <p className="text-sm font-mono text-gray-600 bg-gray-100 px-2 py-1 rounded w-max">{sub.id}</p>
-                                    </div>
-                                    <div>
-                                      <h4 className="text-xs font-bold text-[#808080] uppercase tracking-wider mb-1">AI Confidence Score</h4>
-                                      <p className={`text-sm font-semibold ${sub.status === 'Auto Approved' ? 'text-emerald-600' : 'text-rose-600'}`}>
-                                        {sub.status === 'Auto Approved' ? '98.5% (High)' : '45.2% (Low)'}
-                                      </p>
-                                    </div>
-                                  </div>
-                                </div>
-                                <div className={`w-1/3 rounded-lg border p-4 flex flex-col items-center justify-center text-center ${sub.status === 'Auto Approved' ? 'bg-emerald-50 border-emerald-200' : 'bg-rose-50 border-rose-200'
-                                  }`}>
-                                  <div className={`${sub.status === 'Auto Approved' ? 'text-emerald-600' : 'text-rose-600'} mb-2 scale-150`}>
-                                    {sub.status === 'Auto Approved' ? <Icons.ShieldCheck /> : <Icons.Search />}
-                                  </div>
-                                  <h5 className="font-semibold text-gray-900 text-sm">
-                                    {sub.status === 'Auto Approved' ? 'AI Verification Passed' : 'Manual Review Required'}
-                                  </h5>
-                                  <p className={`text-xs mt-1 ${sub.status === 'Auto Approved' ? 'text-emerald-700' : 'text-rose-700'}`}>
-                                    {sub.status === 'Auto Approved'
-                                      ? 'Image composition and text extraction matched required rubrics automatically.'
-                                      : 'AI could not confidently verify the document validity. Human review needed.'}
-                                  </p>
-                                </div>
-                              </div>
-                            </td>
-                          </tr>
-                        )}
-                      </React.Fragment>
-                    ))
-                  ) : (
-                    <tr>
-                      <td colSpan={8} className="p-8 text-center text-[#808080]">
-                        <div className="flex flex-col items-center justify-center gap-3">
-                          <Icons.Search />
-                          <p>No audit records found matching your filters.</p>
-                        </div>
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
-
-            {/* Pagination Mock */}
-            <div className="px-6 py-4 border-t border-[#E5E7EB] flex items-center justify-between bg-gray-50">
-              <p className="text-sm text-[#808080]">
-                Showing <span className="font-semibold text-gray-900">1</span> to <span className="font-semibold text-gray-900">{filteredSubmissions.length}</span> of <span className="font-semibold text-gray-900">{mockSubmissions.length}</span> entries
-              </p>
-              <div className="flex items-center gap-2">
-                <button className="px-3 py-1.5 border border-[#E5E7EB] rounded-lg text-sm text-[#808080] hover:bg-white hover:text-gray-900 transition-colors disabled:opacity-50">Previous</button>
-                <div className="flex items-center gap-1">
-                  <button className="w-8 h-8 flex items-center justify-center rounded-lg bg-[#B22222] text-white text-sm font-medium shadow-sm">1</button>
-                  <button className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-200 text-[#808080] text-sm font-medium transition-colors">2</button>
-                  <button className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-200 text-[#808080] text-sm font-medium transition-colors">3</button>
-                </div>
-                <button className="px-3 py-1.5 border border-[#E5E7EB] rounded-lg text-sm text-[#808080] hover:bg-white hover:text-gray-900 transition-colors">Next</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </main>
-
-      {/* Proof Preview Modal */}
-      {previewProof && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/60 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full overflow-hidden flex flex-col max-h-[90vh]">
-            <div className="flex items-center justify-between px-6 py-4 border-b border-[#E5E7EB] bg-gray-50">
-              <div>
-                <h3 className="text-lg font-secondary font-bold text-gray-900">Proof Preview</h3>
-                <p className="text-sm text-[#808080]">Reviewing submitted document</p>
-              </div>
-              <button
-                onClick={() => setPreviewProof(null)}
-                className="p-2 text-[#808080] hover:bg-[#B22222]/10 hover:text-[#B22222] rounded-full transition-colors"
-              >
-                <Icons.Close />
-              </button>
-            </div>
-            <div className="p-6 bg-[#F9FAFB] flex-1 overflow-auto flex items-center justify-center min-h-[400px]">
-              {/* Note: Using an img tag directly since next/image needs configured hostnames */}
-              <img
-                src={previewProof}
-                alt="Submission Proof"
-                className="max-w-full max-h-[60vh] object-contain rounded-lg border border-[#E5E7EB] shadow-md bg-white"
-              />
-            </div>
-            <div className="px-6 py-4 border-t border-[#E5E7EB] bg-white flex justify-end gap-3">
-              <button
-                onClick={() => setPreviewProof(null)}
-                className="px-5 py-2.5 rounded-xl border border-[#E5E7EB] text-gray-700 font-medium hover:bg-gray-50 transition-colors"
-              >
-                Close Preview
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Global styles for specific elements to match requirements */}
-      <style dangerouslySetInnerHTML={{
-        __html: `
+    <>
+      <style>{`
+        /* Glass card */
+        .card {
+          background: rgba(255, 255, 255, 0.4);
+          backdrop-filter: blur(24px);
+          -webkit-backdrop-filter: blur(24px);
+          border-radius: 32px;
+          border: 1px solid rgba(0, 0, 0, 0.2);
+          box-shadow: 0 8px 32px 0 rgba(131, 18, 56, 0.5);
+          transition: box-shadow 0.22s ease, transform 0.22s ease;
+        }
+        .card:hover {
+          box-shadow: 0 16px 44px 0 rgba(131, 18, 56, 0.56);
+          transform: translateY(-2px);
+        }
         .header-select {
-          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23808080' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
           background-repeat: no-repeat;
           background-position: right 0.75rem center;
           background-size: 16px 12px;
         }
-        .shadow-soft {
-          box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
-        }
-      `}} />
-    </div>
+      `}</style>
+      <div className="relative h-screen w-full overflow-hidden text-black font-primary bg-white">
+        <div className="relative z-10 h-full w-full overflow-y-auto overflow-x-hidden [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-black/20">
+          <div className="mx-auto flex min-h-full max-w-7xl flex-col px-6 pb-6 pt-12 md:pt-20 font-primary">
+            
+            {/* Header */}
+            <header className="flex flex-col md:flex-row md:items-center justify-between border-b border-black/20 pb-4">
+              <div>
+                <h1 className="heading text-3xl font-bold tracking-wide text-black">Audit-Log</h1>
+                <p className="text-sm text-black flex items-center gap-1.5 mt-1 font-medium">
+                  <Icons.CheckCircle />
+                  Automatically approved submissions available for faculty review.
+                </p>
+              </div>
+            </header>
+
+            {/* Overview Section */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8 mb-8">
+              <div className="card flex items-center gap-4 p-6 !rounded-2xl">
+                <div className="w-12 h-12 bg-white/60 text-black rounded-full flex items-center justify-center shadow-inner border border-black/10">
+                  <Icons.Audit />
+                </div>
+                <div>
+                  <p className="text-sm text-black font-medium">Total Submissions</p>
+                  <p className="text-2xl font-bold text-black">{mockSubmissions.length}</p>
+                </div>
+              </div>
+
+              <div className="card flex items-center gap-4 p-6 !rounded-2xl">
+                <div className="w-12 h-12 bg-white/60 text-green-700 hover:text-green-800 rounded-full flex items-center justify-center shadow-inner border border-black/10">
+                  <Icons.CheckCircle />
+                </div>
+                <div>
+                  <p className="text-sm text-black font-medium">AI Approved</p>
+                  <p className="text-2xl font-bold text-black">{mockSubmissions.filter(s => s.status === 'Auto Approved').length}</p>
+                </div>
+              </div>
+
+              <div className="card flex items-center gap-4 p-6 !rounded-2xl">
+                <div className="w-12 h-12 bg-white/60 text-red-700 hover:text-red-800 rounded-full flex items-center justify-center shadow-inner border border-black/10">
+                  <Icons.Search />
+                </div>
+                <div>
+                  <p className="text-sm text-black font-medium">Manual Review Needed</p>
+                  <p className="text-2xl font-bold text-black">{mockSubmissions.filter(s => s.status === 'Manual Review').length}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Filters Bar */}
+            <div className="card !rounded-2xl p-4 mb-6 flex flex-wrap gap-4 items-center justify-between">
+              <div className="relative flex-1 min-w-[240px] max-w-sm">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-black/50">
+                  <Icons.Search />
+                </div>
+                <input
+                  type="text"
+                  placeholder="Search by Student Name..."
+                  className="w-full pl-10 pr-4 py-2 border border-black/20 rounded-xl bg-white/40 focus:outline-none focus:ring-1 focus:ring-white/50 transition-colors text-black text-sm placeholder:text-black/50 hover:bg-white/60"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
+
+              <div className="flex flex-wrap gap-3">
+                <select
+                  className="py-2 pl-4 pr-10 border border-black/20 rounded-xl focus:outline-none focus:ring-1 focus:ring-white/50 appearance-none bg-white/40 hover:bg-white/60 text-sm text-black font-medium header-select transition-colors"
+                  value={filterActivity}
+                  onChange={(e) => setFilterActivity(e.target.value)}
+                >
+                  <option value="All">All Activities</option>
+                  <option value="Swayam / NPTEL Course">Swayam / NPTEL Course</option>
+                  <option value="Coursera Course">Coursera Course</option>
+                  <option value="Volunteering">Volunteering</option>
+                  <option value="Hackathon Participation">Hackathon Participation</option>
+                  <option value="Winning Hackathon">Winning Hackathon</option>
+                  <option value="Conducting Workshop">Conducting Workshop</option>
+                  <option value="Organizing Event">Organizing Event</option>
+                  <option value="Other College Event">Other College Event</option>
+                  <option value="Cultural Participation">Cultural Participation</option>
+                  <option value="Sports Activities">Sports Activities</option>
+                  <option value="NCC / NSS Activities">NCC / NSS Activities</option>
+                  <option value="Conducting Coding Contest">Conducting Coding Contest</option>
+                  <option value="Global Certificate">Global Certificate</option>
+                  <option value="Club Activities">Club Activities</option>
+                  <option value="Student Chapter Activity">Student Chapter Activity</option>
+                </select>
+
+                <select
+                  className="py-2 pl-4 pr-10 border border-black/20 rounded-xl focus:outline-none focus:ring-1 focus:ring-white/50 appearance-none bg-white/40 hover:bg-white/60 text-sm text-black font-medium header-select transition-colors"
+                  value={filterDate}
+                  onChange={(e) => setFilterDate(e.target.value)}
+                >
+                  <option value="All">All Dates</option>
+                  <option value="Last 7 Days">Last 7 Days</option>
+                  <option value="Last 30 Days">Last 30 Days</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Table Card */}
+            <div className="card !rounded-2xl overflow-hidden p-0 mb-8 border border-black/20">
+              <div className="overflow-x-auto">
+                <table className="w-full text-left border-collapse">
+                  <thead>
+                    <tr className="border-b border-black/20 bg-white/30 text-xs uppercase tracking-wider text-black font-semibold">
+                      <th className="p-4 w-10"></th>
+                      <th className="p-4">Student Name</th>
+                      <th className="p-4">Activity Type</th>
+                      <th className="p-4">Points</th>
+                      <th className="p-4">AI Confidence %</th>
+                      <th className="p-4">Date</th>
+                      <th className="p-4 text-center">Proof</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-black/10">
+                    {filteredSubmissions.length > 0 ? (
+                      filteredSubmissions.map((sub) => (
+                        <React.Fragment key={sub.id}>
+                          <tr className="hover:bg-white/50 transition-colors group">
+                            <td className="p-4 text-center">
+                              <button
+                                onClick={() => setExpandedRow(expandedRow === sub.id ? null : sub.id)}
+                                className="text-black/50 hover:text-black transition-colors p-1 rounded-md hover:bg-white/50"
+                              >
+                                {expandedRow === sub.id ? <Icons.ChevronUp /> : <Icons.ChevronDown />}
+                              </button>
+                            </td>
+                            <td className="p-4 font-medium text-black">{sub.studentName}</td>
+                            <td className="p-4 text-sm text-black/80">{sub.activityType}</td>
+                            <td className="p-4 font-semibold text-black">
+                              {sub.status === 'Auto Approved' ? `+${sub.pointsAwarded}` : <span className="text-black/60 text-xs font-medium px-2 py-1 bg-white/40 rounded-lg border border-black/10">Pending</span>}
+                            </td>
+                            <td className="p-4 font-semibold text-black">
+                               {sub.status === 'Auto Approved' ? '98.5%' : '45.2%'}
+                            </td>
+                            <td className="p-4 text-sm text-black/60">{sub.date}</td>
+                            <td className="p-4 text-center">
+                              <button
+                                onClick={() => setPreviewProof(sub.proofUrl)}
+                                className="inline-flex items-center justify-center gap-2 px-3 py-1.5 bg-white/40 hover:bg-white/80 text-black border border-black/20 rounded-xl text-xs font-medium transition-all shadow-[0_4px_20px_0_rgba(131,18,56,0.1)] hover:shadow-[0_4px_20px_0_rgba(131,18,56,0.3)]"
+                              >
+                                <Icons.Eye />
+                                View
+                              </button>
+                            </td>
+                          </tr>
+                          {/* Expanded Row */}
+                          {expandedRow === sub.id && (
+                            <tr className="bg-white/20 border-b border-black/10">
+                              <td colSpan={7} className="p-6">
+                                <div className="flex gap-8 bg-white/40 p-5 rounded-2xl border border-black/10 shadow-sm backdrop-blur-md">
+                                  <div className="flex-1 space-y-4">
+                                    <div>
+                                      <h4 className="text-xs font-bold text-black/50 uppercase tracking-wider mb-1">Submission Description</h4>
+                                      <p className="text-sm text-black">{sub.description}</p>
+                                    </div>
+                                    <div className="grid grid-cols-2 gap-4">
+                                      <div>
+                                        <h4 className="text-xs font-bold text-black/50 uppercase tracking-wider mb-1">Submission ID</h4>
+                                        <p className="text-sm font-mono text-black/70 bg-white/50 px-2 py-1 rounded-lg border border-black/10 w-max">{sub.id}</p>
+                                      </div>
+                                      <div>
+                                        <h4 className="text-xs font-bold text-black/50 uppercase tracking-wider mb-1">AI Confidence Score</h4>
+                                        <p className={`text-sm font-semibold ${sub.status === 'Auto Approved' ? 'text-green-700' : 'text-red-700'}`}>
+                                          {sub.status === 'Auto Approved' ? '98.5% (High)' : '45.2% (Low)'}
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className={`w-1/3 rounded-2xl border p-4 flex flex-col items-center justify-center text-center backdrop-blur-md ${sub.status === 'Auto Approved' ? 'bg-green-500/10 border-green-500/30' : 'bg-red-500/10 border-red-500/30'
+                                    }`}>
+                                    <div className={`${sub.status === 'Auto Approved' ? 'text-green-700' : 'text-red-700'} mb-2 scale-150`}>
+                                      {sub.status === 'Auto Approved' ? <Icons.ShieldCheck /> : <Icons.Search />}
+                                    </div>
+                                    <h5 className="font-semibold text-black text-sm">
+                                      {sub.status === 'Auto Approved' ? 'AI Verification Passed' : 'Manual Review Required'}
+                                    </h5>
+                                    <p className={`text-xs mt-1 ${sub.status === 'Auto Approved' ? 'text-green-800' : 'text-red-800'}`}>
+                                      {sub.status === 'Auto Approved'
+                                        ? 'Image composition and text extraction matched required rubrics automatically.'
+                                        : 'AI could not confidently verify the document validity. Human review needed.'}
+                                    </p>
+                                  </div>
+                                </div>
+                              </td>
+                            </tr>
+                          )}
+                        </React.Fragment>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan={7} className="p-8 text-center text-black/50">
+                          <div className="flex flex-col items-center justify-center gap-3">
+                            <Icons.Search />
+                            <p>No audit records found matching your filters.</p>
+                          </div>
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Pagination Mock */}
+              <div className="px-6 py-4 border-t border-black/20 flex items-center justify-between bg-white/20">
+                <p className="text-sm text-black/60">
+                  Showing <span className="font-semibold text-black">1</span> to <span className="font-semibold text-black">{filteredSubmissions.length}</span> of <span className="font-semibold text-black">{mockSubmissions.length}</span> entries
+                </p>
+                <div className="flex items-center gap-2">
+                  <button className="px-3 py-1.5 border border-black/20 bg-white/40 rounded-xl text-sm text-black hover:bg-white/80 transition-colors disabled:opacity-50">Previous</button>
+                  <div className="flex items-center gap-1">
+                    <button className="w-8 h-8 flex items-center justify-center rounded-xl bg-primary text-secondary text-sm font-medium shadow-[0_4px_10px_0_rgba(131,18,56,0.3)]">1</button>
+                    <button className="w-8 h-8 flex items-center justify-center rounded-xl bg-white/40 hover:bg-white/80 text-black border border-black/10 text-sm font-medium transition-colors">2</button>
+                    <button className="w-8 h-8 flex items-center justify-center rounded-xl bg-white/40 hover:bg-white/80 text-black border border-black/10 text-sm font-medium transition-colors">3</button>
+                  </div>
+                  <button className="px-3 py-1.5 border border-black/20 bg-white/40 rounded-xl text-sm text-black hover:bg-white/80 transition-colors">Next</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Proof Preview Modal */}
+        {previewProof && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-md p-4">
+            <div className="bg-white/80 backdrop-blur-2xl rounded-3xl shadow-[0_8px_32px_0_rgba(131,18,56,0.3)] border border-white/40 max-w-4xl w-full overflow-hidden flex flex-col max-h-[90vh]">
+              <div className="flex items-center justify-between px-6 py-4 border-b border-black/10 bg-white/50">
+                <div>
+                  <h3 className="text-lg font-secondary font-bold text-black">Proof Preview</h3>
+                  <p className="text-sm text-black/60">Reviewing submitted document</p>
+                </div>
+                <button
+                  onClick={() => setPreviewProof(null)}
+                  className="p-2 text-black/50 hover:bg-primary/10 hover:text-primary rounded-full transition-colors"
+                >
+                  <Icons.Close />
+                </button>
+              </div>
+              <div className="p-6 flex-1 overflow-auto flex items-center justify-center min-h-[400px]">
+                {/* Note: Using an img tag directly since next/image needs configured hostnames */}
+                <img
+                  src={previewProof}
+                  alt="Submission Proof"
+                  className="max-w-full max-h-[60vh] object-contain rounded-2xl border border-black/10 shadow-md bg-white/50"
+                />
+              </div>
+              <div className="px-6 py-4 border-t border-black/10 bg-white/50 flex justify-end gap-3">
+                <button
+                  onClick={() => setPreviewProof(null)}
+                  className="px-5 py-2.5 rounded-xl border border-black/20 bg-white/60 text-black font-medium hover:bg-white/90 hover:shadow-[0_4px_15px_0_rgba(131,18,56,0.15)] transition-all"
+                >
+                  Close Preview
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </>
   );
 }

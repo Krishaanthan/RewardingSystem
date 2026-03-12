@@ -29,17 +29,6 @@ export function PortalLayout({
             <h1 className="heading text-2xl">{title}</h1>
             <p className="text-sm text-brand-text/70">{description}</p>
           </div>
-          <nav className="flex flex-wrap gap-2">
-            {navItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="rounded-lg border border-brand-tertiary px-3 py-2 text-sm font-medium text-brand-primary transition hover:bg-brand-primary hover:text-white"
-              >
-                {item.label}
-              </Link>
-            ))}
-          </nav>
         </div>
       </header>
 
