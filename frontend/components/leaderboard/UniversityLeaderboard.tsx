@@ -268,7 +268,7 @@ function SegmentedTabs({
   options: Array<{ value: string; label: string }>;
 }) {
   return (
-    <div className="inline-flex rounded-md bg-[#f5f5f5] p-1">
+    <div className="inline-flex rounded-md bg-white/20 backdrop-blur-sm p-1 border border-white/20">
       {options.map((opt) => {
         const active = opt.value === value;
         return (
@@ -277,10 +277,10 @@ function SegmentedTabs({
             type="button"
             onClick={() => onChange(opt.value)}
             className={[
-              "rounded-full px-3 py-1.5 text-xs font-semibold transition",
+              "rounded-md px-3 py-1.5 text-xs font-semibold transition",
               active
                 ? "bg-white text-black shadow-sm font-bold"
-                : "text-black/60 hover:bg-black/5",
+                : "text-white/80 hover:bg-white/10 hover:text-white",
             ].join(" ")}
           >
             {opt.label}
@@ -303,20 +303,29 @@ function SelectPill({
   options: string[];
 }) {
   return (
-    <label className="inline-flex items-center gap-2 rounded-md bg-[#f5f5f5] px-4 py-2.5 text-xs font-bold text-black">
-      <span className="tracking-wide text-black">{label}</span>
-      <select
-        className="bg-transparent text-black outline-none"
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-      >
-        {options.map((opt) => (
-          <option key={opt} value={opt}>
-            {opt}
-          </option>
-        ))}
-      </select>
-    </label>
+    <div className="flex flex-col gap-1 items-start">
+      <span className="text-[10px] font-bold tracking-widest text-white/50 uppercase ml-1">
+        {label}
+      </span>
+      <label className="relative inline-flex items-center rounded-lg bg-white/10 backdrop-blur-sm border border-white/20 transition-all hover:bg-white/20 hover:border-white/30 focus-within:ring-2 focus-within:ring-white/50 focus-within:border-white w-full sm:w-auto">
+        <select
+          className="w-full appearance-none bg-transparent text-white pl-4 pr-10 py-2.5 text-sm font-semibold outline-none cursor-pointer [&>option]:text-black"
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+        >
+          {options.map((opt) => (
+            <option key={opt} value={opt}>
+              {opt}
+            </option>
+          ))}
+        </select>
+        <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-white/70">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="m6 9 6 6 6-6"/>
+          </svg>
+        </div>
+      </label>
+    </div>
   );
 }
 
@@ -465,7 +474,7 @@ export function UniversityLeaderboard() {
   const [department, setDepartment] = useState("All Departments");
   const [year, setYear] = useState("All Years");
   const [query, setQuery] = useState("");
-  const [visibleCount, setVisibleCount] = useState(10);
+  const [visibleCount, setVisibleCount] = useState(7);
 
   // Load data (re-fetch when timeRange changes)
   useEffect(() => {
@@ -517,7 +526,7 @@ export function UniversityLeaderboard() {
 
   // Reset pagination when filters change
   useEffect(() => {
-    setVisibleCount(10);
+    setVisibleCount(7);
   }, [department, year, query]);
 
   const podiumStudents = filtered.slice(0, 3);
@@ -540,9 +549,9 @@ export function UniversityLeaderboard() {
       `}</style>
 
       <div className="relative z-10 h-full w-full overflow-y-auto overflow-x-hidden [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-black/20">
-        <main className="mx-auto max-w-[1400px] px-4 pb-8 pt-20 font-primary">
+        <main className="mx-auto px-4 pb-8 pt-20 font-primary">
           {/* Podium */}
-          <section className="mt-6">
+          <section className="mt-6 max-w-[1400px] mx-auto">
               {podiumStudents.length > 0 && (
                 <div
                   className="px-5 sm:px-8 pt-7 pb-7 rounded-2xl relative overflow-hidden"
@@ -558,10 +567,10 @@ export function UniversityLeaderboard() {
                   {/* Heading + Filters */}
                   <div className="relative z-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between mb-5">
                     <div>
-                      <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-white/50 mb-1.5">
+                      <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-white/50 mb-1.5 font-primary">
                         University Leaderboard
                       </p>
-                      <h2 className="text-2xl sm:text-3xl font-semibold text-white leading-tight">
+                      <h2 className="text-2xl sm:text-3xl font-semibold text-white leading-tight font-secondary tracking-wide">
                         Student Innovation Challenge 2026
                       </h2>
                       {data && (
@@ -650,7 +659,7 @@ export function UniversityLeaderboard() {
           </section>
 
           {/* Table */}
-          <section className="mt-8 pt-10">
+          <section className="mt-8 pt-10 max-w-5xl mx-auto">
             <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
               <div>
                 <div className="text-xs font-bold uppercase tracking-[0.22em] text-black/70">
@@ -692,7 +701,7 @@ export function UniversityLeaderboard() {
                         key={s.id}
                         className="border-b border-black/10 last:border-none hover:bg-black/5 transition-colors"
                       >
-                        <td className="py-4 pr-4">
+                        <td className="py-3 pr-4">
                           <div className="flex items-center gap-2">
                             <span className="text-base font-bold text-black/50">
                               #{rank.toString().padStart(2, "0")}
@@ -701,7 +710,7 @@ export function UniversityLeaderboard() {
                           </div>
                         </td>
 
-                        <td className="py-4 pr-4">
+                        <td className="py-3 pr-4">
                           <div className="flex items-center gap-3">
                             <StudentAvatar student={s} size="sm" />
                             <div>
@@ -716,7 +725,7 @@ export function UniversityLeaderboard() {
                           </div>
                         </td>
 
-                        <td className="py-4 pr-4">
+                        <td className="py-3 pr-4">
                           <span className="text-base font-black text-[#831238]">
                             {s.points.toLocaleString()}{" "}
                             <span className="text-[10px] text-black/40 tracking-widest font-bold">
@@ -725,7 +734,7 @@ export function UniversityLeaderboard() {
                           </span>
                         </td>
 
-                        <td className="py-4 pr-4">
+                        <td className="py-3 pr-4">
                           <div className="flex items-center gap-3">
                             <div>
                               <div className="h-2.5 w-40 overflow-hidden rounded-full bg-[#f5f5f5]">
@@ -752,13 +761,13 @@ export function UniversityLeaderboard() {
                           </div>
                         </td>
 
-                        <td className="py-4 pr-4">
+                        <td className="py-3 pr-4">
                           <span className="text-sm font-bold text-black/80">
                             {s.tasksCompleted}/{s.totalTasks}
                           </span>
                         </td>
 
-                        <td className="py-4 text-right">
+                        <td className="py-3 text-right">
                           <button
                             type="button"
                             className="rounded-full px-4 py-2 text-xs font-bold text-white hover:brightness-110 hover:scale-[1.05] transition-transform"
@@ -809,7 +818,7 @@ export function UniversityLeaderboard() {
 
         {/* Footer - current user stats */}
         {currentUser && (
-          <footer className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-[1400px]">
+          <footer className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-5xl">
             <div
               className="rounded-2xl px-6 py-4 flex justify-between items-center text-white shadow-2xl"
               style={{ backgroundColor: MAROON }}
