@@ -44,7 +44,7 @@ export function SupportWidgets() {
             <a 
               key={card.id} 
               href={card.link}
-              className="group relative flex flex-col p-8 bg-white border border-gray-100 rounded-3xl shadow-sm hover:shadow-soft transition-all duration-300 hover:-translate-y-1 overflow-hidden"
+              className="support-card group relative flex flex-col p-8 bg-white border border-gray-100 rounded-3xl hover:-translate-y-1 transition-all duration-300 overflow-hidden"
             >
               {/* Subtle hover gradient behind icon */}
               <div className="absolute top-0 right-0 w-32 h-32 bg-brand-tertiary opacity-0 group-hover:opacity-50 blur-3xl rounded-full transition-opacity duration-500" />

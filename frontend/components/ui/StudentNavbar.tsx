@@ -40,7 +40,7 @@ export default function StudentNavbar() {
     }, [lastScrollY]);
 
     const navItems = [
-        { name: "Home", path: "/student/home" },
+        { name: "Home", path: "/homepage" },
         { name: "Claim Points", path: "/student/claim-points" },
         { name: "Dashboard", path: "/student/dashboard" },
         { name: "Leaderboard", path: "/student/leaderboard" },
@@ -53,7 +53,7 @@ export default function StudentNavbar() {
         >
             {/* Brand */}
             <div className="flex items-center">
-                <Link href="/student/home" className="flex items-center">
+                <Link href="/homepage" className="flex items-center">
                     <img src="/assets/logo.svg" alt="Logo" className="h-[60px] w-auto object-contain" />
                 </Link>
             </div>

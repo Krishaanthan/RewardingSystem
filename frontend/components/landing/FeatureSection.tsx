@@ -19,7 +19,7 @@ export function FeatureSection({ heading, bodyText, imageUrl, imageAlt, sectionI
         
         {/* Left: Image Box */}
         <div className="flex-1 w-full max-w-[500px]">
-          <div className="relative aspect-[4/3] rounded-3xl overflow-hidden shadow-soft bg-white border border-gray-100 group transition-transform duration-500 hover:-translate-y-2">
+          <div className="feature-image-box relative aspect-[4/3] rounded-3xl overflow-hidden bg-white border border-gray-100 group transition-transform duration-500 hover:-translate-y-2">
             <img 
               src={imageUrl} 
               alt={imageAlt}
@@ -31,7 +31,7 @@ export function FeatureSection({ heading, bodyText, imageUrl, imageAlt, sectionI
         </div>
 
         {/* Right: Text Content */}
-        <div className="flex-1 w-full bg-white/90 p-10 lg:p-14 rounded-3xl shadow-sm border border-brand-primary/5 backdrop-blur-md relative overflow-hidden group hover:shadow-soft transition-all duration-500">
+        <div className="feature-text-card flex-1 w-full bg-white/90 p-10 lg:p-14 rounded-3xl border border-brand-primary/5 backdrop-blur-md relative overflow-hidden group transition-all duration-500">
           {/* Decorative accent top */}
           <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-brand-primary to-brand-primary/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           

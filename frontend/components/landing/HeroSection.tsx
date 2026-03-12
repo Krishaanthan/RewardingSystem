@@ -7,7 +7,7 @@ export function HeroSection() {
       <div className="max-w-[1400px] mx-auto w-full px-6 lg:px-12 flex flex-col lg:flex-row items-center justify-between gap-16 relative z-10">
         {/* Left: Illustration */}
         <div className="flex-1 w-full flex justify-center lg:justify-start">
-          <div className="relative w-full max-w-[600px] aspect-square rounded-3xl overflow-hidden shadow-soft bg-brand-tertiary border border-brand-primary/10">
+          <div className="hero-image-box relative w-full max-w-[600px] aspect-square rounded-3xl overflow-hidden shadow-soft bg-brand-tertiary border border-brand-primary/10">
             {/* Placeholder for professional illustration showing diverse college students collaborating */}
             <img 
               src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1471&auto=format&fit=crop" 
@@ -35,12 +35,12 @@ export function HeroSection() {
             Earn academic credit for campus engagement, social contributions, and professional development.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
-            <button className="px-8 py-4 bg-brand-primary text-white font-semibold rounded-xl shadow-soft hover:-translate-y-1 hover:shadow-lg transition-all duration-300 text-lg w-full sm:w-auto">
+            <a href="/homepage#mission" className="px-8 py-4 bg-brand-primary text-white font-semibold rounded-xl shadow-soft hover:-translate-y-1 hover:shadow-lg transition-all duration-300 text-lg w-full sm:w-auto text-center">
               Learn How
-            </button>
-            <button className="px-8 py-4 bg-white text-gray-800 font-semibold rounded-xl border border-gray-200 hover:bg-gray-50 hover:-translate-y-1 transition-all duration-300 text-lg w-full sm:w-auto shadow-sm">
+            </a>
+            <a href="/homepage#engagement" className="px-8 py-4 bg-white text-gray-800 font-semibold rounded-xl border border-gray-200 hover:bg-gray-50 hover:-translate-y-1 transition-all duration-300 text-lg w-full sm:w-auto shadow-sm text-center">
               Discover Features
-            </button>
+            </a>
           </div>
         </div>
       </div>
