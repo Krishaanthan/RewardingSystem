@@ -141,8 +141,8 @@ export default function HomePage() {
               </ul>
             </div>
           }
-          imageUrl="https://images.unsplash.com/photo-1620825937374-87fc1d62c30c?q=80&w=1474&auto=format&fit=crop"
-          imageAlt="Abstract futuristic neural network technology and AI processing"
+          imageUrl="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1470&auto=format&fit=crop"
+          imageAlt="Smart AI Processing Verification showing facial recognition and credential validation"
         />
 
       </main>
