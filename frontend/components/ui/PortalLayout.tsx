@@ -10,16 +10,20 @@ export function PortalLayout({
   title,
   description,
   navItems,
-  children
+  children,
+  transparentBackground
 }: {
   title: string;
   description: string;
   navItems: NavItem[];
   children: ReactNode;
+  transparentBackground?: boolean;
 }) {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-brand-tertiary/20 to-secondary">
-      <header className="border-b border-brand-tertiary bg-secondary">
+    <div className={`min-h-screen ${transparentBackground ? "bg-transparent" : "bg-brand-primary/5"}`}>
+      <header
+        className={`border-b border-brand-primary/10 ${transparentBackground ? "bg-white/95 backdrop-blur-sm" : "bg-white"}`}
+      >
         <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-4 md:flex-row md:items-center md:justify-between">
           <div>
             <h1 className="heading text-2xl">{title}</h1>
