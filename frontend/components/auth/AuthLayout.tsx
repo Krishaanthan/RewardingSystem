@@ -1,3 +1,6 @@
+"use client";
+
+import { motion } from "framer-motion";
 import Link from "next/link";
 import React from "react";
 
@@ -30,6 +33,7 @@ export function AuthLayout({
   activePortal?: PortalId;
 }) {
   const currentPortal = activePortal || "admin";
+
   return (
     <div className="relative min-h-screen w-full overflow-hidden text-black font-primary bg-white">
       <div className="absolute inset-0 z-0 bg-white/60 bg-gradient-to-b from-white/80 via-transparent to-white/80 mix-blend-screen pointer-events-none" />
@@ -46,39 +50,72 @@ export function AuthLayout({
           <div className="relative z-10 mx-auto flex w-full max-w-6xl flex-col justify-center px-4 py-12 lg:items-center lg:px-6">
             <div className="w-full max-w-md">
               <div className="relative">
-                <div className="absolute -inset-1 rounded-2xl bg-[#8F113B]/20 blur-xl opacity-60 transition-opacity" />
-                <div className="relative rounded-[2rem] border border-black/20 bg-white/40 p-8 backdrop-blur-xl shadow-[0_8px_32px_0_rgba(131,18,56,0.5)]">
-                  <div className="mb-6 space-y-1">
+
+                {/* Animated glow blob */}
+                <motion.div
+                  className="absolute -inset-1 rounded-2xl bg-[#8F113B]/20 blur-xl opacity-60"
+                  animate={{ opacity: [0.4, 0.7, 0.4] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                />
+
+                {/* Card entrance */}
+                <motion.div
+                  className="relative rounded-[2rem] border border-black/20 bg-white/40 p-8 backdrop-blur-xl shadow-[0_8px_32px_0_rgba(131,18,56,0.5)]"
+                  initial={{ opacity: 0, y: 32, scale: 0.97 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  {/* Title */}
+                  <motion.div
+                    className="mb-6 space-y-1"
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.15, duration: 0.4 }}
+                  >
                     <h2 className="text-2xl font-semibold text-[#8F113B] font-primary">
                       {title}
                     </h2>
                     {subtitle ? (
-                      <p className="text-sm text-black/70 font-primary">
-                        {subtitle}
-                      </p>
+                      <p className="text-sm text-black/70 font-primary">{subtitle}</p>
                     ) : null}
-                  </div>
+                  </motion.div>
 
-                  <form className="space-y-5">
-                    {fields.map((field) => (
-                      <div key={field}>
+                  {/* Form */}
+                  <motion.form
+                    className="space-y-5"
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.25, duration: 0.45, ease: "easeOut" }}
+                  >
+                    {fields.map((field, i) => (
+                      <motion.div
+                        key={field}
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.3 + i * 0.07, duration: 0.35 }}
+                      >
                         <label className="mb-1.5 block text-sm text-black font-primary">
                           {field}
                         </label>
                         <input
-                          type={field.toLowerCase().includes("password") ? "password" : "text"}
+                          type={field.toLowerCase().includes("password") || field.toLowerCase().includes("code") ? "password" : "text"}
                           className="block w-full rounded-xl border border-black/20 bg-white/40 px-4 py-3 text-black outline-none transition placeholder:text-black/40 focus:border-black/50 focus:ring-1 focus:ring-black/50 font-primary"
                           placeholder={`Enter ${field.toLowerCase()}`}
                         />
-                      </div>
+                      </motion.div>
                     ))}
 
-                    <button
+                    <motion.button
                       type="button"
                       className="group mt-2 flex w-full items-center justify-center gap-2 rounded-xl bg-[#8F113B] px-4 py-3.5 font-semibold text-white transition-all hover:bg-[#a61a49] hover:shadow-[0_0_20px_rgba(131,18,56,0.5)] focus:outline-none focus:ring-2 focus:ring-[#8F113B] focus:ring-offset-2 focus:ring-offset-white/50 font-primary"
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.3 + fields.length * 0.07, duration: 0.35 }}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
                     >
                       {buttonLabel}
-                    </button>
+                    </motion.button>
 
                     <p className="mt-4 flex flex-col items-center gap-2 text-center text-xs text-black/60 font-primary">
                       {links.map((link) => (
@@ -87,44 +124,46 @@ export function AuthLayout({
                         </Link>
                       ))}
                     </p>
-                  </form>
-                </div>
+                  </motion.form>
+                </motion.div>
               </div>
             </div>
           </div>
         </section>
 
+        {/* Portal switcher */}
         <section className="bg-white/50 backdrop-blur-md pb-12 pt-16 border-t border-black/10">
           <div className="mx-auto flex max-w-3xl items-center justify-center gap-10 px-4 sm:gap-14">
-            {PORTALS.map((portal) => {
+            {PORTALS.map((portal, i) => {
               const isActive = portal.id === currentPortal;
-
               return (
-                <Link
+                <motion.div
                   key={portal.id}
-                  href={portal.href}
-                  className="flex flex-col items-center gap-3 text-center transition-opacity hover:opacity-80 font-primary"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.35 + i * 0.1, duration: 0.4 }}
                 >
-                  <span
-                    className={[
-                      "flex h-16 w-16 items-center justify-center rounded-full border border-black/20 transition-colors backdrop-blur-sm",
-                      isActive
-                        ? "bg-[#8F113B] text-white shadow-[0_0_20px_rgba(131,18,56,0.5)]"
-                        : "bg-white/40 text-black/50 hover:bg-white/60"
-                    ].join(" ")}
+                  <Link
+                    href={portal.href}
+                    className="flex flex-col items-center gap-3 text-center transition-opacity hover:opacity-80 font-primary"
                   >
                     <span
-                      className={isActive ? "text-lg font-semibold" : "text-lg font-medium text-black/50"}
+                      className={[
+                        "flex h-16 w-16 items-center justify-center rounded-full border border-black/20 transition-colors backdrop-blur-sm",
+                        isActive
+                          ? "bg-[#8F113B] text-white shadow-[0_0_20px_rgba(131,18,56,0.5)]"
+                          : "bg-white/40 text-black/50 hover:bg-white/60"
+                      ].join(" ")}
                     >
-                      {portal.label.charAt(0)}
+                      <span className={isActive ? "text-lg font-semibold" : "text-lg font-medium text-black/50"}>
+                        {portal.label.charAt(0)}
+                      </span>
                     </span>
-                  </span>
-                  <span
-                    className={isActive ? "text-xs font-semibold text-black" : "text-xs font-medium text-black/50"}
-                  >
-                    {portal.label}
-                  </span>
-                </Link>
+                    <span className={isActive ? "text-xs font-semibold text-black" : "text-xs font-medium text-black/50"}>
+                      {portal.label}
+                    </span>
+                  </Link>
+                </motion.div>
               );
             })}
           </div>

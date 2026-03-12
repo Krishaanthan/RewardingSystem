@@ -731,12 +731,10 @@ export default function App() {
           font-family: 'DM Sans', -apple-system, sans-serif;
           color: #1F2937;
           min-height: 100vh;
-          background-color: #F5ECE8;
+          background-color: #ffffff;
           background-image:
-            radial-gradient(ellipse at 15% 12%, rgba(131,18,56,0.09) 0%, transparent 48%),
-            radial-gradient(ellipse at 85% 85%, rgba(131,18,56,0.07) 0%, transparent 42%),
-            radial-gradient(ellipse at 50% 50%, rgba(255,240,234,0.6) 0%, transparent 70%),
-            url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+            radial-gradient(ellipse at 15% 12%, rgba(131,18,56,0.05) 0%, transparent 48%),
+            radial-gradient(ellipse at 85% 85%, rgba(131,18,56,0.04) 0%, transparent 42%);
         }
 
         /* Glass card */

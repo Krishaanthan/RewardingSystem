@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 "use client";
 
+import { motion } from "framer-motion";
 import Link from "next/link";
 import { FacultyAuthLayout } from "@/components/auth/FacultyAuthLayout";
 
@@ -47,12 +48,14 @@ export default function FacultyLoginPage() {
           />
         </div>
 
-        <button
+        <motion.button
           type="submit"
           className="group mt-2 flex w-full items-center justify-center gap-2 rounded-xl bg-[#8F113B] px-4 py-3.5 font-semibold text-white transition-all hover:bg-[#a61a49] hover:shadow-[0_0_20px_rgba(131,18,56,0.5)] focus:outline-none focus:ring-2 focus:ring-[#8F113B] focus:ring-offset-2 focus:ring-offset-white/50 font-primary"
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.97 }}
         >
           Login
-        </button>
+        </motion.button>
 
         <p
           className="text-center text-xs text-black/60 font-primary"

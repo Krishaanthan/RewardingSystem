@@ -100,7 +100,7 @@ const INDIVIDUAL_BADGES = [
 ];
 
 const TIER_COLORS: Record<string, { bg: string; text: string; border: string; glow: string }> = {
-    Diamond: { bg: "bg-blue-50", text: "text-blue-600", border: "border-blue-400", glow: "shadow-[0_0_15px_rgba(59,130,246,0.3)]" },
+    Diamond: { bg: "bg-primary/10", text: "text-primary", border: "border-primary/40", glow: "shadow-[0_0_15px_rgba(131,18,56,0.3)]" },
     Gold: { bg: "bg-yellow-50", text: "text-yellow-600", border: "border-yellow-400", glow: "shadow-[0_0_15px_rgba(234,179,8,0.3)]" },
     Silver: { bg: "bg-gray-100", text: "text-gray-600", border: "border-gray-400", glow: "shadow-[0_0_15px_rgba(156,163,175,0.3)]" },
     Bronze: { bg: "bg-orange-50", text: "text-orange-700", border: "border-orange-400", glow: "shadow-[0_0_15px_rgba(249,115,22,0.3)]" },
@@ -172,8 +172,8 @@ export default function ProfileDashboard() {
 
                                     <div className="flex flex-col items-center md:items-start rounded-2xl bg-white/60 border border-black/10 px-5 py-3 min-w-[120px]">
                                         <span className="text-xs font-bold uppercase tracking-wider text-black/50">Top Tier</span>
-                                        <span className="text-xl font-black text-blue-600 mt-1 flex items-center gap-1">
-                                            💎 Diamond
+                                        <span className="text-xl font-black text-primary mt-1 flex items-center gap-1">
+                                            ♦ Diamond
                                         </span>
                                     </div>
                                 </div>
@@ -245,7 +245,7 @@ export default function ProfileDashboard() {
                                                     </div>
                                                 </>
                                             ) : (
-                                                <div className="flex items-center gap-1.5 text-xs font-bold text-blue-600">
+                                                <div className="flex items-center gap-1.5 text-xs font-bold text-primary">
                                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
                                                         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clipRule="evenodd" />
                                                     </svg>
