@@ -48,9 +48,23 @@ export default function StudentNavbar() {
 
     return (
         <nav
-            className={`fixed left-0 right-0 top-0 z-[100] flex items-center justify-between bg-white px-6 h-20 font-sans transition-transform duration-300 ${isVisible ? "translate-y-0" : "-translate-y-full"
+            className={`fixed left-0 right-0 top-0 z-[100] flex items-center justify-between bg-white/95 backdrop-blur-md px-6 h-20 font-primary border-b border-[#831238]/10 shadow-sm transition-transform duration-300 ${isVisible ? "translate-y-0" : "-translate-y-full"
                 }`}
         >
+            {/* Top Primary Color Bar */}
+            <div className="absolute top-0 left-0 w-full h-1 bg-[#831238]" />
+
+            {/* Elegant Line Pattern Overlay */}
+            <div 
+                className="absolute inset-0 pointer-events-none opacity-[0.03] mix-blend-multiply" 
+                style={{
+                  backgroundImage: `repeating-linear-gradient(-45deg, #831238 0, #831238 1px, transparent 1px, transparent 12px)`
+                }}
+            />
+
+            {/* Bottom Glowing Gradient Line */}
+            <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#831238]/30 to-transparent pointer-events-none" />
+
             {/* Brand */}
             <div className="flex items-center">
                 <Link href="/homepage" className="flex items-center">
@@ -68,15 +82,12 @@ export default function StudentNavbar() {
                         <Link
                             key={item.name}
                             href={item.path}
-                            className={`relative px-1 py-1 text-[15px] transition-colors ${isActive
-                                ? "font-semibold text-black"
-                                : "font-medium text-gray-500 hover:text-black"
+                            className={`relative px-4 py-2 rounded-full text-sm font-semibold transition-all ${isActive
+                                ? "bg-[#831238]/10 text-[#831238]"
+                                : "text-gray-600 hover:bg-gray-50 hover:text-black"
                                 }`}
                         >
                             {item.name}
-                            {isActive && (
-                                <span className="absolute -bottom-2 left-1/2 h-[3px] w-4 -translate-x-1/2 rounded-full bg-black"></span>
-                            )}
                         </Link>
                     );
                 })}
@@ -89,19 +100,19 @@ export default function StudentNavbar() {
                     className="flex items-center gap-2 rounded-full border border-gray-200 bg-white px-3 py-1.5 transition-colors hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-200"
                     aria-label="Profile menu"
                 >
-                    <div className="flex h-6 w-6 items-center justify-center rounded-full bg-primary text-white">
+                    <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[#831238] text-white">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
                             <path fillRule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clipRule="evenodd" />
                         </svg>
                     </div>
-                    <span className="text-sm font-medium text-black">Profile</span>
+                    <span className="text-sm font-bold text-gray-800 tracking-wide">Profile</span>
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 text-gray-400">
                         <path d="m6 9 6 6 6-6" />
                     </svg>
                 </button>
 
                 <div
-                    className={`absolute right-0 top-full mt-2 w-48 origin-top-right rounded-2xl border border-gray-100 bg-white p-1.5 shadow-lg transition-all duration-200 ease-in-out ${isProfileOpen ? "scale-100 opacity-100" : "pointer-events-none scale-95 opacity-0"
+                    className={`absolute right-0 top-[calc(100%+8px)] w-56 origin-top-right rounded-2xl border border-gray-100 bg-white p-2 shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-all duration-200 ease-out ${isProfileOpen ? "scale-100 opacity-100 translate-y-0" : "pointer-events-none scale-95 opacity-0 -translate-y-2"
                         }`}
                 >
                     <div className="flex flex-col text-sm text-gray-700">
