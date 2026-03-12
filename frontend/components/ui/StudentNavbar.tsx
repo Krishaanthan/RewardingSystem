@@ -48,23 +48,9 @@ export default function StudentNavbar() {
 
     return (
         <nav
-            className={`fixed left-0 right-0 top-0 z-[100] flex items-center justify-between bg-white/95 backdrop-blur-md px-6 h-20 font-primary border-b border-[#831238]/10 shadow-sm transition-transform duration-300 ${isVisible ? "translate-y-0" : "-translate-y-full"
+            className={`fixed left-0 right-0 top-0 z-[100] flex items-center justify-between bg-white px-6 h-20 font-sans transition-transform duration-300 ${isVisible ? "translate-y-0" : "-translate-y-full"
                 }`}
         >
-            {/* Top Primary Color Bar */}
-            <div className="absolute top-0 left-0 w-full h-1 bg-[#831238]" />
-
-            {/* Elegant Line Pattern Overlay */}
-            <div 
-                className="absolute inset-0 pointer-events-none opacity-[0.03] mix-blend-multiply" 
-                style={{
-                  backgroundImage: `repeating-linear-gradient(-45deg, #831238 0, #831238 1px, transparent 1px, transparent 12px)`
-                }}
-            />
-
-            {/* Bottom Glowing Gradient Line */}
-            <div className="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-[#831238]/50 to-transparent pointer-events-none" />
-
             {/* Brand */}
             <div className="flex items-center">
                 <Link href="/homepage" className="flex items-center">
@@ -82,12 +68,15 @@ export default function StudentNavbar() {
                         <Link
                             key={item.name}
                             href={item.path}
-                            className={`relative px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 ${isActive
-                                ? "bg-[#831238] text-white shadow-[0_4px_14px_0_rgba(131,18,56,0.25)]"
-                                : "text-gray-600 hover:bg-[#831238]/10 hover:text-[#831238]"
+                            className={`relative px-1 py-1 text-[15px] transition-colors ${isActive
+                                ? "font-semibold text-black"
+                                : "font-medium text-gray-500 hover:text-black"
                                 }`}
                         >
                             {item.name}
+                            {isActive && (
+                                <span className="absolute -bottom-2 left-1/2 h-[3px] w-4 -translate-x-1/2 rounded-full bg-black"></span>
+                            )}
                         </Link>
                     );
                 })}
