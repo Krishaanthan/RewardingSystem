@@ -63,7 +63,7 @@ export default function StudentNavbar() {
             />
 
             {/* Bottom Glowing Gradient Line */}
-            <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#831238]/30 to-transparent pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-[#831238]/50 to-transparent pointer-events-none" />
 
             {/* Brand */}
             <div className="flex items-center">
@@ -82,9 +82,9 @@ export default function StudentNavbar() {
                         <Link
                             key={item.name}
                             href={item.path}
-                            className={`relative px-4 py-2 rounded-full text-sm font-semibold transition-all ${isActive
-                                ? "bg-[#831238]/10 text-[#831238]"
-                                : "text-gray-600 hover:bg-gray-50 hover:text-black"
+                            className={`relative px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 ${isActive
+                                ? "bg-[#831238] text-white shadow-[0_4px_14px_0_rgba(131,18,56,0.25)]"
+                                : "text-gray-600 hover:bg-[#831238]/10 hover:text-[#831238]"
                                 }`}
                         >
                             {item.name}
@@ -97,16 +97,18 @@ export default function StudentNavbar() {
             <div className="relative flex items-center" ref={dropdownRef}>
                 <button
                     onClick={() => setIsProfileOpen(!isProfileOpen)}
-                    className="flex items-center gap-2 rounded-full border border-gray-200 bg-white px-3 py-1.5 transition-colors hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-200"
+                    className={`flex items-center gap-2 rounded-full border border-gray-200 px-3 py-1.5 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#831238]/20 ${
+                        isProfileOpen ? "bg-[#831238]/5 border-[#831238]/20" : "bg-white hover:bg-[#831238]/5 hover:border-[#831238]/20"
+                    }`}
                     aria-label="Profile menu"
                 >
-                    <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[#831238] text-white">
+                    <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[#831238] text-white shadow-[0_2px_8px_rgba(131,18,56,0.3)]">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
                             <path fillRule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clipRule="evenodd" />
                         </svg>
                     </div>
                     <span className="text-sm font-bold text-gray-800 tracking-wide">Profile</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 text-gray-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`h-4 w-4 transition-transform duration-300 ${isProfileOpen ? "text-[#831238] rotate-180" : "text-gray-400"}`}>
                         <path d="m6 9 6 6 6-6" />
                     </svg>
                 </button>

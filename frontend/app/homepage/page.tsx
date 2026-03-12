@@ -117,6 +117,34 @@ export default function HomePage() {
           imageAlt="Faculty smiling looking at a dashboard"
         />
 
+        {/* Section F: AI Processing Details */}
+        <FeatureSection
+          sectionId="ai-processing"
+          heading="AI Processing: Smart Verification"
+          isList={true}
+          bodyText={
+            <div className="space-y-4">
+              <p className="mb-4 text-gray-600">Our advanced AI model verifies evidence claims with high accuracy, streaming approvals automatically while flagging edge cases for human expertise.</p>
+              <ul className="space-y-3 font-medium text-gray-700">
+                <li className="flex items-center gap-3">
+                  <span className="flex items-center justify-center w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 text-sm">✓</span>
+                  <span><strong className="text-brand-primary">≥ 80% Confidence:</strong> Auto Approved instantly.</span>
+                </li>
+                <li className="flex items-center gap-3">
+                  <span className="flex items-center justify-center w-8 h-8 rounded-full bg-amber-100 text-amber-600 text-sm">!</span>
+                  <span><strong className="text-brand-primary">50% &ndash; 80% Confidence:</strong> Sent to Faculty Review.</span>
+                </li>
+                <li className="flex items-center gap-3">
+                  <span className="flex items-center justify-center w-8 h-8 rounded-full bg-red-100 text-red-600 text-sm">✗</span>
+                  <span><strong className="text-brand-primary">&lt; 50% Confidence:</strong> Automatically Rejected.</span>
+                </li>
+              </ul>
+            </div>
+          }
+          imageUrl="https://images.unsplash.com/photo-1620825937374-87fc1d62c30c?q=80&w=1474&auto=format&fit=crop"
+          imageAlt="Abstract futuristic neural network technology and AI processing"
+        />
+
       </main>
 
       {/* Support Widgets Before Footer */}
