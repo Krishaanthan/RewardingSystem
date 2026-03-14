@@ -71,11 +71,11 @@ export default function FacultyAuditLog() {
           -webkit-backdrop-filter: blur(24px);
           border-radius: 32px;
           border: 1px solid rgba(0, 0, 0, 0.2);
-          box-shadow: 0 8px 32px 0 rgba(131, 18, 56, 0.5);
+          box-shadow: 0 8px 32px 0 rgba(131, 18, 56, 0.25);
           transition: box-shadow 0.22s ease, transform 0.22s ease;
         }
         .card:hover {
-          box-shadow: 0 16px 44px 0 rgba(131, 18, 56, 0.56);
+          box-shadow: 0 16px 44px 0 rgba(131, 18, 56, 0.28);
           transform: translateY(-2px);
         }
         .header-select {
@@ -224,7 +224,7 @@ export default function FacultyAuditLog() {
                             <td className="p-4 text-center">
                               <button
                                 onClick={() => setPreviewProof(sub.proofUrl)}
-                                className="inline-flex items-center justify-center gap-2 px-3 py-1.5 bg-white/40 hover:bg-white/80 text-black border border-black/20 rounded-xl text-xs font-medium transition-all shadow-[0_4px_20px_0_rgba(131,18,56,0.1)] hover:shadow-[0_4px_20px_0_rgba(131,18,56,0.3)]"
+                                className="inline-flex items-center justify-center gap-2 px-3 py-1.5 bg-white/40 hover:bg-white/80 text-black border border-black/20 rounded-xl text-xs font-medium transition-all shadow-[0_4px_20px_0_rgba(131,18,56,0.05)] hover:shadow-[0_4px_20px_0_rgba(131,18,56,0.15)]"
                               >
                                 <Icons.Eye />
                                 View
@@ -296,7 +296,7 @@ export default function FacultyAuditLog() {
                 <div className="flex items-center gap-2">
                   <button className="px-3 py-1.5 border border-black/20 bg-white/40 rounded-xl text-sm text-black hover:bg-white/80 transition-colors disabled:opacity-50">Previous</button>
                   <div className="flex items-center gap-1">
-                    <button className="w-8 h-8 flex items-center justify-center rounded-xl bg-primary text-secondary text-sm font-medium shadow-[0_4px_10px_0_rgba(131,18,56,0.3)]">1</button>
+                    <button className="w-8 h-8 flex items-center justify-center rounded-xl bg-primary text-secondary text-sm font-medium shadow-[0_4px_10px_0_rgba(131,18,56,0.15)]">1</button>
                     <button className="w-8 h-8 flex items-center justify-center rounded-xl bg-white/40 hover:bg-white/80 text-black border border-black/10 text-sm font-medium transition-colors">2</button>
                     <button className="w-8 h-8 flex items-center justify-center rounded-xl bg-white/40 hover:bg-white/80 text-black border border-black/10 text-sm font-medium transition-colors">3</button>
                   </div>
@@ -310,7 +310,7 @@ export default function FacultyAuditLog() {
         {/* Proof Preview Modal */}
         {previewProof && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-md p-4">
-            <div className="bg-white/80 backdrop-blur-2xl rounded-3xl shadow-[0_8px_32px_0_rgba(131,18,56,0.3)] border border-white/40 max-w-4xl w-full overflow-hidden flex flex-col max-h-[90vh]">
+            <div className="bg-white/80 backdrop-blur-2xl rounded-3xl shadow-[0_8px_32px_0_rgba(131,18,56,0.15)] border border-white/40 max-w-4xl w-full overflow-hidden flex flex-col max-h-[90vh]">
               <div className="flex items-center justify-between px-6 py-4 border-b border-black/10 bg-white/50">
                 <div>
                   <h3 className="text-lg font-secondary font-bold text-black">Proof Preview</h3>
@@ -334,7 +334,7 @@ export default function FacultyAuditLog() {
               <div className="px-6 py-4 border-t border-black/10 bg-white/50 flex justify-end gap-3">
                 <button
                   onClick={() => setPreviewProof(null)}
-                  className="px-5 py-2.5 rounded-xl border border-black/20 bg-white/60 text-black font-medium hover:bg-white/90 hover:shadow-[0_4px_15px_0_rgba(131,18,56,0.15)] transition-all"
+                  className="px-5 py-2.5 rounded-xl border border-black/20 bg-white/60 text-black font-medium hover:bg-white/90 hover:shadow-[0_4px_15px_0_rgba(131,18,56,0.075)] transition-all"
                 >
                   Close Preview
                 </button>
