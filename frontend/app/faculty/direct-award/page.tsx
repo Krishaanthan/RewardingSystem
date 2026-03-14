@@ -26,12 +26,12 @@ export default function FacultyDirectAwardPage() {
           transform: translateY(-2px);
         }
       `}</style>
-      <div className="relative h-full w-full overflow-hidden text-black font-primary bg-white">
+      <div className="relative h-screen w-full overflow-hidden text-black font-primary bg-white">
 
         {/* Scrollable Content Container */}
         <div className="relative z-10 h-full w-full overflow-y-auto overflow-x-hidden [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-black/20">
           {/* Main Content */}
-          <div className="mx-auto flex min-h-full max-w-5xl flex-col px-6 pb-6 pt-10 font-primary">
+          <div className="mx-auto flex min-h-full max-w-5xl flex-col px-6 pb-6 pt-28 font-primary">
 
             {/* Header */}
             <motion.header initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="flex flex-col md:flex-row md:items-center justify-between border-b border-black/20 pb-4">
@@ -106,6 +106,16 @@ export default function FacultyDirectAwardPage() {
                 </div>
               </form>
             </motion.main>
+
+            {/* Footer */}
+            <motion.footer
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.5 }}
+              className="mt-auto py-8 text-center text-xs text-black"
+            >
+              © 2024 Academic Points Portal. All submissions are processed by Neural AI.
+            </motion.footer>
           </div>
         </div>
       </div>
