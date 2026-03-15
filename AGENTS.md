@@ -37,10 +37,10 @@ The backend is scaffolded but not yet implemented. The intended stack is **FastA
 ```bash
 # Create and activate virtual env (from repo root)
 python -m venv .venv
-.venv\Scripts\Activate.ps1    # Windows PowerShell
+D:\GitHub\RDSYS\.venv\Scripts\Activate.ps1    # Windows PowerShell
 
 # Install dependencies
-pip install -r requirements.txt
+ uv add or uv sync
 
 # Run dev server (once app entry point exists)
 uvicorn app.main:app --reload
