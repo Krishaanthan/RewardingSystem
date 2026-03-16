@@ -25,43 +25,38 @@ const CREAM = "#FBF6F2";      // page cream bg
    DATA
 ══════════════════════════════════════════════════════════════════════════ */
 const pointsData = [
-  { month: "Sep", points: 120 }, { month: "Oct", points: 210 },
-  { month: "Nov", points: 175 }, { month: "Dec", points: 310 },
-  { month: "Jan", points: 265 }, { month: "Feb", points: 420 },
-  { month: "Mar", points: 395 },
+  { month: "Sep", points: 12 }, { month: "Oct", points: 18 },
+  { month: "Nov", points: 22 }, { month: "Dec", points: 28 },
+  { month: "Jan", points: 35 }, { month: "Feb", points: 42 },
+  { month: "Mar", points: 47 },
 ];
 
 const badges = [
-  { icon: "🏆", name: "Top Scorer", desc: "Highest marks in term", earned: true },
-  { icon: "🔥", name: "7-Day Streak", desc: "7 days consecutive login", earned: true },
-  { icon: "📚", name: "Bookworm", desc: "Read 10 library books", earned: true },
-  { icon: "⚡", name: "Speed Run", desc: "Fastest quiz completion", earned: true },
-  { icon: "🌟", name: "Star Student", desc: "Nominated by teachers", earned: false },
-  { icon: "🎯", name: "Bullseye", desc: "Perfect score on a test", earned: false },
+  { icon: "/assets/Badges/knowledge_seeker/bronzeKS.png", name: "Knowledge Seeker", desc: "Highest marks in term", earned: true },
+  { icon: "/assets/Badges/community_impact/bronzeCI.png", name: "Community Impact", desc: "7 days consecutive login", earned: true },
+  { icon: "/assets/Badges/campus_engagement/bronzeCE.png", name: "Campus Star", desc: "Read 10 library books", earned: true },
+  { icon: "/assets/Badges/Innovation_builder/bronzeIB.png", name: "Innovation Builder", desc: "Fastest quiz completion", earned: true },
+  { icon: "/assets/Badges/Leadership Badge/bronzeLB.png", name: "Leadership Architect", desc: "Nominated by teachers", earned: false },
+  { icon: "/assets/Badges/Hackathon Badge/bronzeHB.png", name: "Hackathon Hero", desc: "Perfect score on a test", earned: false },
 ];
 
 const ledgerData = [
-  { date: "Mar 08", activity: "Math Quiz Bonus", points: +50, type: "credit" },
-  { date: "Mar 07", activity: "Science Project", points: +120, type: "credit" },
-  { date: "Mar 06", activity: "Redeemed Gift Card", points: -200, type: "debit" },
-  { date: "Mar 05", activity: "Attendance Streak", points: +30, type: "credit" },
-  { date: "Mar 04", activity: "Peer Tutor Award", points: +75, type: "credit" },
-  { date: "Mar 03", activity: "Late Submission Penalty", points: -10, type: "debit" },
-  { date: "Mar 02", activity: "Reading Challenge", points: +80, type: "credit" },
-  { date: "Mar 01", activity: "Hackathon Winner", points: +50, type: "credit" },
-  { date: "Feb 28", activity: "Library Contribution", points: +10, type: "credit" },
-  { date: "Feb 27", activity: "Event Participation", points: +20, type: "credit" },
+  { date: "Mar 15", activity: "Winning the hackathon", points: +5, type: "credit" },
+  { date: "Mar 14", activity: "Hackathon Participation", points: +2, type: "credit" },
+  { date: "Mar 12", activity: "Volunteering", points: +2, type: "credit" },
+  { date: "Mar 10", activity: "Swayam NPTEL course", points: +4, type: "credit" },
+  { date: "Today", activity: "Coursera Course", points: +3, type: "credit" },
 ];
 
 const leaderboardData = [
-  { rank: 1, name: "Alex Johnson", points: 20000, initials: "AJ", dept: "Computer Science", badges: 8 },
-  { rank: 2, name: "Ealca", points: 16000, initials: "EA", dept: "Mathematics", badges: 6 },
-  { rank: 3, name: "Ahoky", points: 15800, initials: "AH", dept: "Physics", badges: 6 },
-  { rank: 4, name: "Jordan Smith", points: 14200, initials: "JS", dept: "Computer Science", badges: 4, isUser: true },
-  { rank: 5, name: "Alex", points: 12660, initials: "AL", dept: "Chemistry", badges: 4, relPoints: "+10170" },
-  { rank: 6, name: "Lena Park", points: 11400, initials: "LP", dept: "Biology", badges: 3 },
-  { rank: 7, name: "Sam Rivera", points: 10900, initials: "SR", dept: "History", badges: 3 },
-  { rank: 8, name: "Priya Nair", points: 9800, initials: "PN", dept: "Economics", badges: 2 },
+  { rank: 1, name: "Alex Johnson", points: 64, initials: "AJ", dept: "Computer Science", badges: 8 },
+  { rank: 2, name: "Ealca", points: 58, initials: "EA", dept: "Mathematics", badges: 6 },
+  { rank: 3, name: "Ahoky", points: 52, initials: "AH", dept: "Physics", badges: 6 },
+  { rank: 4, name: "Akash Smith", points: 47, initials: "AS", dept: "Computer Science", badges: 4, isUser: true },
+  { rank: 5, name: "Alex", points: 42, initials: "AL", dept: "Chemistry", badges: 4, relPoints: "+5" },
+  { rank: 6, name: "Lena Park", points: 38, initials: "LP", dept: "Biology", badges: 3 },
+  { rank: 7, name: "Sam Rivera", points: 35, initials: "SR", dept: "History", badges: 3 },
+  { rank: 8, name: "Priya Nair", points: 30, initials: "PN", dept: "Economics", badges: 2 },
 ];
 
 const certificates = [
@@ -71,12 +66,11 @@ const certificates = [
 ];
 
 const claimableTasks = [
-  { id: 1, title: "Complete Math Quiz", pts: 50, deadline: "Today", icon: "📝", done: false },
-  { id: 2, title: "Submit Science Report", pts: 120, deadline: "Mar 10", icon: "🔬", done: false },
-  { id: 3, title: "Attend Workshop", pts: 40, deadline: "Mar 12", icon: "🎯", done: true },
-  { id: 4, title: "Peer Review Assignment", pts: 30, deadline: "Mar 14", icon: "👥", done: false },
-  { id: 5, title: "Library Reading Challenge", pts: 80, deadline: "Mar 15", icon: "📚", done: true },
-  { id: 6, title: "Hackathon Participation", pts: 200, deadline: "Mar 20", icon: "💻", done: false },
+  { id: 1, title: "Coursera Course", pts: 3, deadline: "Today", icon: "📝", done: false },
+  { id: 2, title: "Swayam NPTEL course", pts: 4, deadline: "Mar 10", icon: "🔬", done: false },
+  { id: 3, title: "Volunteering", pts: 2, deadline: "Mar 12", icon: "🎯", done: true },
+  { id: 4, title: "Hackathon Participation", pts: 2, deadline: "Mar 14", icon: "👥", done: false },
+  { id: 5, title: "Winning the hackathon", pts: 5, deadline: "Mar 15", icon: "📚", done: true },
 ];
 
 /* ══════════════════════════════════════════════════════════════════════════
@@ -160,7 +154,7 @@ function BadgesPage({ onBack }: any) {
         {earned.map((b, i) => (
           <div key={i} onMouseEnter={() => setHov(`e${i}`)} onMouseLeave={() => setHov(null)} style={{ position: "relative", background: hov === `e${i}` ? PL : `linear-gradient(145deg, #FFF7F9 0%, #FDF4F6 100%)`, border: `2px solid ${hov === `e${i}` ? P : PB}`, borderRadius: 16, padding: "24px 14px 18px", textAlign: "center", transform: hov === `e${i}` ? "translateY(-4px)" : "none", boxShadow: hov === `e${i}` ? `0 12px 32px rgba(131,18,56,0.18)` : `0 2px 10px rgba(131,18,56,0.07)`, transition: "all 0.22s ease" }}>
             <div style={{ position: "absolute", top: 10, right: 10, width: 18, height: 18, borderRadius: "50%", background: P, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 9, color: "#fff", fontWeight: 800 }}>✓</div>
-            <div style={{ fontSize: 44, marginBottom: 10 }}>{b.icon}</div>
+            <div style={{ marginBottom: 10, display: "flex", justifyContent: "center" }}><img src={b.icon} alt={b.name} style={{ width: 44, height: 44, objectFit: "contain" }} /></div>
             <div style={{ fontSize: 13, fontWeight: 700, color: P, marginBottom: 4 }}>{b.name}</div>
             <div style={{ fontSize: 11, color: TSUB, lineHeight: 1.4 }}>{b.desc}</div>
             <div style={{ marginTop: 10, display: "inline-block", background: P, color: "#fff", fontSize: 9, fontWeight: 700, padding: "2px 9px", borderRadius: 99, letterSpacing: "0.05em" }}>EARNED</div>
@@ -173,7 +167,7 @@ function BadgesPage({ onBack }: any) {
       <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 16 }}>
         {locked.map((b, i) => (
           <div key={i} style={{ background: "#F9FAFB", border: `2px dashed ${CG}`, borderRadius: 16, padding: "24px 14px 18px", textAlign: "center", opacity: 0.55 }}>
-            <div style={{ fontSize: 44, marginBottom: 10, filter: "grayscale(1)" }}>{b.icon}</div>
+            <div style={{ marginBottom: 10, display: "flex", justifyContent: "center", filter: "grayscale(1)" }}><img src={b.icon} alt={b.name} style={{ width: 44, height: 44, objectFit: "contain" }} /></div>
             <div style={{ fontSize: 13, fontWeight: 700, color: CGD, marginBottom: 4 }}>{b.name}</div>
             <div style={{ fontSize: 11, color: CGD, lineHeight: 1.4 }}>{b.desc}</div>
             <div style={{ marginTop: 10, display: "inline-block", background: CG, color: "#fff", fontSize: 9, fontWeight: 700, padding: "2px 9px", borderRadius: 99, letterSpacing: "0.05em" }}>LOCKED</div>
@@ -201,7 +195,7 @@ function LedgerPage({ onBack }: any) {
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 16, marginBottom: 22 }}>
         {[
-          { label: "Balance", value: "2,310 pts", color: P, bg: PL, br: PB },
+          { label: "Balance", value: "47 pts", color: P, bg: PL, br: PB },
           { label: "Total Earned", value: `+${totalIn} pts`, color: GRN, bg: GRNB, br: GRNBR },
           { label: "Total Spent", value: `${totalOut} pts`, color: RED, bg: "#FEF2F2", br: "#FECACA" },
         ].map(s => (
@@ -396,13 +390,13 @@ function StudentProfileCard() {
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: 14 }}>
         {/* Avatar */}
         <div style={{ position: "relative" }}>
-          <div style={{ width: 96, height: 96, borderRadius: "50%", background: `linear-gradient(135deg, ${P} 0%, ${PM} 100%)`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 32, fontWeight: 800, color: "#fff", boxShadow: `0 10px 32px rgba(131,18,56,0.35)`, letterSpacing: -1 }}>JS</div>
+          <div style={{ width: 96, height: 96, borderRadius: "50%", background: `linear-gradient(135deg, ${P} 0%, ${PM} 100%)`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 32, fontWeight: 800, color: "#fff", boxShadow: `0 10px 32px rgba(131,18,56,0.35)`, letterSpacing: -1 }}>AS</div>
           <div style={{ position: "absolute", bottom: 4, right: 4, width: 20, height: 20, borderRadius: "50%", background: "#22C55E", border: "3px solid #fff", boxShadow: "0 2px 6px rgba(0,0,0,0.15)" }} />
         </div>
 
         {/* Name — enlarged */}
         <div>
-          <div style={{ fontSize: 26, fontWeight: 800, color: TXT, letterSpacing: -0.7, lineHeight: 1.1 }}>Jordan Smith</div>
+          <div style={{ fontSize: 26, fontWeight: 800, color: TXT, letterSpacing: -0.7, lineHeight: 1.1 }}>Akash Smith</div>
           <div style={{ fontSize: 13, color: CGD, marginTop: 5 }}>ID: STU-2024-0412</div>
         </div>
 
@@ -413,7 +407,7 @@ function StudentProfileCard() {
 
         {/* Stats */}
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 2, background: "#F0E8EC", borderRadius: 14, overflow: "hidden", width: "100%", marginTop: 6 }}>
-          {[["#4", "Rank"], ["2,310", "Points"], ["4", "Badges"]].map(([val, lbl]) => (
+          {[["#4", "Rank"], ["47", "Points"], ["4", "Badges"]].map(([val, lbl]) => (
             <div key={lbl} style={{ background: "#fff", padding: "14px 8px", textAlign: "center" }}>
               <div style={{ fontSize: 22, fontWeight: 800, color: P, letterSpacing: -0.5 }}>{val}</div>
               <div style={{ fontSize: 11, color: CGD, marginTop: 2 }}>{lbl}</div>
@@ -432,8 +426,8 @@ function PointsChart() {
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 20 }}>
         <div>
           <Label>Points Growth</Label>
-          <div style={{ fontSize: 30, fontWeight: 800, color: TXT, letterSpacing: -1, lineHeight: 1 }}>2,310</div>
-          <div style={{ fontSize: 13, color: GRN, marginTop: 5, fontWeight: 600 }}>↑ +390 this week</div>
+          <div style={{ fontSize: 30, fontWeight: 800, color: TXT, letterSpacing: -1, lineHeight: 1 }}>47</div>
+          <div style={{ fontSize: 13, color: GRN, marginTop: 5, fontWeight: 600 }}>↑ +7 this week</div>
         </div>
         <div style={{ background: PL, color: P, fontSize: 12, fontWeight: 600, padding: "5px 13px", borderRadius: 20, border: `1px solid ${PB}` }}>This Term</div>
       </div>
@@ -499,7 +493,7 @@ function BadgesWidget({ onNavigate }: any) {
             {b.earned && (
               <div style={{ position: "absolute", top: 7, right: 7, width: 16, height: 16, borderRadius: "50%", background: P, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 8, color: "#fff", fontWeight: 800 }}>✓</div>
             )}
-            <div style={{ fontSize: 30, marginBottom: 7, filter: b.earned ? "none" : "grayscale(1)" }}>{b.icon}</div>
+            <div style={{ marginBottom: 7, display: "flex", justifyContent: "center", filter: b.earned ? "none" : "grayscale(1)" }}><img src={b.icon} alt={b.name} style={{ width: 34, height: 34, objectFit: "contain" }} /></div>
             <div style={{ fontSize: 10.5, fontWeight: 700, color: b.earned ? P : CGD, lineHeight: 1.3 }}>{b.name}</div>
             {b.earned && (
               <div style={{ marginTop: 5, display: "inline-block", background: P, color: "#fff", fontSize: 8.5, fontWeight: 700, padding: "1px 7px", borderRadius: 99, letterSpacing: "0.05em" }}>EARNED</div>
@@ -521,16 +515,16 @@ function BadgesWidget({ onNavigate }: any) {
 
 /* ── Progress Card ───────────────────────────────────────────────────────── */
 function ProgressCard() {
-  const cur = 320, tgt = 500;
+  const cur = 47, tgt = 50;
   const pct = Math.round((cur / tgt) * 100);
   return (
     <Card>
       <Label>Next Badge Progress</Label>
       <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 20 }}>
-        <div style={{ width: 54, height: 54, borderRadius: 15, background: `linear-gradient(135deg, ${PL}, #F5C6D0)`, border: `1px solid ${PB}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 26 }}>🌟</div>
+        <div style={{ width: 54, height: 54, borderRadius: 15, background: `linear-gradient(135deg, ${PL}, #F5C6D0)`, border: `1px solid ${PB}`, display: "flex", alignItems: "center", justifyContent: "center" }}><img src="/assets/Badges/knowledge_seeker/goldKS.png" alt="Gold Achiever" style={{ width: 36, height: 36, objectFit: "contain" }} /></div>
         <div>
           <div style={{ fontSize: 16, fontWeight: 700, color: TXT }}>Gold Achiever</div>
-          <div style={{ fontSize: 12, color: CGD, marginTop: 3 }}>Complete 500 points this month</div>
+          <div style={{ fontSize: 12, color: CGD, marginTop: 3 }}>Complete 50 points this term</div>
         </div>
       </div>
       <div style={{ display: "flex", justifyContent: "space-between", fontSize: 13, marginBottom: 8 }}>
@@ -568,7 +562,7 @@ function MyLedgerWidget({ onNavigate }: any) {
 
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <div style={{ width: 40, height: 40, borderRadius: 12, background: PL, border: `1px solid ${PB}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18 }}>📋</div>
+          <div style={{ width: 40, height: 40, borderRadius: 12, background: PL, border: `1px solid ${PB}`, display: "flex", alignItems: "center", justifyContent: "center" }}><img src="/assets/Badges/Leadership Badge/bronzeLB.png" alt="Ledger" style={{ width: 24, height: 24, objectFit: "contain" }} /></div>
           <div>
             <div style={{ fontSize: 15, fontWeight: 800, color: TXT, letterSpacing: -0.3 }}>My Ledger</div>
             <div style={{ fontSize: 11, color: CGD }}>Transaction history</div>
@@ -803,14 +797,14 @@ export default function App() {
         {page === "dashboard" && (
           <div className="page-in">
             <div style={{ marginBottom: 28 }}>
-              <h1 style={{ fontSize: 26, fontWeight: 800, color: TXT, letterSpacing: -0.6 }}>Good morning, Jordan 👋</h1>
+              <h1 style={{ fontSize: 26, fontWeight: 800, color: TXT, letterSpacing: -0.6 }}>Good morning, Akash 👋</h1>
               <p style={{ fontSize: 14, color: CGD, marginTop: 4 }}>Sunday, March 8 · Week 10 of Term 1 · You're doing great this week!</p>
             </div>
 
             {/* Stat row — 3 cards (no Active Streak) */}
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 16, marginBottom: 20 }}>
               {[
-                { label: "Total Points", value: "2,310", sub: "↑ +390 this week", subC: GRN, icon: "⭐" },
+                { label: "Total Points", value: "47", sub: "↑ +7 this week", subC: GRN, icon: "⭐" },
                 { label: "Current Rank", value: "#4", sub: "↑ Up 2 positions", subC: GRN, icon: "📈" },
                 { label: "Badges Earned", value: "4 / 6", sub: "2 more to unlock", subC: CGD, icon: "🏅" },
               ].map(s => (

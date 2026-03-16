@@ -5,7 +5,7 @@ import { useState } from "react";
 
 // Mock Data
 const STUDENT = {
-    name: "Jordan Smith",
+    name: "Akash Smith",
     id: "STU-2024-0412",
     department: "Computer Science",
     year: "Year 2",
@@ -148,7 +148,7 @@ export default function ProfileDashboard() {
                             {/* Profile Picture (Gradient Placeholder) */}
                             <div className="relative shrink-0">
                                 <div className="flex h-32 w-32 items-center justify-center rounded-full bg-primary text-4xl font-bold text-white shadow-[0_8px_24px_rgba(131,18,56,0.35)]">
-                                    JS
+                                    AS
                                 </div>
                                 {/* Status Dot */}
                                 <div className="absolute bottom-1 right-1 h-6 w-6 rounded-full border-4 border-white bg-green-500"></div>
