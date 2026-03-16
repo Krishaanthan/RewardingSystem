@@ -105,6 +105,8 @@ Pages are organized by role under `frontend/app/`:
 
 ### Backend — FastAPI (Project Structure)
 
+This modular structure keeps your authentication, database models, and claim routing separated for easier maintenance.
+
 ```
 backend/app/
 ├── main.py                 # FastAPI application instance & global config
@@ -117,7 +119,6 @@ backend/app/
 │       ├── auth.py         # Login and Registration endpoints
 │       ├── claims.py       # Claim submissions and status retrieval
 │       └── profile.py      # Student profile, badge, and points aggregation
-├── services/               # Business logic; AI verification pipeline
 ├── models/                 # SQLAlchemy Database Models
 │   ├── user.py             
 │   ├── activity.py         
@@ -131,26 +132,54 @@ backend/app/
     └── base.py             # SQLAlchemy declarative base
 ```
 
-The AI verification pipeline (in `services/`) is the core business logic: it receives uploaded documents, runs OCR (pytesseract/pdf2image/Pillow), calls OpenAI to verify authenticity, and returns a confidence score. Claims above the auto-approval threshold are approved automatically; those below go to the faculty review queue.
+---
 
-### Database — PostgreSQL + pgvector
+### Database Schema (PostgreSQL)
 
-The primary persistence layer is **PostgreSQL**, accessed asynchronously via **SQLAlchemy**.
+These tables are designed to handle the exact data flow from registration to the final badge assignment.
 
-- PostgreSQL 16 via Docker (Connection: `postgresql://postgres:postgres@localhost:5432/student_rewards`).
-- `pgvector` extension is bootstrapped by `database/postgres/init/001_extensions.sql`.
-- Alembic migrations go in `database/postgres/migrations/`.
-- Async DB access via SQLAlchemy (asyncio) + asyncpg.
+- **`users` Table (Authentication):**
+    - `id` (UUID, Primary Key)
+    - `registration_number` (String, Unique) - Used for logging in.
+    - `password_hash` (String)
+    - `name` (String)
+    - `department` (String)
+    - `role` (Enum: STUDENT, FACULTY, ADMIN)
 
-#### Schema Definitions:
-- **`users`**: `id` (UUID), `registration_number` (Unique), `password_hash`, `name`, `department`, `role` (STUDENT, FACULTY, ADMIN).
-- **`activities`**: `id` (PK), `activity_name`, `points_awarded`.
-- **`claims`**: `id` (UUID), `student_id` (FK), `activity_id` (FK), `proof_url`, `status` (AI_PROCESSING, APPROVED, REJECTED).
-- **`badges`**: `id` (PK), `badge_name`, `required_points`.
+- **`activities` Table (Pointing System):**
+    - `id` (Integer, Primary Key)
+    - `activity_name` (String) - e.g., "Hackathon Participation", "NPTEL Course".
+    - `points_awarded` (Integer) - The specific points assigned to this activity.
+
+- **`claims` Table (Submission Statuses & Approved Activities):**
+    - `id` (UUID, Primary Key)
+    - `student_id` (Foreign Key -> `users.id`) - Links the applied claim to the specific student.
+    - `activity_id` (ForeignKey -> `activities.id`) - Links to the specific activity.
+    - `proof_url` (String) - The hosted link to the uploaded certificate/image.
+    - `status` (Enum: `AI_PROCESSING`, `APPROVED`, `REJECTED`) - Tracks the current state of the submission.
+
+- **`badges` Table:**
+    - `id` (Integer, Primary Key)
+    - `badge_name` (String) - e.g., "Silver", "Gold".
+    - `required_points` (Integer) - The point threshold needed to unlock this badge.
+
+---
 
 ### API Endpoint Mapping
 
-- **Auth**: `POST /api/auth/register`, `POST /api/auth/login` (JWT).
-- **Claims**: `POST /api/claims/submit` (initial status `AI_PROCESSING`), `GET /api/claims/statuses` (student's view), `GET /api/claims/approved` (global approved list).
-- **Profile**: `GET /api/student/profile` (aggregates points and awards badges).
-- **Testing**: `PUT /api/claims/{claim_id}/test-approve` (manual status override).
+These RESTful endpoints translate the logical flow of your application into actionable HTTP requests.
+
+- **Auth**:
+    - `POST /api/auth/register`: Accepts student details. The data is updated and stored in the database's `users` table.
+    - `POST /api/auth/login`: Accepts a registration number and password. Data is verified against the registered student table to authenticate and return a JWT.
+
+- **Claims**:
+    - `POST /api/claims/submit`: Handles the file upload and activity selection. It updates the database to show the student applied for the activity and automatically sets the initial status to `AI_PROCESSING`.
+    - `GET /api/claims/statuses`: Retrieves data from the claim points table to populate the submission statuses page for the logged-in student.
+    - `GET /api/claims/approved`: Powers the Approved Activity Table. It returns all approved activities with the details of the student and displays the accumulated points tied to those activities.
+
+- **Profile**:
+    - `GET /api/student/profile`: Aggregates the total points from the user's approved activities and compares them against the `badges` table thresholds. It returns the total points and the specific awarded badge for the frontend to display.
+
+- **Testing**:
+    - `PUT /api/claims/{claim_id}/test-approve`: A dedicated endpoint for testing purposes. This manually edits the claim table to change the status from `AI_PROCESSING` to `APPROVED`.

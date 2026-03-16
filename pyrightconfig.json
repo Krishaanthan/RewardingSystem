@@ -2,11 +2,21 @@
   "venvPath": ".",
   "venv": ".venv",
   "include": [
-    "backend"
+    "."
   ],
   "extraPaths": [
-    "backend"
+    "."
+  ],
+  "exclude": [
+    "**/node_modules",
+    "**/__pycache__",
+    ".venv"
   ],
   "reportMissingImports": true,
-  "typeCheckingMode": "basic"
+  "typeCheckingMode": "basic",
+  "executionEnvironments": [
+    {
+      "root": "."
+    }
+  ]
 }
