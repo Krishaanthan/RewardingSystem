@@ -10,7 +10,7 @@ class Settings(BaseSettings):
     
     POSTGRES_SERVER: str = "localhost"
     POSTGRES_USER: str = "postgres"
-    POSTGRES_PASSWORD: str = "postgres"
+    POSTGRES_PASSWORD: str = "1695"
     POSTGRES_DB: str = "student_rewards"
     DATABASE_URL: Optional[str] = None
 
