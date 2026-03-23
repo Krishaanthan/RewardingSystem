@@ -17,7 +17,10 @@ if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
 from backend.app.db.base import Base
-from backend.app.models.user import User  # Import models here
+from backend.app.models.user import User          # noqa: F401
+from backend.app.models.activity import Activity  # noqa: F401
+from backend.app.models.claim import Claim, ClaimFile  # noqa: F401
+from backend.app.models.badge import Badge        # noqa: F401
 from backend.app.core.config import settings
 
 target_metadata = Base.metadata

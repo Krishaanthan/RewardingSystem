@@ -17,4 +17,5 @@ class User(Base):
     password_hash = Column(String, nullable=False)
     name = Column(String, nullable=False)
     department = Column(String, nullable=False)
+    section = Column(String, nullable=True)
     role = Column(Enum(UserRole), default=UserRole.STUDENT, nullable=False)
