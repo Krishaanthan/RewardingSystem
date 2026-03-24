@@ -11,6 +11,7 @@ GET  /api/student/profile             — Points total + earned badges
 from fastapi import APIRouter, Depends, Form, HTTPException, UploadFile, File, BackgroundTasks
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
+from sqlalchemy import func
 from uuid import UUID
 from collections import defaultdict
 
@@ -189,5 +190,57 @@ async def student_profile(
         "current_year": current_user.current_year,
         "section": current_user.section,
         "total_points": total_points,
+        "badges": earned_badges,
+    }
+@router.get("/dashboard-summary")
+async def dashboard_summary(
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    # 1. Fetch current student's approved claims
+    result = await db.execute(
+        select(Claim, Activity)
+        .join(Activity, Claim.activity_id == Activity.id)
+        .where(Claim.student_id == current_user.id, Claim.status == ClaimStatus.APPROVED)
+    )
+    rows = result.all()
+
+    total_points = sum(activity.points for _, activity in rows)
+    category_counts = defaultdict(int)
+    for _, activity in rows:
+        if activity.badge_category:
+            category_counts[activity.badge_category] += 1
+
+    earned_badges = compute_all_badges(dict(category_counts))
+
+    # 2. Calculate Rank based on total points across all students
+    all_students_query = select(
+        Claim.student_id,
+        func.sum(Activity.points).label("total")
+    ).join(Activity, Claim.activity_id == Activity.id)\
+     .where(Claim.status == ClaimStatus.APPROVED)\
+     .group_by(Claim.student_id)
+
+    ranks_result = await db.execute(all_students_query)
+    all_ranks = sorted(ranks_result.all(), key=lambda x: x.total, reverse=True)
+
+    rank = next(
+        (i + 1 for i, r in enumerate(all_ranks) if r.student_id == current_user.id),
+        len(all_ranks) + 1  # student with 0 points is last
+    )
+
+    return {
+        "student": {
+            "name": current_user.name,
+            "registration_number": current_user.registration_number,
+            "department": current_user.department,
+            "current_year": current_user.current_year,
+            "section": current_user.section,
+        },
+        "stats": {
+            "total_points": total_points,
+            "rank": rank,
+            "badges_count": len(earned_badges),
+        },
         "badges": earned_badges,
     }
