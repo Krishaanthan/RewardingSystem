@@ -25,7 +25,7 @@ export function PointsOverview() {
 
             {/* Total Points */}
             <div className="z-10 relative mb-2">
-                <div className="text-[2.5rem] leading-none font-extrabold text-maroon-800 tracking-tight drop-shadow-sm">14,500</div>
+                <div className="text-[2.5rem] leading-none font-extrabold text-maroon-800 tracking-tight drop-shadow-sm">47</div>
                 <div className="text-[10px] font-semibold text-gray-500 mt-1 uppercase tracking-wide">Total Available Points</div>
             </div>
 
@@ -45,12 +45,12 @@ export function PointsOverview() {
                     </defs>
                     {/* Area Fill */}
                     <path
-                        d="M0,100 L0,75 C50,65 80,85 130,55 C180,25 220,60 270,35 C320,10 360,40 400,20 L400,100 Z"
+                        d="M0,100 L0,75 C40,110 80,-10 130,55 C180,120 220,-20 270,35 C320,100 360,-10 400,20 L400,100 Z"
                         fill="url(#premiumGradient)"
                     />
                     {/* Stroke Line */}
                     <path
-                        d="M0,75 C50,65 80,85 130,55 C180,25 220,60 270,35 C320,10 360,40 400,20"
+                        d="M0,75 C40,110 80,-10 130,55 C180,120 220,-20 270,35 C320,100 360,-10 400,20"
                         fill="none"
                         stroke="#800000"
                         strokeWidth="2.5"
