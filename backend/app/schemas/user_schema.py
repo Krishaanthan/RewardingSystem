@@ -7,6 +7,8 @@ class UserBase(BaseModel):
     registration_number: str
     name: str
     department: str
+    current_year: Optional[str] = None
+    section: Optional[str] = None
     role: UserRole = UserRole.STUDENT
 
 class UserCreate(UserBase):

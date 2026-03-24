@@ -11,6 +11,31 @@ export default function StudentNavbar() {
     const [lastScrollY, setLastScrollY] = useState(0);
 
     const dropdownRef = useRef<HTMLDivElement>(null);
+    const [studentName, setStudentName] = useState<string>("Profile");
+
+    useEffect(() => {
+        const fetchStudentName = async () => {
+            try {
+                const token = localStorage.getItem("access_token");
+                if (!token) return;
+
+                const response = await fetch("http://localhost:8000/api/student/profile", {
+                    headers: {
+                        "Authorization": `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    setStudentName(data.name);
+                }
+            } catch (err) {
+                console.error("Error fetching student name:", err);
+            }
+        };
+
+        fetchStudentName();
+    }, []);
 
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
@@ -96,7 +121,7 @@ export default function StudentNavbar() {
                             <path fillRule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clipRule="evenodd" />
                         </svg>
                     </div>
-                    <span className="text-sm font-bold text-gray-800 tracking-wide">Profile</span>
+                    <span className="text-sm font-bold text-gray-800 tracking-wide">{studentName}</span>
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`h-4 w-4 transition-transform duration-300 ${isProfileOpen ? "text-[#831238] rotate-180" : "text-gray-400"}`}>
                         <path d="m6 9 6 6 6-6" />
                     </svg>
@@ -152,7 +177,11 @@ export default function StudentNavbar() {
                         <div className="my-1 h-px w-full bg-gray-100" />
                         <Link
                             href="/student-login"
-                            onClick={() => setIsProfileOpen(false)}
+                            onClick={() => {
+                                setIsProfileOpen(false);
+                                localStorage.removeItem("access_token");
+                                localStorage.removeItem("token_type");
+                            }}
                             className="flex items-center gap-3 rounded-xl px-4 py-2.5 text-red-600 transition-colors hover:bg-red-50"
                         >
                             <svg

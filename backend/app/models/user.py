@@ -18,4 +18,5 @@ class User(Base):
     name = Column(String, nullable=False)
     department = Column(String, nullable=False)
     section = Column(String, nullable=True)
+    current_year = Column(String, nullable=True)
     role = Column(Enum(UserRole), default=UserRole.STUDENT, nullable=False)

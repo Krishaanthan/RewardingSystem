@@ -22,7 +22,7 @@ class Claim(Base):
     activity_id = Column(ForeignKey("activities.id"), nullable=False)
     status = Column(Enum(ClaimStatus), default=ClaimStatus.AI_PROCESSING, nullable=False)
     rejection_reason = Column(String, nullable=True)
-    submitted_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
+    submitted_at = Column(DateTime, default=lambda: datetime.now(timezone.utc).replace(tzinfo=None), nullable=False)
 
 
 class ClaimFile(Base):

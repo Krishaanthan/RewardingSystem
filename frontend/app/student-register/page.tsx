@@ -135,6 +135,8 @@ export default function StudentRegisterPage() {
           registration_number: formData.registration,
           name: formData.name,
           department: selectedDepartmentName,
+          current_year: selectedYear,
+          section: formData.section,
           password: formData.password,
           role: "STUDENT",
         }),

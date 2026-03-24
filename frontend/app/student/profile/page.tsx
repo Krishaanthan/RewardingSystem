@@ -1,18 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-// Mock Data
-const STUDENT = {
-    name: "Jordan Smith",
-    id: "STU-2024-0412",
-    department: "Computer Science",
-    year: "Year 2",
-    totalPoints: 2310,
-    avatar: "/assets/profile-placeholder.png", // Or generic gradient
-};
-
+// TIER BADGES Mock Data
 const TIER_BADGES = [
     {
         id: "knowledge-seeker",
@@ -110,6 +101,63 @@ const TIER_COLORS: Record<string, { bg: string; text: string; border: string; gl
 };
 
 export default function ProfileDashboard() {
+    const [student, setStudent] = useState<any>(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        const fetchProfile = async () => {
+            try {
+                const token = localStorage.getItem("access_token");
+                if (!token) {
+                    setIsLoading(false);
+                    return;
+                }
+
+                const response = await fetch("http://localhost:8000/api/student/profile", {
+                    headers: {
+                        "Authorization": `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error("Failed to fetch profile");
+                }
+
+                const data = await response.json();
+                setStudent(data);
+            } catch (err: any) {
+                setError(err.message);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchProfile();
+    }, []);
+
+    if (isLoading) {
+        return (
+            <div className="flex h-screen w-full items-center justify-center bg-white">
+                <div className="h-12 w-12 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
+            </div>
+        );
+    }
+
+    if (!student) {
+        return (
+            <div className="flex h-screen w-full items-center justify-center bg-white text-black">
+                <p>Unable to load profile. Please log in again.</p>
+            </div>
+        );
+    }
+
+    const initials = student.name
+        .split(" ")
+        .map((n: string) => n[0])
+        .join("")
+        .toUpperCase();
+
     return (
         <>
             <style>{`
@@ -145,31 +193,30 @@ export default function ProfileDashboard() {
                         {/* 1. Student Profile Header */}
                         <main className="card w-full p-8 md:p-10 mb-10 flex flex-col md:flex-row items-center md:items-start gap-8">
 
-                            {/* Profile Picture (Gradient Placeholder) */}
+                            {/* Profile Picture (Initials) */}
                             <div className="relative shrink-0">
                                 <div className="flex h-32 w-32 items-center justify-center rounded-full bg-primary text-4xl font-bold text-white shadow-[0_8px_24px_rgba(131,18,56,0.35)]">
-                                    JS
+                                    {initials}
                                 </div>
-                                {/* Status Dot */}
                                 <div className="absolute bottom-1 right-1 h-6 w-6 rounded-full border-4 border-white bg-green-500"></div>
                             </div>
 
                             {/* Profile Details & Summary */}
                             <div className="flex-1 text-center md:text-left">
                                 <h1 className="text-3xl font-extrabold tracking-tight text-black flex items-center justify-center md:justify-start gap-3">
-                                    {STUDENT.name}
+                                    {student.name}
                                     <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-bold text-primary border border-primary/20">
-                                        {STUDENT.id}
+                                        {student.registration_number}
                                     </span>
                                 </h1>
                                 <p className="mt-2 text-black/70 font-medium">
-                                    {STUDENT.department} &bull; {STUDENT.year}
+                                    {student.department} &bull; {student.current_year} {student.section ? `&bull; Section ${student.section}` : ""}
                                 </p>
 
                                 <div className="mt-6 flex flex-wrap justify-center md:justify-start gap-4">
                                     <div className="flex flex-col items-center md:items-start rounded-2xl bg-white/60 border border-black/10 px-5 py-3 min-w-[120px]">
                                         <span className="text-xs font-bold uppercase tracking-wider text-black/50">Total Points</span>
-                                        <span className="text-2xl font-black text-primary">{STUDENT.totalPoints.toLocaleString()}</span>
+                                        <span className="text-2xl font-black text-primary">{student.total_points.toLocaleString()}</span>
                                     </div>
 
                                     <div className="flex flex-col items-center md:items-start rounded-2xl bg-white/60 border border-black/10 px-5 py-3 min-w-[120px]">
@@ -237,7 +284,7 @@ export default function ProfileDashboard() {
                                                 <>
                                                     <div className="flex justify-between text-xs font-bold mb-2">
                                                         <span className="text-black">{badge.progress}% to {badge.nextTier}</span>
-                                                        <span className="text-primary">{badge.ptsToNext} pts left</span>
+                                                        <span className="text-primary">{"ptsToNext" in badge ? (badge as any).ptsToNext : 0} pts left</span>
                                                     </div>
                                                     <div className="h-2 w-full rounded-full bg-black/10 overflow-hidden">
                                                         <div
@@ -293,7 +340,7 @@ export default function ProfileDashboard() {
                                     {badge.earned && (
                                         <div className="absolute top-4 right-4 text-primary">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
-                                                <path fillRule="evenodd" d="M8.603 3.799A4.49 4.49 0 0112 2.25c1.357 0 2.573.6 3.397 1.549a4.49 4.49 0 013.498 1.307 4.491 4.491 0 011.307 3.497A4.49 4.49 0 0121.75 12a4.49 4.49 0 01-1.549 3.397 4.491 4.491 0 01-1.307 3.497 4.491 4.491 0 01-3.497 1.307A4.49 4.49 0 0112 21.75a4.49 4.49 0 01-3.397-1.549 4.49 4.49 0 01-3.498-1.306 4.491 4.491 0 01-1.307-3.498A4.49 4.49 0 012.25 12c0-1.357.6-2.573 1.549-3.397a4.49 4.49 0 011.307-3.497 4.49 4.49 0 013.497-1.307zm7.007 6.387a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clipRule="evenodd" />
+                                                <path fillRule="evenodd" d="M8.603 3.799A4.49 4.49 0 0112 2.25c1.357 0 2.573.6 3.397 1.549a4.49 4.49 0 013.498 1.307 4.491 4.491 0 011.307 3.497A4.49 4.49 0 0121.75 12a4.49 4.49 0 01-1.549 3.397 4.491 4.491 0 01-1.307 3.497 4.491 4.491 0 01-3.497 1.307A4.49 4.49 0 0112 21.75a4.49 4.49 0 01-3.397-1.549 4.49 4.49 0 01-3.498-1.306 4.491 4.491 0 01-1.307-3.498A4.49 4.49 0 012.25 12c0-1.357.6-2.573 1.549-3.397a4.49 4.49 0 011.307-3.497a4.49 4.49 0 013.497-1.307zm7.007 6.387a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clipRule="evenodd" />
                                             </svg>
                                         </div>
                                     )}

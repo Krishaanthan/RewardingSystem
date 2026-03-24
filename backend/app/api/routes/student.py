@@ -186,6 +186,8 @@ async def student_profile(
         "name": current_user.name,
         "registration_number": current_user.registration_number,
         "department": current_user.department,
+        "current_year": current_user.current_year,
+        "section": current_user.section,
         "total_points": total_points,
         "badges": earned_badges,
     }

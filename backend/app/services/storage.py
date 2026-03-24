@@ -16,9 +16,13 @@ async def save_upload_file(reg_no: str, activity_id: int, file_type: str, file: 
     folder = os.path.join(BASE_STORAGE, str(reg_no), str(activity_id))
     os.makedirs(folder, exist_ok=True)
 
-    # Sanitise the original filename
+    # 2. Sanitize file_type (remove slashes, etc.)
+    safe_file_type = "".join(c for c in file_type if c.isalnum() or c in ("-", "_")).strip()
+    
+    # 3. Sanitize original filename
     safe_name = "".join(c for c in (file.filename or "file") if c.isalnum() or c in (".", "-", "_"))
-    dest_name = f"{file_type}_{safe_name}"
+    
+    dest_name = f"{safe_file_type}_{safe_name}"
     dest_path = os.path.join(folder, dest_name)
 
     contents = await file.read()
