@@ -1,13 +1,12 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
-import BadgeCard, { BadgeCardProps } from "@/components/badges/BadgeCard";
+import { BadgeCardProps } from "@/components/badges/BadgeCard";
+import BadgeWidget from "@/components/badges/BadgeWidget";
+import BadgeDetailModal from "@/components/badges/BadgeDetailModal";
 
-// ────────────────────────────────────────────────────────────────
-//  BADGE DATA
-//  To add a badge image, update the `imagePath` field with the
-//  path to your image, e.g.:  "/assets/badges/knowledge-seeker.png"
-// ────────────────────────────────────────────────────────────────
+// All paths are relative to /public — served as static assets by Next.js
 const TIERED_BADGES: BadgeCardProps[] = [
   {
     id: "knowledge-seeker",
@@ -15,7 +14,7 @@ const TIERED_BADGES: BadgeCardProps[] = [
     category: "Learning & Certifications",
     description:
       "Awarded to students who actively pursue online courses and certifications to expand their academic and professional skills.",
-    imagePath: "", // ← INSERT image path here, e.g. "/assets/badges/knowledge-seeker.png"
+    imagePath: "/assets/Badges/knowledge_seeker/bronzeKS.png",
     activities: [
       "Swayam NPTEL Course",
       "Coursera Course",
@@ -24,10 +23,10 @@ const TIERED_BADGES: BadgeCardProps[] = [
       "Global Certification",
     ],
     tiers: [
-      { tier: "Bronze",  icon: "🥉", requirement: "Complete 1 course" },
-      { tier: "Silver",  icon: "🥈", requirement: "Complete 3 courses" },
-      { tier: "Gold",    icon: "🥇", requirement: "Complete 5 courses" },
-      { tier: "Diamond", icon: "♦", requirement: "Complete 8+ courses" },
+      { tier: "Bronze",  icon: "🥉", requirement: "Complete 1 course",   imagePath: "/assets/Badges/knowledge_seeker/bronzeKS.png" },
+      { tier: "Silver",  icon: "🥈", requirement: "Complete 3 courses",  imagePath: "/assets/Badges/knowledge_seeker/silverKS.png" },
+      { tier: "Gold",    icon: "🥇", requirement: "Complete 5 courses",  imagePath: "/assets/Badges/knowledge_seeker/goldKS.png" },
+      { tier: "Diamond", icon: "♦",  requirement: "Complete 8+ courses", imagePath: "/assets/Badges/knowledge_seeker/diamond KS.png" },
     ],
     progressionNames: ["Knowledge Seeker", "Knowledge Explorer", "Knowledge Master", "Global Scholar"],
   },
@@ -37,7 +36,7 @@ const TIERED_BADGES: BadgeCardProps[] = [
     category: "Community & Social",
     description:
       "Recognises students who contribute to society through volunteering, service organisations, and campus community activities.",
-    imagePath: "", // ← INSERT image path here, e.g. "/assets/badges/community-impact.png"
+    imagePath: "/assets/Badges/community_impact/bronzeCI.png",
     activities: [
       "Volunteering",
       "NSS / NCC Activities",
@@ -45,10 +44,10 @@ const TIERED_BADGES: BadgeCardProps[] = [
       "Student Chapter Activity",
     ],
     tiers: [
-      { tier: "Bronze",  icon: "🥉", requirement: "Participate in 1 activity" },
-      { tier: "Silver",  icon: "🥈", requirement: "Participate in 3 activities" },
-      { tier: "Gold",    icon: "🥇", requirement: "Participate in 5 activities" },
-      { tier: "Diamond", icon: "♦", requirement: "Lead / major involvement" },
+      { tier: "Bronze",  icon: "🥉", requirement: "Participate in 1 activity",      imagePath: "/assets/Badges/community_impact/bronzeCI.png" },
+      { tier: "Silver",  icon: "🥈", requirement: "Participate in 3 activities",    imagePath: "/assets/Badges/community_impact/silverCI.png" },
+      { tier: "Gold",    icon: "🥇", requirement: "Participate in 5 activities",    imagePath: "/assets/Badges/community_impact/goldCI.png" },
+      { tier: "Diamond", icon: "♦",  requirement: "Lead / major involvement",       imagePath: "/assets/Badges/community_impact/diamondCI.png" },
     ],
     progressionNames: ["Community Impact", "Community Pillar", "Community Champion", "Community Legend"],
   },
@@ -58,17 +57,17 @@ const TIERED_BADGES: BadgeCardProps[] = [
     category: "Campus Engagement",
     description:
       "Celebrates active participation in inter-college events, cultural activities, and sports competitions.",
-    imagePath: "", // ← INSERT image path here, e.g. "/assets/badges/campus-star.png"
+    imagePath: "/assets/Badges/campus_engagement/bronzeCE.png",
     activities: [
       "Other College Events",
       "Cultural Participation",
       "Sports & Other Activities",
     ],
     tiers: [
-      { tier: "Bronze",  icon: "🥉", requirement: "1 participation" },
-      { tier: "Silver",  icon: "🥈", requirement: "3 participations" },
-      { tier: "Gold",    icon: "🥇", requirement: "5 participations" },
-      { tier: "Diamond", icon: "♦", requirement: "8+ participations" },
+      { tier: "Bronze",  icon: "🥉", requirement: "1 participation",   imagePath: "/assets/Badges/campus_engagement/bronzeCE.png" },
+      { tier: "Silver",  icon: "🥈", requirement: "3 participations",  imagePath: "/assets/Badges/campus_engagement/silverCE.png" },
+      { tier: "Gold",    icon: "🥇", requirement: "5 participations",  imagePath: "/assets/Badges/campus_engagement/gold CE.png" },
+      { tier: "Diamond", icon: "♦",  requirement: "8+ participations", imagePath: "/assets/Badges/campus_engagement/diamondCE.png" },
     ],
     progressionNames: ["Campus Star", "Campus Icon", "Campus Legend", "Campus Titan"],
   },
@@ -78,7 +77,7 @@ const TIERED_BADGES: BadgeCardProps[] = [
     category: "Research & Development",
     description:
       "Rewards students who push boundaries through research, project development, and student-funded innovations.",
-    imagePath: "", // ← INSERT image path here, e.g. "/assets/badges/innovation-builder.png"
+    imagePath: "/assets/Badges/Innovation_builder/bronzeIB.png",
     activities: [
       "Research",
       "Project",
@@ -86,10 +85,10 @@ const TIERED_BADGES: BadgeCardProps[] = [
       "Student Funding Project",
     ],
     tiers: [
-      { tier: "Bronze",  icon: "🥉", requirement: "Complete 1 project" },
-      { tier: "Silver",  icon: "🥈", requirement: "Complete 2 projects" },
-      { tier: "Gold",    icon: "🥇", requirement: "3+ projects" },
-      { tier: "Diamond", icon: "♦", requirement: "Funded or impactful project" },
+      { tier: "Bronze",  icon: "🥉", requirement: "Complete 1 project",          imagePath: "/assets/Badges/Innovation_builder/bronzeIB.png" },
+      { tier: "Silver",  icon: "🥈", requirement: "Complete 2 projects",          imagePath: "/assets/Badges/Innovation_builder/SiverIB.png" },
+      { tier: "Gold",    icon: "🥇", requirement: "3+ projects",                  imagePath: "/assets/Badges/Innovation_builder/GoldIB.png" },
+      { tier: "Diamond", icon: "♦",  requirement: "Funded or impactful project",  imagePath: "/assets/Badges/Innovation_builder/diamondIB.png" },
     ],
     progressionNames: ["Innovation Builder", "Innovation Catalyst", "Innovation Pioneer", "Innovation Visionary"],
   },
@@ -99,17 +98,17 @@ const TIERED_BADGES: BadgeCardProps[] = [
     category: "Leadership",
     description:
       "Granted to students who demonstrate leadership by organising events, workshops, and coding contests.",
-    imagePath: "", // ← INSERT image path here, e.g. "/assets/badges/leadership-architect.png"
+    imagePath: "/assets/Badges/Leadership Badge/bronzeLB.png",
     activities: [
       "Organising Events",
       "Conducting Workshops",
       "Conducting Coding Contests",
     ],
     tiers: [
-      { tier: "Bronze",  icon: "🥉", requirement: "Organise 1 event" },
-      { tier: "Silver",  icon: "🥈", requirement: "Organise 2 events" },
-      { tier: "Gold",    icon: "🥇", requirement: "Conduct workshop / contest" },
-      { tier: "Diamond", icon: "♦", requirement: "Lead multiple events" },
+      { tier: "Bronze",  icon: "🥉", requirement: "Organise 1 event",             imagePath: "/assets/Badges/Leadership Badge/bronzeLB.png" },
+      { tier: "Silver",  icon: "🥈", requirement: "Organise 2 events",             imagePath: "/assets/Badges/Leadership Badge/silverLB.png" },
+      { tier: "Gold",    icon: "🥇", requirement: "Conduct workshop / contest",    imagePath: "/assets/Badges/Leadership Badge/gold LB.png" },
+      { tier: "Diamond", icon: "♦",  requirement: "Lead multiple events",          imagePath: "/assets/Badges/Leadership Badge/diamondLB.png" },
     ],
     progressionNames: ["Leadership Architect", "Leadership Strategist", "Leadership Commander", "Leadership Visionary"],
   },
@@ -119,16 +118,16 @@ const TIERED_BADGES: BadgeCardProps[] = [
     category: "Hackathons",
     description:
       "Celebrates students who compete in hackathons and prove their ability to build under pressure.",
-    imagePath: "", // ← INSERT image path here, e.g. "/assets/badges/hackathon-hero.png"
+    imagePath: "/assets/Badges/Hackathon Badge/bronzeHB.png",
     activities: [
       "Hackathon Participation",
       "Winning Hackathon",
     ],
     tiers: [
-      { tier: "Bronze",  icon: "🥉", requirement: "Participate in 1 hackathon" },
-      { tier: "Silver",  icon: "🥈", requirement: "Participate in 2 hackathons" },
-      { tier: "Gold",    icon: "🥇", requirement: "Win 1 hackathon" },
-      { tier: "Diamond", icon: "♦", requirement: "Win multiple hackathons" },
+      { tier: "Bronze",  icon: "🥉", requirement: "Participate in 1 hackathon",  imagePath: "/assets/Badges/Hackathon Badge/bronzeHB.png" },
+      { tier: "Silver",  icon: "🥈", requirement: "Participate in 2 hackathons", imagePath: "/assets/Badges/Hackathon Badge/silverHB.png" },
+      { tier: "Gold",    icon: "🥇", requirement: "Win 1 hackathon",             imagePath: "/assets/Badges/Hackathon Badge/gold HB.png" },
+      { tier: "Diamond", icon: "♦",  requirement: "Win multiple hackathons",     imagePath: "/assets/Badges/Hackathon Badge/DiamondHB.png" },
     ],
     progressionNames: ["Hackathon Hero", "Hackathon Warrior", "Hackathon Champion", "Hackathon Legend"],
   },
@@ -141,9 +140,10 @@ const INDIVIDUAL_BADGES: BadgeCardProps[] = [
     category: "Academics",
     description:
       "A prestigious standalone badge awarded to students who maintain a CGPA above 8.5, reflecting outstanding academic performance.",
-    imagePath: "", // ← INSERT image path here, e.g. "/assets/badges/academic-excellence.png"
+    imagePath: "/assets/Badges/Academic Excellence.png",
     activities: ["> 8.5 CGPA"],
     isIndividual: true,
+    imageScale: 1.6,
   },
   {
     id: "global-explorer",
@@ -151,9 +151,10 @@ const INDIVIDUAL_BADGES: BadgeCardProps[] = [
     category: "Global Experience",
     description:
       "Awarded to students who participate in a study-abroad summer camp, showcasing their commitment to international learning.",
-    imagePath: "", // ← INSERT image path here, e.g. "/assets/badges/global-explorer.png"
+    imagePath: "/assets/Badges/Global Exploror.png",
     activities: ["Study Summer Camp Abroad"],
     isIndividual: true,
+    imageScale: 1.6,
   },
   {
     id: "startup-founder",
@@ -161,17 +162,21 @@ const INDIVIDUAL_BADGES: BadgeCardProps[] = [
     category: "Entrepreneurship",
     description:
       "The highest entrepreneurship honour — awarded to students who have a startup that is officially funded and approved.",
-    imagePath: "", // ← INSERT image path here, e.g. "/assets/badges/startup-founder.png"
+    imagePath: "/assets/Badges/Startup Founder.png",
     activities: ["Startup Funded & Approved"],
     isIndividual: true,
   },
 ];
 
+const ALL_BADGES = [...TIERED_BADGES, ...INDIVIDUAL_BADGES];
+
 export default function BadgesPage() {
+  const [selected, setSelected] = useState<BadgeCardProps | null>(null);
+
   return (
     <>
       <style>{`
-        .badge-card {
+        .badge-widget {
           transition: box-shadow 0.22s ease, transform 0.22s ease;
         }
       `}</style>
@@ -194,8 +199,7 @@ export default function BadgesPage() {
             </h1>
             <p className="text-sm text-gray-500 max-w-2xl">
               Earn badges by participating in academic and extracurricular activities.
-              Tiered badges upgrade automatically as you complete more activities — Individual badges are
-              standalone honours for exceptional achievements.
+              Click any badge to explore its tiers, requirements, and progression path.
             </p>
           </motion.header>
 
@@ -207,10 +211,10 @@ export default function BadgesPage() {
             className="mb-12 flex flex-wrap gap-4"
           >
             {[
-              { icon: "🥉", label: "Bronze", color: "#CD7F32" },
-              { icon: "🥈", label: "Silver", color: "#A0A0A0" },
-              { icon: "🥇", label: "Gold",   color: "#C8A400" },
-              { icon: "♦", label: "Diamond", color: "#831238" },
+              { icon: "🥉", label: "Bronze",            color: "#CD7F32" },
+              { icon: "🥈", label: "Silver",            color: "#A0A0A0" },
+              { icon: "🥇", label: "Gold",              color: "#C8A400" },
+              { icon: "♦",  label: "Diamond",           color: "#831238" },
               { icon: "🏅", label: "Special (No Tier)", color: "#9333EA" },
             ].map((item) => (
               <div
@@ -225,7 +229,7 @@ export default function BadgesPage() {
             ))}
           </motion.div>
 
-          {/* ── Tiered Badges Section ── */}
+          {/* ── Tiered Badges ── */}
           <section className="mb-16">
             <motion.div
               initial={{ opacity: 0, x: -16 }}
@@ -237,20 +241,27 @@ export default function BadgesPage() {
               <div>
                 <h2 className="heading text-2xl font-bold text-black">Tiered Badges</h2>
                 <p className="text-xs text-gray-400 mt-0.5">
-                  These badges have 4 levels: Bronze → Silver → Gold → Diamond
+                  These badges have 4 levels: Bronze → Silver → Gold → Diamond. Click to explore.
                 </p>
               </div>
             </motion.div>
 
-            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 xl:grid-cols-3">
+            <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
               {TIERED_BADGES.map((badge, i) => (
                 <motion.div
                   key={badge.id}
-                  initial={{ opacity: 0, y: 30 }}
+                  initial={{ opacity: 0, y: 24 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.15 + i * 0.06, duration: 0.4 }}
+                  transition={{ delay: 0.15 + i * 0.05, duration: 0.4 }}
                 >
-                  <BadgeCard {...badge} />
+                  <BadgeWidget
+                    name={badge.name}
+                    category={badge.category}
+                    imagePath={badge.imagePath}
+                    isIndividual={badge.isIndividual}
+                    imageScale={badge.imageScale}
+                    onSelect={() => setSelected(badge)}
+                  />
                 </motion.div>
               ))}
             </div>
@@ -259,7 +270,7 @@ export default function BadgesPage() {
           {/* ── Divider ── */}
           <div className="mb-16 h-px w-full bg-black/10" />
 
-          {/* ── Individual Badges Section ── */}
+          {/* ── Special Badges ── */}
           <section>
             <motion.div
               initial={{ opacity: 0, x: -16 }}
@@ -272,21 +283,28 @@ export default function BadgesPage() {
               <div>
                 <h2 className="heading text-2xl font-bold text-black">Special Badges</h2>
                 <p className="text-xs text-gray-400 mt-0.5">
-                  Standalone honours — no tiers, just exceptional achievement
+                  Standalone honours — no tiers, just exceptional achievement. Click to explore.
                 </p>
               </div>
             </motion.div>
 
-            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 xl:grid-cols-3">
+            <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
               {INDIVIDUAL_BADGES.map((badge, i) => (
                 <motion.div
                   key={badge.id}
-                  initial={{ opacity: 0, y: 30 }}
+                  initial={{ opacity: 0, y: 24 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-40px" }}
+                  viewport={{ once: true, margin: "-30px" }}
                   transition={{ delay: i * 0.07, duration: 0.4 }}
                 >
-                  <BadgeCard {...badge} />
+                  <BadgeWidget
+                    name={badge.name}
+                    category={badge.category}
+                    imagePath={badge.imagePath}
+                    isIndividual={badge.isIndividual}
+                    imageScale={badge.imageScale}
+                    onSelect={() => setSelected(badge)}
+                  />
                 </motion.div>
               ))}
             </div>
@@ -302,9 +320,11 @@ export default function BadgesPage() {
           >
             © 2024 Student Reward System · Badge achievements are verified by AI and faculty review.
           </motion.footer>
-
         </div>
       </div>
+
+      {/* ── Detail modal (rendered outside scroll container) ── */}
+      <BadgeDetailModal badge={selected} onClose={() => setSelected(null)} />
     </>
   );
 }

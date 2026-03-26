@@ -5,7 +5,7 @@ import { useState } from "react";
 
 // Mock Data
 const STUDENT = {
-    name: "Jordan Smith",
+    name: "Akash Smith",
     id: "STU-2024-0412",
     department: "Computer Science",
     year: "Year 2",
@@ -19,36 +19,36 @@ const TIER_BADGES = [
         title: "Knowledge Seeker",
         desc: "Learning & Certifications",
         tier: "Diamond",
-        image: "/assets-badges/knowledge-seeker-diamond.png",
+        image: "/assets/Badges/knowledge_seeker/diamond KS.png",
         progress: 100, // max level
         nextTier: null,
-    },
-    {
-        id: "campus-star",
-        title: "Campus Star",
-        desc: "Cultural, Sports, College Events",
-        tier: "Gold",
-        image: "/assets-badges/campus-star-gold.png",
-        progress: 85,
-        nextTier: "Diamond",
-        ptsToNext: 150,
     },
     {
         id: "community-impact",
         title: "Community Impact",
         desc: "Volunteering, NSS/NCC, Clubs",
         tier: "Silver",
-        image: "/assets-badges/community-impact-silver.png",
+        image: "/assets/Badges/community_impact/silverCI.png",
         progress: 50,
         nextTier: "Gold",
         ptsToNext: 300,
+    },
+    {
+        id: "campus-star",
+        title: "Campus Star",
+        desc: "Cultural, Sports, College Events",
+        tier: "Gold",
+        image: "/assets/Badges/campus_engagement/gold CE.png",
+        progress: 85,
+        nextTier: "Diamond",
+        ptsToNext: 150,
     },
     {
         id: "hackathon-hero",
         title: "Hackathon Hero",
         desc: "Hackathon participation and wins",
         tier: "Bronze",
-        image: "/assets-badges/hackathon-hero-bronze.png",
+        image: "/assets/Badges/Hackathon Badge/bronzeHB.png",
         progress: 20,
         nextTier: "Silver",
         ptsToNext: 400,
@@ -58,7 +58,7 @@ const TIER_BADGES = [
         title: "Innovation Builder",
         desc: "Research, Projects, Funding",
         tier: "Locked",
-        image: "/assets-badges/innovation-builder-locked.png",
+        image: "/assets/Badges/Innovation_builder/bronzeIB.png",
         progress: 0,
         nextTier: "Bronze",
         ptsToNext: 100,
@@ -68,7 +68,7 @@ const TIER_BADGES = [
         title: "Leadership Architect",
         desc: "Organizing events, workshops",
         tier: "Locked",
-        image: "/assets-badges/leadership-architect-locked.png",
+        image: "/assets/Badges/Leadership Badge/bronzeLB.png",
         progress: 0,
         nextTier: "Bronze",
         ptsToNext: 100,
@@ -81,21 +81,23 @@ const INDIVIDUAL_BADGES = [
         title: "Academic Excellence",
         desc: "> 8.5 CGPA Achieved",
         earned: true,
-        image: "/assets-badges/academic-excellence.png",
+        image: "/assets/Badges/Academic Excellence.png",
+        imageScale: 1.6,
     },
     {
         id: "global-explorer",
         title: "Global Explorer",
         desc: "Study Summer Camp Abroad",
         earned: false,
-        image: "/assets-badges/global-explorer.png",
+        image: "/assets/Badges/Global Exploror.png",
+        imageScale: 1.6,
     },
     {
         id: "startup-founder",
         title: "Startup Founder",
         desc: "Startup Funded & Approved",
         earned: false,
-        image: "/assets-badges/startup-founder.png",
+        image: "/assets/Badges/Startup Founder.png",
     },
 ];
 
@@ -146,7 +148,7 @@ export default function ProfileDashboard() {
                             {/* Profile Picture (Gradient Placeholder) */}
                             <div className="relative shrink-0">
                                 <div className="flex h-32 w-32 items-center justify-center rounded-full bg-primary text-4xl font-bold text-white shadow-[0_8px_24px_rgba(131,18,56,0.35)]">
-                                    JS
+                                    AS
                                 </div>
                                 {/* Status Dot */}
                                 <div className="absolute bottom-1 right-1 h-6 w-6 rounded-full border-4 border-white bg-green-500"></div>
@@ -206,7 +208,7 @@ export default function ProfileDashboard() {
                                             <div className={`rounded-xl border px-3 py-1 text-xs font-bold uppercase tracking-wider ${colors.bg} ${colors.text} ${colors.border}`}>
                                                 {badge.tier}
                                             </div>
-                                            <div className="h-16 w-16 shrink-0 drop-shadow-lg">
+                                            <div className="h-24 w-24 shrink-0 drop-shadow-lg flex items-center justify-center overflow-hidden">
                                                 <img
                                                     src={badge.image}
                                                     alt={badge.title}
@@ -273,11 +275,12 @@ export default function ProfileDashboard() {
                                     key={badge.id}
                                     className={`badge-card relative flex flex-col items-center justify-center p-6 text-center transition-all duration-300 rounded-[2rem] border ${badge.earned ? 'bg-primary/5 border-primary/20 hover:border-primary/40 shadow-sm' : 'bg-black/5 border-black/10 opacity-60 grayscale'}`}
                                 >
-                                    <div className="h-20 w-20 mb-4 drop-shadow-md">
+                                    <div className="h-24 w-24 mb-4 drop-shadow-md flex items-center justify-center overflow-hidden">
                                         <img
                                             src={badge.image}
                                             alt={badge.title}
                                             className={`badge-img h-full w-full object-contain`}
+                                            style={badge.imageScale ? { transform: `scale(${badge.imageScale})`, transformOrigin: 'center' } : undefined}
                                         />
                                     </div>
                                     <h3 className="text-sm font-bold text-black mb-1 leading-tight">

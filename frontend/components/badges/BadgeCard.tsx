@@ -6,6 +6,7 @@ export type BadgeTier = {
   tier: "Bronze" | "Silver" | "Gold" | "Diamond";
   icon: string;
   requirement: string;
+  imagePath?: string; // per-tier badge image
 };
 
 export type BadgeCardProps = {
@@ -13,11 +14,17 @@ export type BadgeCardProps = {
   name: string;
   category: string;
   description: string;
-  imagePath: string; // Add your badge image path here (e.g. "/assets/badges/knowledge-seeker.png")
+  imagePath: string; // header image (individual badges) or default/fallback (tiered badges)
   activities: string[];
   tiers?: BadgeTier[];
   isIndividual?: boolean;
   progressionNames?: string[];
+  /** Override card header area height, e.g. "h-[486px]" */
+  headerHeight?: string;
+  /** Override main badge image size classes, e.g. "h-[325px] w-[325px]" */
+  imageSize?: string;
+  /** Zoom factor applied via CSS scale() to crop transparent clearspace (default 1) */
+  imageScale?: number;
 };
 
 const tierColors: Record<string, { bg: string; border: string; text: string; glow: string }> = {
@@ -56,7 +63,16 @@ export default function BadgeCard({
   tiers,
   isIndividual = false,
   progressionNames,
+  headerHeight = "h-[374px]",
+  imageSize = "h-[250px] w-[250px]",
+  imageScale = 1,
 }: BadgeCardProps) {
+  // For tiered badges, use the Bronze-tier image as the card header; fall back to prop then placeholder.
+  const headerImage =
+    !isIndividual && tiers && tiers[0]?.imagePath
+      ? tiers[0].imagePath
+      : imagePath;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 24 }}
@@ -67,17 +83,13 @@ export default function BadgeCard({
       className="badge-card flex flex-col overflow-hidden rounded-3xl border border-black/10 bg-white/60 backdrop-blur-md shadow-md transition-shadow"
     >
       {/* Badge Image Area */}
-      <div className="relative flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 h-48">
-        {/* ── INSERT BADGE IMAGE HERE ──
-            Replace imagePath prop value with your image path, e.g.:
-            imagePath="/assets/badges/knowledge-seeker.png"
-            The <img> tag below will use it automatically.
-        ── ── ── ── ── ── ── ── ── ── */}
-        {imagePath ? (
+      <div className={`relative flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 ${headerHeight}`}>
+        {headerImage ? (
           <img
-            src={imagePath}
+            src={headerImage}
             alt={`${name} badge`}
-            className="h-32 w-32 object-contain drop-shadow-md"
+            className={`${imageSize} object-contain drop-shadow-md`}
+            style={imageScale !== 1 ? { transform: `scale(${imageScale})`, transformOrigin: 'center' } : undefined}
           />
         ) : (
           /* Placeholder shown when no image is provided */
@@ -144,10 +156,19 @@ export default function BadgeCard({
                 return (
                   <div
                     key={t.tier}
-                    className="flex flex-col gap-0.5 rounded-2xl border px-3 py-2"
+                    className="flex flex-col gap-1 rounded-2xl border px-3 py-2"
                     style={{ background: colors.bg, borderColor: colors.border }}
                   >
-                    <span className="text-base leading-none">{t.icon}</span>
+                    {/* Tier thumbnail */}
+                    {t.imagePath ? (
+                      <img
+                        src={t.imagePath}
+                        alt={`${t.tier} tier`}
+                        className="h-[78px] w-[78px] object-contain self-center mb-1 drop-shadow-sm"
+                      />
+                    ) : (
+                      <span className="text-base leading-none">{t.icon}</span>
+                    )}
                     <span
                       className="text-[11px] font-bold tracking-wide"
                       style={{ color: colors.text }}

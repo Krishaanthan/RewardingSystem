@@ -32,7 +32,7 @@ npm run build
 
 ### Backend (`backend/`)
 
-The backend is scaffolded but not yet implemented. The intended stack is FastAPI + Uvicorn.
+The backend is scaffolded but not yet implemented. The intended stack is **FastAPI + SQLAlchemy + PostgreSQL** (via Uvicorn).
 
 ```bash
 # Create and activate virtual env (from repo root)
@@ -103,21 +103,54 @@ Pages are organized by role under `frontend/app/`:
 - Fonts: `--font-primary` = Inter (sans-serif body), `--font-secondary` = Playfair Display (headings via `.heading` class).
 - Path alias `@/` maps to `frontend/` root (configured in `tsconfig.json`).
 
-### Backend — FastAPI (Planned Structure)
+### Backend — FastAPI (Project Structure)
 
 ```
 backend/app/
-├── api/v1/      # Route handlers
-├── core/        # Settings (pydantic-settings) and security (JWT via python-jose/passlib)
-├── services/    # Business logic; AI verification pipeline (OpenAI + pytesseract/pdf2image)
-└── models/      # SQLAlchemy ORM models and Pydantic schemas
+├── main.py                 # FastAPI application instance & global config
+├── core/
+│   ├── config.py           # Environment variables (DB URI, JWT Secret)
+│   └── security.py         # Password hashing and JWT generation logic
+├── api/
+│   ├── dependencies.py     # Auth extraction (get_current_user)
+│   └── routes/
+│       ├── auth.py         # Login and Registration endpoints
+│       ├── claims.py       # Claim submissions and status retrieval
+│       └── profile.py      # Student profile, badge, and points aggregation
+├── services/               # Business logic; AI verification pipeline
+├── models/                 # SQLAlchemy Database Models
+│   ├── user.py             
+│   ├── activity.py         
+│   ├── claim.py            
+│   └── badge.py            
+├── schemas/                # Pydantic models for request/response validation
+│   ├── user_schema.py
+│   └── claim_schema.py
+└── db/
+    ├── session.py          # PostgreSQL connection pool
+    └── base.py             # SQLAlchemy declarative base
 ```
 
 The AI verification pipeline (in `services/`) is the core business logic: it receives uploaded documents, runs OCR (pytesseract/pdf2image/Pillow), calls OpenAI to verify authenticity, and returns a confidence score. Claims above the auto-approval threshold are approved automatically; those below go to the faculty review queue.
 
 ### Database — PostgreSQL + pgvector
 
-- PostgreSQL 16 via Docker.
-- `pgvector` extension is bootstrapped by `database/postgres/init/001_extensions.sql` on first container start.
+The primary persistence layer is **PostgreSQL**, accessed asynchronously via **SQLAlchemy**.
+
+- PostgreSQL 16 via Docker (Connection: `postgresql://postgres:postgres@localhost:5432/student_rewards`).
+- `pgvector` extension is bootstrapped by `database/postgres/init/001_extensions.sql`.
 - Alembic migrations go in `database/postgres/migrations/`.
 - Async DB access via SQLAlchemy (asyncio) + asyncpg.
+
+#### Schema Definitions:
+- **`users`**: `id` (UUID), `registration_number` (Unique), `password_hash`, `name`, `department`, `role` (STUDENT, FACULTY, ADMIN).
+- **`activities`**: `id` (PK), `activity_name`, `points_awarded`.
+- **`claims`**: `id` (UUID), `student_id` (FK), `activity_id` (FK), `proof_url`, `status` (AI_PROCESSING, APPROVED, REJECTED).
+- **`badges`**: `id` (PK), `badge_name`, `required_points`.
+
+### API Endpoint Mapping
+
+- **Auth**: `POST /api/auth/register`, `POST /api/auth/login` (JWT).
+- **Claims**: `POST /api/claims/submit` (initial status `AI_PROCESSING`), `GET /api/claims/statuses` (student's view), `GET /api/claims/approved` (global approved list).
+- **Profile**: `GET /api/student/profile` (aggregates points and awards badges).
+- **Testing**: `PUT /api/claims/{claim_id}/test-approve` (manual status override).

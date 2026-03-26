@@ -1,4 +1,4 @@
-export function Footer() {
+﻿export function Footer() {
   return (
     <footer className="relative z-20 bg-white border-t border-brand-primary/10 mt-20 overflow-hidden">
       {/* Elegant Red Top Accent */}
@@ -14,8 +14,11 @@ export function Footer() {
           {/* Left: Branding & Copy */}
           <div className="flex flex-col items-center md:items-start">
             <div className="flex items-center gap-3 mb-3">
-              <span className="flex items-center bg-white rounded-lg p-2 shadow-sm border border-gray-100">
-                <img src="/assets/logo.svg" alt="CampusCred Logo" className="h-[28px] md:h-[32px] w-auto object-contain" />
+              <span className="text-2xl font-bold tracking-tight text-gray-900 flex items-center gap-2">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="text-brand-primary">
+                  <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+                CampusCred
               </span>
               <span className="px-2.5 py-1 rounded-md bg-brand-tertiary text-brand-primary text-[10px] uppercase font-bold tracking-widest border border-brand-primary/10">
                 v1.0.0-beta
@@ -28,7 +31,7 @@ export function Footer() {
 
           {/* Middle: Developer Credit */}
           <div className="text-sm text-gray-400 font-medium text-center bg-gray-50/50 px-6 py-2 rounded-full border border-gray-100">
-            Designed & Developed by <span className="text-brand-primary font-bold tracking-wide">Coffee Compiled and Team</span>
+            Designed & Developed by <span className="text-brand-primary font-bold tracking-wide">Campus Innovators</span>
           </div>
 
           {/* Right: Links */}
