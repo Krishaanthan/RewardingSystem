@@ -110,7 +110,7 @@ const MOCK_STUDENTS: LeaderboardStudent[] = [
   },
   {
     id: "s5",
-    name: "Fatima Khan",
+    name: "shaveena",
     initials: "FK",
     department: "ECE",
     departmentLabel: "B.E. Electronics and Communication",
