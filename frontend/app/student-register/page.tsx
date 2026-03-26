@@ -1,8 +1,8 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
 "use client";
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { StudentAuthLayout } from "@/components/auth/StudentAuthLayout";
 import { Select } from "@/components/ui/Select";
 
@@ -88,8 +88,17 @@ const DEPARTMENTS: Department[] = [
 ];
 
 export default function StudentRegisterPage() {
+  const router = useRouter();
+  const [formData, setFormData] = useState({
+    registration: "",
+    name: "",
+    password: "",
+    section: "",
+  });
   const [selectedDepartmentName, setSelectedDepartmentName] = useState<string>("");
   const [selectedYear, setSelectedYear] = useState<string>("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const selectedDepartment = useMemo(
     () => DEPARTMENTS.find((dept) => dept.name === selectedDepartmentName) ?? null,
@@ -104,6 +113,49 @@ export default function StudentRegisterPage() {
     [selectedDepartment]
   );
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch("http://localhost:8000/api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          registration_number: formData.registration,
+          name: formData.name,
+          department: selectedDepartmentName,
+          current_year: selectedYear,
+          section: formData.section,
+          password: formData.password,
+          role: "STUDENT",
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.detail || "Registration failed");
+      }
+
+      // Success - redirect to login
+      router.push("/student-login");
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <StudentAuthLayout
       mode="register"
@@ -111,7 +163,12 @@ export default function StudentRegisterPage() {
       subtitle="Create your account to start claiming reward points."
       activePortal="student"
     >
-      <form className="space-y-5">
+      <form className="space-y-5" onSubmit={handleSubmit}>
+        {error && (
+          <div className="rounded-lg bg-red-50 p-3 text-sm text-red-500 border border-red-100">
+            {error}
+          </div>
+        )}
         <div>
           <label
             htmlFor="registration"
@@ -123,6 +180,9 @@ export default function StudentRegisterPage() {
             id="registration"
             name="registration"
             type="text"
+            required
+            value={formData.registration}
+            onChange={handleChange}
             autoComplete="off"
             className="block w-full rounded-xl border border-black/20 bg-white/40 px-4 py-3 text-black outline-none transition placeholder:text-black/40 focus:border-black/50 focus:ring-1 focus:ring-black/50"
             placeholder="Enter registration number"
@@ -140,6 +200,9 @@ export default function StudentRegisterPage() {
             id="name"
             name="name"
             type="text"
+            required
+            value={formData.name}
+            onChange={handleChange}
             autoComplete="name"
             className="block w-full rounded-xl border border-black/20 bg-white/40 px-4 py-3 text-black outline-none transition placeholder:text-black/40 focus:border-black/50 focus:ring-1 focus:ring-black/50"
             placeholder="Enter full name"
@@ -156,6 +219,7 @@ export default function StudentRegisterPage() {
             </label>
             <Select
               id="department"
+              required
               value={selectedDepartmentName}
               onChange={(event) => {
                 setSelectedDepartmentName(event.target.value);
@@ -181,6 +245,7 @@ export default function StudentRegisterPage() {
             </label>
             <Select
               id="year"
+              required
               value={selectedYear}
               onChange={(event) => setSelectedYear(event.target.value)}
               disabled={!selectedDepartment}
@@ -208,6 +273,8 @@ export default function StudentRegisterPage() {
               id="section"
               name="section"
               type="text"
+              value={formData.section}
+              onChange={handleChange}
               autoComplete="off"
               className="block w-full rounded-xl border border-black/20 bg-white/40 px-4 py-3 text-black outline-none transition placeholder:text-black/40 focus:border-black/50 focus:ring-1 focus:ring-black/50"
               placeholder="e.g. A"
@@ -225,6 +292,9 @@ export default function StudentRegisterPage() {
               id="password"
               name="password"
               type="password"
+              required
+              value={formData.password}
+              onChange={handleChange}
               autoComplete="new-password"
               className="block w-full rounded-xl border border-black/20 bg-white/40 px-4 py-3 text-black outline-none transition placeholder:text-black/40 focus:border-black/50 focus:ring-1 focus:ring-black/50"
               placeholder="Create a password"
@@ -234,9 +304,10 @@ export default function StudentRegisterPage() {
 
         <button
           type="submit"
-          className="group mt-2 flex w-full items-center justify-center gap-2 rounded-xl bg-[#8F113B] px-4 py-3.5 font-semibold text-white transition-all hover:bg-[#a61a49] hover:shadow-[0_0_20px_rgba(131,18,56,0.5)] focus:outline-none focus:ring-2 focus:ring-[#8F113B] focus:ring-offset-2 focus:ring-offset-white/50 font-primary"
+          disabled={isLoading}
+          className="group mt-2 flex w-full items-center justify-center gap-2 rounded-xl bg-[#8F113B] px-4 py-3.5 font-semibold text-white transition-all hover:bg-[#a61a49] hover:shadow-[0_0_20px_rgba(131,18,56,0.5)] focus:outline-none focus:ring-2 focus:ring-[#8F113B] focus:ring-offset-2 focus:ring-offset-white/50 font-primary disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          Create Account
+          {isLoading ? "Creating Account..." : "Create Account"}
         </button>
 
         <p

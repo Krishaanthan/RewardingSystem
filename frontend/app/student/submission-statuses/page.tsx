@@ -1,52 +1,36 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { SubmissionStatusBadge } from "@/components/ui/SubmissionStatusBadge";
-import { ACTIVITY_REWARDS, type SubmissionStatus } from "@/lib/activity-rewards";
+import type { SubmissionStatus } from "@/lib/activity-rewards";
+
+type ClaimFile = {
+  id: string;
+  file_path: string;
+  file_type: string;
+};
 
 type Submission = {
   id: string;
-  activity: string;
-  rewards: number;
-  submittedAt: string;
-  status: SubmissionStatus;
-  feedback?: string;
+  activity_title: string;
+  activity_points: number;
+  submitted_at: string;
+  status: string;
+  rejection_reason?: string;
+  files: ClaimFile[];
 };
 
-// Mock submissions
-const submissions: Submission[] = [
-  {
-    id: "1",
-    activity: "NPTEL 12 week course",
-    rewards: 6,
-    submittedAt: "2025-03-01T14:30:00",
-    status: "ai-processing",
-  },
-  {
-    id: "2",
-    activity: "Hackathon Participation",
-    rewards: 2,
-    submittedAt: "2025-02-28T10:15:00",
-    status: "approved",
-  },
-  {
-    id: "3",
-    activity: "Global Certificate",
-    rewards: 6,
-    submittedAt: "2025-02-27T09:00:00",
-    status: "manual-review",
-  },
-  {
-    id: "4",
-    activity: "Club Activities",
-    rewards: 2,
-    submittedAt: "2025-02-25T16:45:00",
-    status: "rejected",
-    feedback:
-      "Certificate image is blurry and the name does not match the registered student. Please resubmit with a clear copy.",
-  },
-];
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000/api";
+
+// Map backend status values to frontend badge variants
+const STATUS_MAP: Record<string, SubmissionStatus> = {
+  AI_PROCESSING: "ai-processing",
+  APPROVED: "approved",
+  MANUAL_REVIEW: "manual-review",
+  REJECTED: "rejected",
+};
 
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString("en-IN", {
@@ -59,10 +43,33 @@ function formatDate(iso: string) {
 }
 
 export default function SubmissionStatusesPage() {
+  const [submissions, setSubmissions] = useState<Submission[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const token = localStorage.getItem("access_token");
+    if (!token) {
+      setError("You must be logged in to view submissions.");
+      setLoading(false);
+      return;
+    }
+
+    fetch(`${API_BASE}/student/claim-statuses`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then(async (r) => {
+        if (!r.ok) throw new Error("Failed to fetch");
+        return r.json();
+      })
+      .then((data) => setSubmissions(data))
+      .catch(() => setError("Could not load submissions. Please try again later."))
+      .finally(() => setLoading(false));
+  }, []);
+
   return (
     <>
       <style>{`
-        /* Glass card */
         .card {
           background: rgba(255, 255, 255, 0.4);
           backdrop-filter: blur(24px);
@@ -78,10 +85,7 @@ export default function SubmissionStatusesPage() {
         }
       `}</style>
       <div className="relative h-screen w-full overflow-hidden text-black font-primary bg-white">
-
-        {/* Scrollable Content Container */}
         <div className="relative z-10 h-full w-full overflow-y-auto overflow-x-hidden [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-black/20">
-          {/* Main Content */}
           <div className="mx-auto flex min-h-full max-w-5xl flex-col px-6 pb-6 pt-28 font-primary">
 
             {/* Header */}
@@ -92,11 +96,10 @@ export default function SubmissionStatusesPage() {
               </div>
             </motion.header>
 
-            {/* Top Info Banner */}
+            {/* Top Banner */}
             <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1, duration: 0.4 }} className="mt-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
               <p className="max-w-xl text-base leading-relaxed text-black">
-                Full transparency on your submission pipeline. Submissions from the
-                Claim Points page appear here automatically.
+                Full transparency on your submission pipeline. Submissions from the Claim Points page appear here automatically.
               </p>
               <Link
                 href="/student/claim-points"
@@ -111,7 +114,7 @@ export default function SubmissionStatusesPage() {
 
             <div className="mt-12 space-y-8">
 
-              {/* Submissions list - Glassmorphic Card */}
+              {/* Submissions list */}
               <motion.section initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.5 }} className="card w-full overflow-hidden">
                 <div className="border-b border-black/20 px-8 py-5 flex items-center gap-3">
                   <div className="h-6 w-1 rounded-full bg-primary"></div>
@@ -119,13 +122,14 @@ export default function SubmissionStatusesPage() {
                 </div>
 
                 <div className="divide-y divide-black/20">
-                  {submissions.length === 0 ? (
+                  {loading ? (
+                    <div className="px-8 py-12 text-center text-black">Loading submissions…</div>
+                  ) : error ? (
+                    <div className="px-8 py-12 text-center text-primary">{error}</div>
+                  ) : submissions.length === 0 ? (
                     <div className="px-8 py-12 text-center text-black">
                       <p>No submissions yet.</p>
-                      <Link
-                        href="/student/claim-points"
-                        className="mt-4 inline-block font-semibold text-black transition hover:text-black/80"
-                      >
+                      <Link href="/student/claim-points" className="mt-4 inline-block font-semibold text-black transition hover:text-black/80">
                         Submit your first proof &rarr;
                       </Link>
                     </div>
@@ -140,13 +144,32 @@ export default function SubmissionStatusesPage() {
                       >
                         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                           <div className="min-w-0 flex-1">
-                            <p className="font-semibold text-black text-lg">
-                              {sub.activity}
-                            </p>
-                            <p className="mt-1 text-sm text-black">
-                              Submitted {formatDate(sub.submittedAt)}
-                            </p>
-                            {sub.status === "rejected" && sub.feedback && (
+                            <p className="font-semibold text-black text-lg">{sub.activity_title}</p>
+                            <p className="mt-1 text-sm text-black">Submitted {formatDate(sub.submitted_at)}</p>
+
+                            {/* Uploaded files */}
+                            {sub.files.length > 0 && (
+                              <div className="mt-3 flex flex-wrap gap-2">
+                                {sub.files.map((f) => (
+                                  <a
+                                    key={f.id}
+                                    href={`http://localhost:8000/storage/${f.file_path.replace(/\\/g, "/")}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    title={f.file_path}
+                                    className="inline-flex items-center gap-1.5 rounded-lg border border-black/15 bg-white/50 px-3 py-1.5 text-xs font-medium text-black transition hover:bg-white/80 hover:border-primary/40"
+                                  >
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="h-3.5 w-3.5 opacity-60">
+                                      <path strokeLinecap="round" strokeLinejoin="round" d="M18.375 12.739l-7.693 7.693a4.5 4.5 0 01-6.364-6.364l10.94-10.94A3 3 0 1119.5 7.372L8.552 18.32m.009-.01-.01.01m5.699-9.941-7.81 7.81a1.5 1.5 0 002.112 2.13" />
+                                    </svg>
+                                    {f.file_type}
+                                  </a>
+                                ))}
+                              </div>
+                            )}
+
+                            {/* Rejection feedback */}
+                            {sub.status === "REJECTED" && sub.rejection_reason && (
                               <div className="mt-4 rounded-xl border border-primary/30 bg-primary/10 p-4 text-sm text-black">
                                 <span className="font-bold tracking-wider text-xs uppercase text-primary flex items-center gap-2 mb-1">
                                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
@@ -154,16 +177,16 @@ export default function SubmissionStatusesPage() {
                                   </svg>
                                   Feedback
                                 </span>
-                                {sub.feedback}
+                                {sub.rejection_reason}
                               </div>
                             )}
                           </div>
                           <div className="flex shrink-0 items-center gap-6 mt-4 sm:mt-0">
                             <span className="font-bold text-black text-xl tracking-tight">
-                              +{sub.rewards} pts
+                              +{sub.activity_points} pts
                             </span>
                             <div className="scale-110 origin-right">
-                              <SubmissionStatusBadge status={sub.status} />
+                              <SubmissionStatusBadge status={STATUS_MAP[sub.status] ?? "ai-processing"} />
                             </div>
                           </div>
                         </div>
@@ -172,48 +195,6 @@ export default function SubmissionStatusesPage() {
                   )}
                 </div>
               </motion.section>
-
-              {/* Activity & Rewards reference table - Glassmorphic Card */}
-              <motion.section initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.5 }} className="card w-full overflow-hidden">
-                <div className="border-b border-black/20 px-8 py-5">
-                  <div className="flex items-center gap-3">
-                    <div className="h-6 w-1 rounded-full bg-primary"></div>
-                    <h2 className="heading text-xl font-semibold tracking-wide text-black">Activity & Rewards</h2>
-                  </div>
-                  <p className="mt-2 text-sm text-black">
-                    Points awarded per activity type
-                  </p>
-                </div>
-
-                <div className="max-h-80 overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-black/20">
-                  <table className="min-w-full text-left text-sm">
-                    <thead className="sticky top-0 z-10 border-b border-black/20 bg-white/80 backdrop-blur-md">
-                      <tr>
-                        <th className="px-8 py-4 font-semibold text-black uppercase tracking-widest text-xs">
-                          Activity
-                        </th>
-                        <th className="px-8 py-4 font-semibold text-black uppercase tracking-widest text-xs">
-                          Rewards
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-black/20">
-                      {Object.entries(ACTIVITY_REWARDS).map(([activity, rewards]) => (
-                        <tr
-                          key={activity}
-                          className="transition-colors hover:bg-white/60"
-                        >
-                          <td className="px-8 py-4 text-black">{activity}</td>
-                          <td className="px-8 py-4 font-bold text-black tracking-wide">
-                            {rewards} pts
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </motion.section>
-
             </div>
 
             {/* Footer */}

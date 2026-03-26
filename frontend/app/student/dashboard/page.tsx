@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 
 /* ══════════════════════════════════════════════════════════════════════════
@@ -384,30 +384,36 @@ function LeaderboardPage({ onBack }: any) {
 ══════════════════════════════════════════════════════════════════════════ */
 
 /* ── Student Profile (enlarged) ──────────────────────────────────────────── */
-function StudentProfileCard() {
+function StudentProfileCard({ student, stats }: { student: any; stats: any }) {
+  const initials = student?.name
+    ? student.name.split(" ").map((n: string) => n[0]).join("").toUpperCase()
+    : "ST";
+
   return (
     <Card style={{ padding: "28px 26px" }}>
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: 14 }}>
         {/* Avatar */}
         <div style={{ position: "relative" }}>
-          <div style={{ width: 96, height: 96, borderRadius: "50%", background: `linear-gradient(135deg, ${P} 0%, ${PM} 100%)`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 32, fontWeight: 800, color: "#fff", boxShadow: `0 10px 32px rgba(131,18,56,0.35)`, letterSpacing: -1 }}>AS</div>
+          <div style={{ width: 96, height: 96, borderRadius: "50%", background: `linear-gradient(135deg, ${P} 0%, ${PM} 100%)`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 32, fontWeight: 800, color: "#fff", boxShadow: `0 10px 32px rgba(131,18,56,0.35)`, letterSpacing: -1 }}>
+            {initials}
+          </div>
           <div style={{ position: "absolute", bottom: 4, right: 4, width: 20, height: 20, borderRadius: "50%", background: "#22C55E", border: "3px solid #fff", boxShadow: "0 2px 6px rgba(0,0,0,0.15)" }} />
         </div>
 
         {/* Name — enlarged */}
         <div>
-          <div style={{ fontSize: 26, fontWeight: 800, color: TXT, letterSpacing: -0.7, lineHeight: 1.1 }}>Akash Smith</div>
-          <div style={{ fontSize: 13, color: CGD, marginTop: 5 }}>ID: STU-2024-0412</div>
+          <div style={{ fontSize: 26, fontWeight: 800, color: TXT, letterSpacing: -0.7, lineHeight: 1.1 }}>{student?.name || "Loading..."}</div>
+          <div style={{ fontSize: 13, color: CGD, marginTop: 5 }}>ID: {student?.registration_number || "-"}</div>
         </div>
 
         {/* Dept badge */}
         <div style={{ background: PL, color: P, fontSize: 12, fontWeight: 600, padding: "5px 14px", borderRadius: 20, border: `1px solid ${PB}` }}>
-          Computer Science · Year 2
+          {student?.department || "Dept"} · Year {student?.current_year || "-"}
         </div>
 
         {/* Stats */}
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 2, background: "#F0E8EC", borderRadius: 14, overflow: "hidden", width: "100%", marginTop: 6 }}>
-          {[["#4", "Rank"], ["47", "Points"], ["4", "Badges"]].map(([val, lbl]) => (
+          {[[`#${stats?.rank || "-"}`, "Rank"], [`${stats?.total_points || 0}`, "Points"], [`${stats?.badges_count || 0}`, "Badges"]].map(([val, lbl]) => (
             <div key={lbl} style={{ background: "#fff", padding: "14px 8px", textAlign: "center" }}>
               <div style={{ fontSize: 22, fontWeight: 800, color: P, letterSpacing: -0.5 }}>{val}</div>
               <div style={{ fontSize: 11, color: CGD, marginTop: 2 }}>{lbl}</div>
@@ -700,9 +706,38 @@ function CertificatesPanel() {
 }
 
 
+
 export default function App() {
   const [activeNav, setActiveNav] = useState("dashboard");
   const [page, setPage] = useState("dashboard");
+  const [dashboardData, setDashboardData] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchDashboard = async () => {
+      try {
+        const token = localStorage.getItem("access_token");
+        if (!token) return;
+
+        const response = await fetch("http://localhost:8000/api/student/dashboard-summary", {
+          headers: {
+            "Authorization": `Bearer ${token}`
+          }
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setDashboardData(data);
+        }
+      } catch (err) {
+        console.error("Error fetching dashboard data:", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchDashboard();
+  }, []);
 
   const goTo = (p: any) => { setPage(p); window.scrollTo({ top: 0, behavior: "smooth" }); };
   const goBack = () => goTo("dashboard");
@@ -713,6 +748,16 @@ export default function App() {
     claim: "🎁 Claim Points",
     badges: "🏅 My Badges",
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex h-screen items-center justify-center bg-white">
+        <div className="h-12 w-12 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
+      </div>
+    );
+  }
+
+  const { student, stats } = dashboardData || { student: {}, stats: {} };
 
   return (
     <>
@@ -797,16 +842,16 @@ export default function App() {
         {page === "dashboard" && (
           <div className="page-in">
             <div style={{ marginBottom: 28 }}>
-              <h1 style={{ fontSize: 26, fontWeight: 800, color: TXT, letterSpacing: -0.6 }}>Good morning, Akash 👋</h1>
-              <p style={{ fontSize: 14, color: CGD, marginTop: 4 }}>Sunday, March 8 · Week 10 of Term 1 · You're doing great this week!</p>
+              <h1 style={{ fontSize: 26, fontWeight: 800, color: TXT, letterSpacing: -0.6 }}>Good morning, {student?.name || "Student"} 👋</h1>
+              <p style={{ fontSize: 14, color: TSUB, marginTop: 4 }}>You're doing great this week!</p>
             </div>
 
             {/* Stat row — 3 cards (no Active Streak) */}
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 16, marginBottom: 20 }}>
               {[
-                { label: "Total Points", value: "47", sub: "↑ +7 this week", subC: GRN, icon: "⭐" },
-                { label: "Current Rank", value: "#4", sub: "↑ Up 2 positions", subC: GRN, icon: "📈" },
-                { label: "Badges Earned", value: "4 / 6", sub: "2 more to unlock", subC: CGD, icon: "🏅" },
+                { label: "Total Points", value: `${stats?.total_points || 0}`, sub: "Earned this term", subC: GRN, icon: "⭐" },
+                { label: "Current Rank", value: `#${stats?.rank || "-"}`, sub: "Across all students", subC: GRN, icon: "📈" },
+                { label: "Badges Earned", value: `${stats?.badges_count || 0}`, sub: "Unlocked achievements", subC: CGD, icon: "🏅" },
               ].map(s => (
                 <div key={s.label} className="card" style={{ padding: "20px 22px" }}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 10 }}>
@@ -821,7 +866,7 @@ export default function App() {
 
             {/* Row 1: Profile (enlarged 340px) + Chart */}
             <div style={{ display: "grid", gridTemplateColumns: "340px 1fr", gap: 18, marginBottom: 18 }}>
-              <StudentProfileCard />
+              <StudentProfileCard student={student} stats={stats} />
               <PointsChart />
             </div>
 

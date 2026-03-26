@@ -3,18 +3,38 @@
 import Link from "next/link";
 import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
-import { ACTIVITY_REWARDS } from "@/lib/activity-rewards";
 import { ACTIVITY_PROOF_RULES } from "@/lib/activity-proof-rules";
 
-const activities = Object.keys(ACTIVITY_REWARDS);
+type ActivityItem = {
+  id: number;
+  title: string;
+  points: number;
+  required_proof_types: string[];
+};
+
 const rulesByActivity = Object.fromEntries(
   ACTIVITY_PROOF_RULES.map((r) => [r.activity, r])
 );
 
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000/api";
+
 export default function ClaimPointsPage() {
-  const [selectedActivity, setSelectedActivity] = useState("");
+  const [activities, setActivities] = useState<ActivityItem[]>([]);
+  const [selectedActivity, setSelectedActivity] = useState<ActivityItem | null>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [files, setFiles] = useState<Record<string, File | null>>({});
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Fetch activities from backend
+  useEffect(() => {
+    fetch(`${API_BASE}/student/activities`)
+      .then((r) => r.json())
+      .then((data) => setActivities(data))
+      .catch(() => {/* silently fall back to empty list */});
+  }, []);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -26,12 +46,64 @@ export default function ClaimPointsPage() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const rule = selectedActivity ? rulesByActivity[selectedActivity] : null;
+  const rule = selectedActivity ? rulesByActivity[selectedActivity.title] : null;
+
+  const handleFileChange = (fieldId: string, file: File | null) => {
+    setFiles((prev) => ({ ...prev, [fieldId]: file }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedActivity) return;
+    setError(null);
+    setSubmitting(true);
+
+    const token = localStorage.getItem("access_token");
+    if (!token) {
+      setError("You must be logged in to submit a claim.");
+      setSubmitting(false);
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("activity_id", String(selectedActivity.id));
+
+    // Attach each file — use the proof type as a meaningful name prefix
+    Object.entries(files).forEach(([fileType, file]) => {
+      if (file) {
+        // Rename file so backend can infer file_type from filename
+        const blob = file.slice(0, file.size, file.type);
+        const renamed = new File([blob], `${fileType}_${file.name}`, { type: file.type });
+        formData.append("files", renamed);
+      }
+    });
+
+    try {
+      const res = await fetch(`${API_BASE}/student/submit-claim`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+        body: formData,
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        setError(data.detail ?? "Submission failed. Please try again.");
+        return;
+      }
+
+      setSuccess(true);
+      // Redirect to submission statuses after short delay
+      setTimeout(() => { window.location.href = "/student/submission-statuses"; }, 1500);
+    } catch {
+      setError("Network error. Please check your connection.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
     <>
       <style>{`
-        /* Glass card */
         .card {
           background: rgba(255, 255, 255, 0.4);
           backdrop-filter: blur(24px);
@@ -47,10 +119,7 @@ export default function ClaimPointsPage() {
         }
       `}</style>
       <div className="relative h-screen w-full overflow-hidden text-black font-primary bg-white">
-
-        {/* Scrollable Content Container */}
         <div className="relative z-10 h-full w-full overflow-y-auto overflow-x-hidden [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-black/20">
-          {/* Main Content */}
           <div className="mx-auto flex min-h-full max-w-5xl flex-col px-6 pb-6 pt-28 font-primary">
 
             {/* Header */}
@@ -59,7 +128,6 @@ export default function ClaimPointsPage() {
                 <h1 className="heading text-2xl font-bold tracking-wide text-black">Claim Points</h1>
                 <p className="text-sm text-black">AI-Powered Submission Verification</p>
               </div>
-
             </motion.header>
 
             {/* Top Info Banner */}
@@ -88,12 +156,24 @@ export default function ClaimPointsPage() {
                 <h2 className="heading text-2xl font-semibold tracking-wide text-black">Submit Proof</h2>
               </div>
 
-              <form className="space-y-6">
+              {/* Success message */}
+              {success && (
+                <div className="mb-6 rounded-xl border border-green-500/30 bg-green-500/10 px-4 py-3 text-sm text-green-700 font-medium">
+                  ✅ Claim submitted successfully! Redirecting to submission statuses…
+                </div>
+              )}
+
+              {/* Error message */}
+              {error && (
+                <div className="mb-6 rounded-xl border border-primary/30 bg-primary/10 px-4 py-3 text-sm text-primary font-medium">
+                  {error}
+                </div>
+              )}
+
+              <form className="space-y-6" onSubmit={handleSubmit}>
                 {/* Activity Select */}
                 <div>
-                  <label className="mb-2 block text-sm font-medium text-black">
-                    Activity
-                  </label>
+                  <label className="mb-2 block text-sm font-medium text-black">Activity</label>
                   <div className="relative" ref={dropdownRef}>
                     <button
                       type="button"
@@ -102,10 +182,10 @@ export default function ClaimPointsPage() {
                       aria-haspopup="listbox"
                       aria-expanded={isDropdownOpen}
                     >
-                      <span className={`truncate ${!selectedActivity ? "text-black" : "text-black"}`}>
-                        {selectedActivity ? `${selectedActivity} (${ACTIVITY_REWARDS[selectedActivity]} pts)` : "Select activity"}
+                      <span className="truncate">
+                        {selectedActivity ? `${selectedActivity.title} (${selectedActivity.points} pts)` : "Select activity"}
                       </span>
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className={`h-4 w-4 text-black transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`}>
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className={`h-4 w-4 text-black transition-transform ${isDropdownOpen ? "rotate-180" : ""}`}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                       </svg>
                     </button>
@@ -114,16 +194,17 @@ export default function ClaimPointsPage() {
                       <ul className="max-h-60 overflow-y-auto rounded-lg text-sm text-black [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-black/20">
                         {activities.map((activity) => (
                           <li
-                            key={activity}
+                            key={activity.id}
                             role="option"
-                            aria-selected={selectedActivity === activity}
+                            aria-selected={selectedActivity?.id === activity.id}
                             onClick={() => {
                               setSelectedActivity(activity);
+                              setFiles({});
                               setIsDropdownOpen(false);
                             }}
-                            className={`cursor-pointer rounded-md px-4 py-3 transition-colors hover:bg-white/60 ${selectedActivity === activity ? 'bg-white/80 font-semibold text-black' : ''}`}
+                            className={`cursor-pointer rounded-md px-4 py-3 transition-colors hover:bg-white/60 ${selectedActivity?.id === activity.id ? "bg-white/80 font-semibold" : ""}`}
                           >
-                            {activity} ({ACTIVITY_REWARDS[activity]} pts)
+                            {activity.title} ({activity.points} pts)
                           </li>
                         ))}
                       </ul>
@@ -131,66 +212,56 @@ export default function ClaimPointsPage() {
                   </div>
                 </div>
 
-                {rule && (
+                {selectedActivity && (
                   <>
-                    {/* Verification Requirements Alert */}
-                    <div className="rounded-xl border border-primary/30 bg-primary/10 p-5 text-sm">
-                      <div className="flex items-center gap-2 text-primary font-bold tracking-wider text-xs uppercase mb-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
-                          <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-4.5A.75.75 0 0110 5zm0 10a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
-                        </svg>
-                        <span>Verification Requirements</span>
+                    {/* Proof requirements from frontend rules (UI only) */}
+                    {rule && (
+                      <div className="rounded-xl border border-primary/30 bg-primary/10 p-5 text-sm">
+                        <div className="flex items-center gap-2 text-primary font-bold tracking-wider text-xs uppercase mb-2">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
+                            <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-4.5A.75.75 0 0110 5zm0 10a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
+                          </svg>
+                          <span>Verification Requirements</span>
+                        </div>
+                        <p className="text-black">{rule.requiredProof}</p>
+                        <p className="mt-1 text-black italic text-xs">Common challenges: {rule.fraudChallenge}</p>
                       </div>
-                      <p className="text-black">
-                        {rule.requiredProof}
-                      </p>
-                      <p className="mt-1 text-black italic text-xs">
-                        Common challenges: {rule.fraudChallenge}
-                      </p>
-                    </div>
+                    )}
 
-                    <h3 className="text-xs font-bold tracking-widest text-black uppercase pt-4">
-                      Required Proof For Submission
-                    </h3>
-
-                    {/* Dynamic Fields */}
+                    {/* Dynamic file fields from backend required_proof_types */}
+                    <h3 className="text-xs font-bold tracking-widest text-black uppercase pt-4">Required Proof For Submission</h3>
                     <div className="space-y-4">
-                      {rule.fields.map((field) =>
-                        field.type === "link" ? (
-                          <div key={field.id}>
+                      {selectedActivity.required_proof_types.map((proofType) =>
+                        proofType.toLowerCase().includes("link") ? (
+                          <div key={proofType}>
                             <label className="mb-2 block text-sm font-medium text-black">
-                              {field.label} {field.required && <span className="text-primary">*</span>}
+                              {proofType} <span className="text-primary">*</span>
                             </label>
                             <input
                               type="url"
-                              placeholder={field.placeholder ?? "https://..."}
-                              required={field.required}
-                              className="w-full rounded-xl border border-black/20 bg-white/40 px-4 py-3 text-black outline-none placeholder:text-black focus:border-black/20 focus:ring-1 focus:ring-white/50"
+                              placeholder="https://..."
+                              required
+                              onChange={(e) => handleFileChange(proofType, null)}
+                              className="w-full rounded-xl border border-black/20 bg-white/40 px-4 py-3 text-black outline-none placeholder:text-black/50 focus:border-black/20 focus:ring-1 focus:ring-white/50"
                             />
                           </div>
                         ) : (
-                          <div key={field.id}>
+                          <div key={proofType}>
                             <label className="mb-2 block text-sm font-medium text-black">
-                              {field.label} {field.required && <span className="text-primary">*</span>}
+                              {proofType} <span className="text-primary">*</span>
                             </label>
-                            <div className="relative flex items-center overflow-hidden rounded-xl border border-black/20 bg-white/40 transition-colors hover:bg-white/60 focus-within:border-black/20 focus-within:ring-1 focus-within:ring-white/50">
+                            <div className="relative flex items-center overflow-hidden rounded-xl border border-black/20 bg-white/40 transition-colors hover:bg-white/60">
                               <input
                                 type="file"
-                                accept={field.accept ?? ".pdf,image/*"}
-                                required={field.required}
+                                accept=".pdf,image/*"
+                                required
                                 className="peer absolute inset-0 z-10 h-full w-full cursor-pointer opacity-0"
-                                onChange={(e) => {
-                                  const span = e.target.nextElementSibling;
-                                  if (span) {
-                                    span.textContent = e.target.files?.[0]?.name || "No file chosen";
-                                    span.classList.replace("text-black", "text-black");
-                                  }
-                                }}
+                                onChange={(e) => handleFileChange(proofType, e.target.files?.[0] ?? null)}
                               />
                               <span className="flex-1 truncate px-4 py-3 text-sm text-black">
-                                No file chosen
+                                {files[proofType] ? files[proofType]!.name : "No file chosen"}
                               </span>
-                              <span className="m-1 flex-shrink-0 cursor-pointer rounded-lg bg-primary px-5 py-2 text-sm font-semibold text-secondary transition hover:bg-primary/80 peer-valid:bg-primary">
+                              <span className="m-1 flex-shrink-0 cursor-pointer rounded-lg bg-primary px-5 py-2 text-sm font-semibold text-secondary transition hover:bg-primary/80">
                                 Choose file
                               </span>
                             </div>
@@ -201,24 +272,19 @@ export default function ClaimPointsPage() {
                   </>
                 )}
 
-                {selectedActivity && !rule && (
-                  <p className="rounded-lg border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-200">
-                    Proof rules for this activity are being configured. Please select
-                    another activity or contact support.
-                  </p>
-                )}
-
                 {/* Submit Button */}
                 <div className="pt-4">
                   <button
                     type="submit"
-                    disabled={!selectedActivity || !rule}
+                    disabled={!selectedActivity || submitting || success}
                     className="group flex items-center gap-2 rounded-xl bg-primary px-8 py-3.5 font-semibold text-secondary transition-all hover:bg-primary/80 hover:shadow-[0_0_20px_rgba(131,18,56,0.5)] focus:outline-none focus:ring-2 focus:ring-[#8F113B] focus:ring-offset-2 focus:ring-offset-black/50 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none"
                   >
-                    Submit Claim
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="h-4 w-4 transition-transform group-hover:translate-x-1">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                    </svg>
+                    {submitting ? "Submitting…" : "Submit Claim"}
+                    {!submitting && (
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="h-4 w-4 transition-transform group-hover:translate-x-1">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                      </svg>
+                    )}
                   </button>
                 </div>
               </form>

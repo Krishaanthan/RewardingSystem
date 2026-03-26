@@ -1,5 +1,6 @@
 import type { SubmissionStatus } from "@/lib/activity-rewards";
 
+
 function Spinner() {
   return (
     <svg

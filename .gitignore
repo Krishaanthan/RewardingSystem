@@ -10,3 +10,7 @@ backend/__pycache__/
 # Environment
 .env
 .env.*
+
+storage/*
+storage
+storage/
