@@ -11,6 +11,9 @@ export default function StudentNavbar() {
     const [lastScrollY, setLastScrollY] = useState(0);
 
     const dropdownRef = useRef<HTMLDivElement>(null);
+    const mobileMenuRef = useRef<HTMLDivElement>(null);
+    const toggleButtonRef = useRef<HTMLButtonElement>(null);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [studentName, setStudentName] = useState<string>("Profile");
 
     useEffect(() => {
@@ -41,6 +44,12 @@ export default function StudentNavbar() {
         function handleClickOutside(event: MouseEvent) {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
                 setIsProfileOpen(false);
+            }
+            if (mobileMenuRef.current && 
+                !mobileMenuRef.current.contains(event.target as Node) && 
+                toggleButtonRef.current && 
+                !toggleButtonRef.current.contains(event.target as Node)) {
+                setIsMenuOpen(false);
             }
         }
         document.addEventListener("mousedown", handleClickOutside);
@@ -83,7 +92,7 @@ export default function StudentNavbar() {
                 </Link>
             </div>
 
-            {/* Center Links */}
+            {/* Center Links (Desktop) */}
             <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center gap-8">
                 {navItems.map((item) => {
                     const isActive =
@@ -107,8 +116,28 @@ export default function StudentNavbar() {
                 })}
             </div>
 
-            {/* Profile Section */}
-            <div className="relative flex items-center" ref={dropdownRef}>
+            {/* Mobile Toggle Button */}
+            <div className="flex items-center md:hidden">
+                <button
+                    ref={toggleButtonRef}
+                    onClick={() => setIsMenuOpen(!isMenuOpen)}
+                    className="p-2 text-gray-600 hover:text-black focus:outline-none"
+                    aria-label="Toggle menu"
+                >
+                    {isMenuOpen ? (
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="h-6 w-6">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    ) : (
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="h-6 w-6">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                        </svg>
+                    )}
+                </button>
+            </div>
+
+            {/* Profile Section (Desktop) */}
+            <div className="hidden md:flex relative items-center" ref={dropdownRef}>
                 <button
                     onClick={() => setIsProfileOpen(!isProfileOpen)}
                     className={`flex items-center gap-2 rounded-full border border-gray-200 px-3 py-1.5 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#831238]/20 ${
@@ -200,6 +229,83 @@ export default function StudentNavbar() {
                             </svg>
                             Logout
                         </Link>
+                    </div>
+                </div>
+            </div>
+
+            {/* Mobile Menu Overlay */}
+            <div
+                ref={mobileMenuRef}
+                className={`fixed inset-x-0 top-20 z-50 overflow-hidden bg-white shadow-xl transition-all duration-300 ease-in-out md:hidden ${isMenuOpen ? "max-h-[calc(100vh-80px)] opacity-100" : "max-h-0 opacity-0 pointer-events-none"
+                    }`}
+            >
+                <div className="flex flex-col p-4 space-y-2">
+                    {/* Navigation Items */}
+                    <div className="pb-4 border-b border-gray-100">
+                        {navItems.map((item) => {
+                            const isActive =
+                                pathname === item.path ||
+                                (item.path === "/student/claim-points" && pathname === "/student/submission-statuses");
+                            return (
+                                <Link
+                                    key={item.name}
+                                    href={item.path}
+                                    onClick={() => setIsMenuOpen(false)}
+                                    className={`block px-4 py-3 rounded-xl transition-colors ${isActive
+                                        ? "bg-[#831238]/5 font-semibold text-[#831238]"
+                                        : "font-medium text-gray-600 hover:bg-gray-50 hover:text-black"
+                                        }`}
+                                >
+                                    {item.name}
+                                </Link>
+                            );
+                        })}
+                    </div>
+
+                    {/* Profile Items */}
+                    <div className="pt-2">
+                        <div className="px-4 py-2 flex items-center gap-3 mb-2">
+                            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#831238] text-white">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
+                                    <path fillRule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clipRule="evenodd" />
+                                </svg>
+                            </div>
+                            <span className="font-bold text-gray-800">{studentName}</span>
+                        </div>
+                        <Link
+                            href="/student/profile"
+                            onClick={() => setIsMenuOpen(false)}
+                            className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50 hover:text-black transition-colors"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="h-5 w-5 text-gray-400">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                            </svg>
+                            Your Profile
+                        </Link>
+                        <Link
+                            href="/student/badges"
+                            onClick={() => setIsMenuOpen(false)}
+                            className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50 hover:text-black transition-colors"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="h-5 w-5 text-gray-400">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 18.75h-9m9 0a3 3 0 013 3h-15a3 3 0 013-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M7.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0a7.454 7.454 0 01-.982-3.172M9.497 14.25a7.454 7.454 0 00.981-3.172M5.25 4.236c-.982.143-1.954.317-2.916.52A6.003 6.003 0 007.73 9.728M5.25 4.236V4.5c0 2.108.966 3.99 2.48 5.228M5.25 4.236V2.721C7.456 2.41 9.71 2.25 12 2.25c2.291 0 4.545.16 6.75.47v1.516M7.73 9.728a6.726 6.726 0 002.748 1.35m8.272-6.842V4.5c0 2.108-.966 3.99-2.48 5.228m2.48-5.492a46.32 46.32 0 012.916.52 6.003 6.003 0 01-5.395 4.972m0 0a6.726 6.726 0 01-2.749 1.35m0 0a6.772 6.772 0 01-3.044 0" />
+                            </svg>
+                            Badges
+                        </Link>
+                        <button
+                            onClick={() => {
+                                setIsMenuOpen(false);
+                                localStorage.removeItem("access_token");
+                                localStorage.removeItem("token_type");
+                                window.location.href = "/student-login";
+                            }}
+                            className="flex w-full items-center gap-3 px-4 py-3 rounded-xl text-red-600 hover:bg-red-50 transition-colors text-left"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="h-5 w-5">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
+                            </svg>
+                            Logout
+                        </button>
                     </div>
                 </div>
             </div>
