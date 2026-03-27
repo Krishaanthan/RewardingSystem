@@ -13,9 +13,9 @@ export const facultyNav = [
 ];
 
 export const adminNav = [
-  { label: "Dashboard", href: "/admin/dashboard" },
-  { label: "User Management", href: "/admin/user-management" },
-  { label: "Point Rules", href: "/admin/point-rules" },
-  { label: "AI Settings", href: "/admin/ai-settings" },
-  { label: "Bulk Deductions", href: "/admin/bulk-deductions" }
+  { label: "Dashboard", href: "/admin-portal/dashboard" },
+  { label: "User Management", href: "/admin-portal/user-management" },
+  { label: "Point Rules", href: "/admin-portal/point-rules" },
+  { label: "AI Settings", href: "/admin-portal/admin-settings" },
+  { label: "Bulk Deductions", href: "/admin-portal/bulk-deduction" }
 ];
