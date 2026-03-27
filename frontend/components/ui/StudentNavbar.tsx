@@ -22,15 +22,12 @@ export default function StudentNavbar() {
                 const token = localStorage.getItem("access_token");
                 if (!token) return;
 
-                const response = await fetch("http://localhost:8000/api/student/profile", {
-                    headers: {
-                        "Authorization": `Bearer ${token}`
-                    }
+                const res = await fetch("http://localhost:8000/api/student/profile", {
+                    headers: { "Authorization": `Bearer ${token}` }
                 });
-
-                if (response.ok) {
-                    const data = await response.json();
-                    setStudentName(data.name);
+                if (res.ok) {
+                    const data = await res.json();
+                    setStudentName(data.name || "Student");
                 }
             } catch (err) {
                 console.error("Error fetching student name:", err);

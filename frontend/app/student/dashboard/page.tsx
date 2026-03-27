@@ -621,12 +621,17 @@ function ClaimWidget({ onNavigate }: any) {
 }
 
 /* ── Leaderboard Widget ──────────────────────────────────────────────────── */
-function LeaderboardWidget({ onNavigate }: any) {
+function LeaderboardWidget({ onNavigate, student, stats }: any) {
   const top3 = leaderboardData.slice(0, 3);
   const podium = [top3[1], top3[0], top3[2]];
   const PC = ["#A8A8A8", "#C9A84C", "#A0714F"];
   const medals = ["🥈", "🥇", "🥉"];
-  const user: any = leaderboardData.find(s => s.isUser);
+  const mockUser: any = leaderboardData.find(s => s.isUser);
+
+  const userName = student?.name || mockUser?.name || "Student";
+  const userInitials = userName.split(" ").map((n: string) => n[0]).join("").toUpperCase().substring(0, 2);
+  const userRank = stats?.rank || mockUser?.rank || "-";
+  const userPoints = stats?.total_points || mockUser?.points || 0;
 
   return (
     <Card onClick={onNavigate} style={{ padding: 0, overflow: "hidden" }}>
@@ -661,13 +666,13 @@ function LeaderboardWidget({ onNavigate }: any) {
       {/* User row */}
       <div style={{ padding: "12px 16px 14px" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "10px 12px", borderRadius: 10, background: PL, border: `1px solid ${PB}` }}>
-          <div style={{ fontSize: 13, fontWeight: 800, color: P, width: 28 }}>{user.rank}th</div>
-          <div style={{ width: 32, height: 32, borderRadius: "50%", background: `linear-gradient(135deg, ${P}, ${PM})`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 800, color: "#fff" }}>{user.initials}</div>
+          <div style={{ fontSize: 13, fontWeight: 800, color: P, width: 28 }}>{userRank === "-" ? "-" : `${userRank}th`}</div>
+          <div style={{ width: 32, height: 32, borderRadius: "50%", background: `linear-gradient(135deg, ${P}, ${PM})`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 800, color: "#fff" }}>{userInitials}</div>
           <div style={{ flex: 1 }}>
-            <div style={{ fontSize: 13, fontWeight: 700, color: P }}>{user.name}</div>
+            <div style={{ fontSize: 13, fontWeight: 700, color: P }}>{userName}</div>
             <div style={{ fontSize: 10, color: CGD }}>relative to Peers</div>
           </div>
-          <div style={{ fontSize: 14, fontWeight: 800, color: TXT }}>{user.points.toLocaleString()}</div>
+          <div style={{ fontSize: 14, fontWeight: 800, color: TXT }}>{userPoints.toLocaleString()}</div>
         </div>
         <div style={{ marginTop: 8, textAlign: "center", fontSize: 11, color: CGD }}>Tap to view full leaderboard</div>
       </div>
@@ -884,7 +889,7 @@ export default function App() {
 
             {/* Row 4: Leaderboard (full width, clickable) */}
             <div style={{ marginBottom: 18 }}>
-              <LeaderboardWidget onNavigate={() => goTo("leaderboard")} />
+              <LeaderboardWidget onNavigate={() => goTo("leaderboard")} student={student} stats={stats} />
             </div>
 
             {/* Row 5: Certificates */}
