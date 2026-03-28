@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 
 /* ══════════════════════════════════════════════════════════════════════════
@@ -27,28 +27,27 @@ const YEL = "#D97706";        // yellow warning
 const YELB = "#FFFBEB";       // yellow bg
 
 /* ══════════════════════════════════════════════════════════════════════════
-   MOCK DATA
+   DATA TYPES
 ══════════════════════════════════════════════════════════════════════════ */
-const recentActivity = [
-  { student: "Priya S. / 22CS104", activity: "Global Certification – AWS", status: "manual-review", time: "10 min ago" },
-  { student: "Arjun M. / 22CS211", activity: "Co-curricular – Hackathon", status: "ai-approved", time: "22 min ago" },
-  { student: "Sneha K. / 22EE089", activity: "Academics – CGPA Imp.", status: "rejected", time: "1 hr ago" },
-  { student: "Karthik R. / 21ME056", activity: "Extracurricular – NSS", status: "ai-approved", time: "2 hr ago" },
-  { student: "Divya P. / 22CS318", activity: "Global Cert – Google", status: "manual-review", time: "3 hr ago" },
-];
+
+interface SummaryData {
+  pending_reviews: number;
+  manually_reviewed: number;
+  ai_approved: number;
+  direct_awards: number;
+  recent_activity: {
+    student: string;
+    activity: string;
+    status: string;
+    time: string;
+  }[];
+}
 
 const submissionsData = [
   { day: "Mon", count: 30 }, { day: "Tue", count: 55 },
   { day: "Wed", count: 40 }, { day: "Thu", count: 70 },
   { day: "Fri", count: 60 }, { day: "Sat", count: 90 },
   { day: "Sun", count: 10 },
-];
-
-const queueSummary = [
-  { label: "AI Processing", emoji: "🔵", color: BLU, bg: BLUB, count: "14" },
-  { label: "Flagged for Review", emoji: "🟡", color: YEL, bg: YELB, count: "7" },
-  { label: "AI Approved", emoji: "✅", color: GRN, bg: GRNB, count: "43" },
-  { label: "Rejected", emoji: "❌", color: RED, bg: "#FEF2F2", count: "3" },
 ];
 
 /* ══════════════════════════════════════════════════════════════════════════
@@ -80,6 +79,35 @@ function Label({ children, style = {} }: any) {
 ══════════════════════════════════════════════════════════════════════════ */
 export default function FacultyDashboardPage() {
   const router = useRouter();
+  const [data, setData] = useState<SummaryData | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const token = localStorage.getItem("access_token");
+        if (!token) return;
+        const res = await fetch("http://localhost:8000/api/faculty/dashboard-summary", {
+          headers: { "Authorization": `Bearer ${token}` }
+        });
+        if (res.ok) {
+          setData(await res.json());
+        }
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const queueSummary = [
+    { label: "Flagged for Review", emoji: "🟡", color: YEL, bg: YELB, count: data?.pending_reviews ?? 0 },
+    { label: "AI Approved", emoji: "✅", color: GRN, bg: GRNB, count: data?.ai_approved ?? 0 },
+    { label: "Manually Reviewed", emoji: "🔵", color: BLU, bg: BLUB, count: data?.manually_reviewed ?? 0 },
+    { label: "Direct Awards", emoji: "🏆", color: P, bg: PL, count: data?.direct_awards ?? 0 },
+  ];
 
   return (
     <>
@@ -143,16 +171,16 @@ export default function FacultyDashboardPage() {
         {/* HEADER */}
         <div style={{ marginBottom: 32 }}>
           <h1 style={{ fontSize: 28, fontWeight: 800, color: TXT, letterSpacing: -0.8, lineHeight: 1.2 }}>Faculty Dashboard</h1>
-          <p style={{ fontSize: 15, color: TSUB, marginTop: 4 }}>Welcome back, Ramesh · Department of Computer Science</p>
+          <p style={{ fontSize: 15, color: TSUB, marginTop: 4 }}>Welcome back to the Faculty Portal</p>
         </div>
 
         {/* STAT CARDS */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16, marginBottom: 24 }}>
           {[
-            { label: "PENDING REVIEWS", value: "7", color: YEL, bg: YELB, br: "#FDE68A", sub: "⚠ Awaiting manual action" },
-            { label: "AI APPROVED TODAY", value: "43", color: GRN, bg: GRNB, br: GRNBR, sub: "Auto-processed by AI" },
-            { label: "MANUALLY REVIEWED", value: "12", color: BLU, bg: BLUB, br: "#BFDBFE", sub: "This week" },
-            { label: "DIRECT AWARDS", value: "5", color: P, bg: PL, br: PB, sub: "Granted this week" },
+            { label: "PENDING REVIEWS", value: isLoading ? "-" : data?.pending_reviews ?? 0, color: YEL, bg: YELB, br: "#FDE68A", sub: "⚠ Awaiting manual action" },
+            { label: "AI APPROVED", value: isLoading ? "-" : data?.ai_approved ?? 0, color: GRN, bg: GRNB, br: GRNBR, sub: "Auto-processed by AI" },
+            { label: "MANUALLY REVIEWED", value: isLoading ? "-" : data?.manually_reviewed ?? 0, color: BLU, bg: BLUB, br: "#BFDBFE", sub: "Processed by you" },
+            { label: "DIRECT AWARDS", value: isLoading ? "-" : data?.direct_awards ?? 0, color: P, bg: PL, br: PB, sub: "Granted to students" },
           ].map(s => (
             <div key={s.label} style={{ background: s.bg, border: `1px solid ${s.br}`, borderRadius: 16, padding: "20px 22px" }}>
               <div style={{ fontSize: 11, fontWeight: 700, color: CGD, textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 8 }}>{s.label}</div>
@@ -181,23 +209,29 @@ export default function FacultyDashboardPage() {
                 </tr>
               </thead>
               <tbody>
-                {recentActivity.map((row, i) => (
-                  <tr key={i} style={{ borderBottom: i < recentActivity.length - 1 ? `1px solid #F3F4F6` : "none", transition: "background 0.2s" }} className="hover:bg-gray-50/50">
-                    <td style={{ padding: "14px 22px", color: TXT, fontWeight: 600 }}>{row.student}</td>
-                    <td style={{ padding: "14px 22px", color: TSUB }}>{row.activity}</td>
-                    <td style={{ padding: "14px 22px" }}>
-                      <span style={{ 
-                        background: row.status === "ai-approved" ? GRNB : row.status === "manual-review" ? YELB : "#FEF2F2", 
-                        color: row.status === "ai-approved" ? GRN : row.status === "manual-review" ? YEL : RED, 
-                        fontSize: 11, fontWeight: 700, padding: "4px 10px", borderRadius: 99, 
-                        border: `1px solid ${row.status === "ai-approved" ? GRNBR : row.status === "manual-review" ? "#FDE68A" : "#FECACA"}` 
-                      }}>
-                        {row.status === "ai-approved" ? "AI Approved" : row.status === "manual-review" ? "Manual Review" : "Rejected"}
-                      </span>
-                    </td>
-                    <td style={{ padding: "14px 22px", color: CGD, fontSize: 11 }}>{row.time}</td>
+                {data?.recent_activity?.length === 0 ? (
+                  <tr>
+                    <td colSpan={4} style={{ padding: "30px", textAlign: "center", color: TSUB }}>No recent activity to show</td>
                   </tr>
-                ))}
+                ) : (
+                  data?.recent_activity?.map((row, i) => (
+                    <tr key={i} style={{ borderBottom: i < (data.recent_activity.length - 1) ? `1px solid #F3F4F6` : "none", transition: "background 0.2s" }} className="hover:bg-gray-50/50">
+                      <td style={{ padding: "14px 22px", color: TXT, fontWeight: 600 }}>{row.student}</td>
+                      <td style={{ padding: "14px 22px", color: TSUB }}>{row.activity}</td>
+                      <td style={{ padding: "14px 22px" }}>
+                        <span style={{ 
+                          background: row.status === "APPROVED" ? GRNB : row.status === "MANUAL_REVIEW" ? YELB : "#FEF2F2", 
+                          color: row.status === "APPROVED" ? GRN : row.status === "MANUAL_REVIEW" ? YEL : RED, 
+                          fontSize: 11, fontWeight: 700, padding: "4px 10px", borderRadius: 99, 
+                          border: `1px solid ${row.status === "APPROVED" ? GRNBR : row.status === "MANUAL_REVIEW" ? "#FDE68A" : "#FECACA"}` 
+                        }}>
+                          {row.status === "APPROVED" ? "Approved" : row.status === "MANUAL_REVIEW" ? "Manual Review" : "Rejected"}
+                        </span>
+                      </td>
+                      <td style={{ padding: "14px 22px", color: CGD, fontSize: 11 }}>{new Date(row.time).toLocaleDateString()}</td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </Card>

@@ -1,181 +1,41 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Badge } from "@/components/ui/Badge";
 
-type Priority = "high" | "medium" | "low";
-type QueueStatus = "pending" | "approved" | "rejected" | "clarification-requested";
+type QueueStatus = "AI_PROCESSING" | "APPROVED" | "REJECTED" | "MANUAL_REVIEW";
 
 type Submission = {
   id: string;
-  priority: Priority;
   status: QueueStatus;
+  proof_url: string;
   student: {
     name: string;
-    registrationNumber: string;
+    reg_no: string;
     department: string;
-    year: string;
-    section: string;
-    totalRewardPoints: number;
-    totalPenaltyPoints: number;
-    previousRejections: number;
   };
   activity: {
-    type: string;
-    title: string;
-    description: string;
-    eventDate: string;
+    id: number;
+    activity_name: string;
+    points_awarded: number;
   };
-  evidence: {
-    type: string;
-    label: string;
-    url: string;
-  };
-  ai: {
-    confidenceScore: number;
-    suggestedAction: string;
-    suggestedPoints: number;
-    flagReason: string;
-  };
-  facultyComment?: string;
-  resolvedAt?: string;
-  resolvedBy?: string;
+  notes?: string;
+  submitted_at: string;
 };
 
-const PRIORITY_LABEL: Record<Priority, string> = {
-  high: "High",
-  medium: "Medium",
-  low: "Low"
+const STATUS_LABEL: Record<string, string> = {
+  AI_PROCESSING: "Pending AI",
+  MANUAL_REVIEW: "Needs Review",
+  APPROVED: "Approved",
+  REJECTED: "Rejected",
 };
 
-const STATUS_LABEL: Record<QueueStatus, string> = {
-  pending: "Pending",
-  approved: "Approved",
-  rejected: "Rejected",
-  "clarification-requested": "Clarification Requested"
+const STATUS_BADGE: Record<string, "pending" | "approved" | "rejected" | "clarification-requested"> = {
+  AI_PROCESSING: "pending",
+  MANUAL_REVIEW: "clarification-requested",
+  APPROVED: "approved",
+  REJECTED: "rejected",
 };
-
-const STATUS_BADGE: Record<QueueStatus, "pending" | "approved" | "rejected" | "clarification-requested"> = {
-  pending: "pending",
-  approved: "approved",
-  rejected: "rejected",
-  "clarification-requested": "clarification-requested"
-};
-
-const MOCK_SUBMISSIONS: Submission[] = [
-  {
-    id: "1",
-    priority: "high",
-    status: "pending",
-    student: {
-      name: "Mahashaveena Sri",
-      registrationNumber: "22CS045",
-      department: "B.E - Computer Science and Engineering",
-      year: "Year 3",
-      section: "A",
-      totalRewardPoints: 85,
-      totalPenaltyPoints: 0,
-      previousRejections: 1
-    },
-    activity: {
-      type: "Hackathon Participation",
-      title: "National Hackathon 2025",
-      description: "Participated in 24-hour hackathon and submitted project.",
-      eventDate: "2025-02-15"
-    },
-    evidence: { type: "Certificate PDF", label: "Certificate PDF", url: "#" },
-    ai: {
-      confidenceScore: 62,
-      suggestedAction: "Needs Manual Review",
-      suggestedPoints: 15,
-      flagReason: "Name on certificate does not exactly match student record."
-    }
-  },
-  {
-    id: "2",
-    priority: "medium",
-    status: "pending",
-    student: {
-      name: "Rahul Kumar",
-      registrationNumber: "23ME102",
-      department: "B.E - Mechanical Engineering",
-      year: "Year 2",
-      section: "B",
-      totalRewardPoints: 45,
-      totalPenaltyPoints: 5,
-      previousRejections: 0
-    },
-    activity: {
-      type: "Workshop Attendance",
-      title: "IoT Workshop",
-      description: "Two-day workshop on IoT basics.",
-      eventDate: "2025-03-01"
-    },
-    evidence: { type: "Screenshot", label: "Attendance screenshot", url: "#" },
-    ai: {
-      confidenceScore: 58,
-      suggestedAction: "Needs Manual Review",
-      suggestedPoints: 5,
-      flagReason: "Low OCR confidence on uploaded certificate; blurry seal."
-    }
-  },
-  {
-    id: "3",
-    priority: "high",
-    status: "pending",
-    student: {
-      name: "Priya S",
-      registrationNumber: "21IT089",
-      department: "B.Tech - Information Technology",
-      year: "Year 4",
-      section: "A",
-      totalRewardPoints: 120,
-      totalPenaltyPoints: 10,
-      previousRejections: 2
-    },
-    activity: {
-      type: "Misconduct",
-      title: "Late Assignment",
-      description: "Repeated late submission reported by course instructor.",
-      eventDate: "2025-03-05"
-    },
-    evidence: { type: "Document", label: "Instructor report", url: "#" },
-    ai: {
-      confidenceScore: 88,
-      suggestedAction: "Suggest negative points",
-      suggestedPoints: -20,
-      flagReason: "Misconduct report; student has prior similar flags."
-    }
-  },
-  {
-    id: "4",
-    priority: "low",
-    status: "pending",
-    student: {
-      name: "Arun V",
-      registrationNumber: "22EC034",
-      department: "B.E - Electronics and Communication",
-      year: "Year 3",
-      section: "C",
-      totalRewardPoints: 60,
-      totalPenaltyPoints: 0,
-      previousRejections: 0
-    },
-    activity: {
-      type: "Duplicate",
-      title: "Same certificate resubmitted",
-      description: "Certificate for same event already claimed earlier.",
-      eventDate: "2024-11-20"
-    },
-    evidence: { type: "Certificate PDF", label: "Certificate PDF", url: "#" },
-    ai: {
-      confidenceScore: 95,
-      suggestedAction: "Reject – duplicate",
-      suggestedPoints: 0,
-      flagReason: "Duplicate certificate detected; student already claimed this activity."
-    }
-  }
-];
 
 export default function FacultyReviewQueuePage() {
   const [department, setDepartment] = useState("");
@@ -188,18 +48,79 @@ export default function FacultyReviewQueuePage() {
   const [comment, setComment] = useState<Record<string, string>>({});
   const [pointsEdit, setPointsEdit] = useState<Record<string, string>>({});
 
-  const filtered = MOCK_SUBMISSIONS.filter((s) => {
-    if (department && s.student.department !== department) return false;
-    if (year && s.student.year !== year) return false;
-    if (activityType && s.activity.type !== activityType) return false;
-    if (priority && s.priority !== priority) return false;
-    if (status && s.status !== status) return false;
-    if (confidenceRange) {
-      const [min, max] = confidenceRange.split("-").map(Number);
-      if (max) {
-        if (s.ai.confidenceScore < min || s.ai.confidenceScore > max) return false;
-      } else if (s.ai.confidenceScore < min) return false;
+  const [submissions, setSubmissions] = useState<Submission[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const fetchClaims = async () => {
+    try {
+      const token = localStorage.getItem("access_token");
+      if (!token) return;
+      const res = await fetch("http://localhost:8000/api/faculty/review-queue", {
+        headers: { "Authorization": `Bearer ${token}` }
+      });
+      if (res.ok) {
+        const data = await res.json();
+        const mapped = data.map((item: any) => ({
+          id: item.id,
+          status: item.status,
+          proof_url: item.files?.length > 0 ? item.files[0].file_path : "#",
+          student: {
+            name: item.student_name,
+            reg_no: item.student_reg_no,
+            department: item.student_dept,
+          },
+          activity: {
+            id: item.activity_id,
+            activity_name: item.activity_title,
+            points_awarded: item.activity_points,
+          },
+          submitted_at: item.submitted_at,
+          notes: item.rejection_reason
+        }));
+        setSubmissions(mapped);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsLoading(false);
     }
+  };
+
+  useEffect(() => {
+    fetchClaims();
+  }, []);
+
+  const handleReview = async (id: string, newStatus: string, awardedPoints: string) => {
+    try {
+      const token = localStorage.getItem("access_token");
+      const action = newStatus === "APPROVED" ? "approve" : newStatus === "REJECTED" ? "reject" : "manual_review";
+      const payload = {
+        action: action,
+        reason: comment[id] || "",
+      };
+      const res = await fetch(`http://localhost:8000/api/faculty/claims/${id}/review`, {
+        method: "PUT",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (res.ok) {
+        fetchClaims();
+        setComment((prev) => ({ ...prev, [id]: "" }));
+      } else {
+        alert("Failed to review claim.");
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const filtered = submissions.filter((s) => {
+    if (department && s.student.department !== department) return false;
+    if (status && s.status !== status) return false;
     return true;
   });
 
@@ -406,7 +327,18 @@ export default function FacultyReviewQueuePage() {
               <h2 className="heading text-lg font-bold text-black border-b border-black/20 pb-2 mb-4">
                 Submissions ({filtered.length})
               </h2>
-              {filtered.map((sub) => (
+              {isLoading ? (
+                 <div className="flex justify-center py-20">
+                   <div className="animate-spin w-8 h-8 border-4 border-primary rounded-full border-t-transparent" />
+                 </div>
+              ) : filtered.length === 0 ? (
+                 <div className="card !rounded-2xl p-8 text-center text-black/50 border border-black/20">
+                   <div className="flex flex-col items-center justify-center gap-3">
+                     <Icons.Search />
+                     <p>No submissions match the current filters.</p>
+                   </div>
+                 </div>
+              ) : filtered.map((sub) => (
                 <article
                   key={sub.id}
                   className="card overflow-hidden p-6 !rounded-2xl"
@@ -414,35 +346,9 @@ export default function FacultyReviewQueuePage() {
                   {/* Card header: priority + status */}
                   <div className="flex flex-wrap items-center justify-between gap-2 border-b border-black/10 pb-4">
                     <div className="flex flex-wrap items-center gap-2">
-                      <span
-                        className="inline-flex h-3 w-3 rounded-full shadow-sm"
-                        title={`Priority: ${PRIORITY_LABEL[sub.priority]}`}
-                        style={{
-                          backgroundColor:
-                            sub.priority === "high"
-                              ? "#dc2626"
-                              : sub.priority === "medium"
-                                ? "#eab308"
-                                : "#22c55e"
-                        }}
-                      />
-                      <Badge
-                        label={PRIORITY_LABEL[sub.priority]}
-                        variant={`priority-${sub.priority}` as "priority-high" | "priority-medium" | "priority-low"}
-                      />
-                      <Badge label={STATUS_LABEL[sub.status]} variant={STATUS_BADGE[sub.status]} />
+                      <Badge label={STATUS_LABEL[sub.status] || sub.status} variant={STATUS_BADGE[sub.status] || "pending"} />
+                      <span className="text-sm font-semibold text-black/60 capitalize mx-2 opacity-80 decoration-slate-300">Submitted at {new Date(sub.submitted_at).toLocaleDateString()}</span>
                     </div>
-                    <button
-                      type="button"
-                      className="text-sm font-medium text-black/70 hover:text-black hover:underline transition-colors flex items-center gap-1"
-                      onClick={() => setExpandedId(expandedId === sub.id ? null : sub.id)}
-                    >
-                      {expandedId === sub.id ? (
-                        <>Collapse <Icons.ChevronUp /></>
-                      ) : (
-                        <>Student history &amp; more <Icons.ChevronDown /></>
-                      )}
-                    </button>
                   </div>
 
                   <div className="grid gap-6 pt-4 md:grid-cols-2">
@@ -453,20 +359,18 @@ export default function FacultyReviewQueuePage() {
                           Student
                         </h3>
                         <p className="mt-1 font-medium text-black">
-                          {sub.student.name} · {sub.student.registrationNumber}
+                          {sub.student.name} · {sub.student.reg_no}
                         </p>
                         <p className="text-sm text-black/80">
-                          {sub.student.department} · {sub.student.year} &amp; Sec {sub.student.section}
+                          {sub.student.department}
                         </p>
                       </div>
                       <div>
                         <h3 className="text-xs font-bold uppercase tracking-wider text-black/50">
                           Activity
                         </h3>
-                        <p className="mt-1 font-medium text-black">{sub.activity.type}</p>
-                        <p className="text-sm font-semibold text-black/90">{sub.activity.title}</p>
-                        <p className="mt-1 text-sm text-black/80">{sub.activity.description}</p>
-                        <p className="mt-1 text-xs text-black/60">Event date: {sub.activity.eventDate}</p>
+                        <p className="mt-1 font-medium text-black">{sub.activity.activity_name}</p>
+                        <p className="mt-1 text-sm text-black/80">Default pts: {sub.activity.points_awarded}</p>
                       </div>
                     </div>
 
@@ -476,72 +380,32 @@ export default function FacultyReviewQueuePage() {
                         <h3 className="text-xs font-bold uppercase tracking-wider text-black/50">
                           Evidence
                         </h3>
-                        <p className="mt-1 text-sm text-black">{sub.evidence.label}</p>
                         <div className="mt-2 flex gap-2">
                           <a
-                            href={sub.evidence.url}
+                            href={sub.proof_url}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="inline-flex items-center justify-center gap-2 px-3 py-1.5 bg-white/40 hover:bg-white/80 text-black border border-black/20 rounded-xl text-xs font-medium transition-all shadow-[0_4px_20px_0_rgba(131,18,56,0.05)]"
                           >
                             <Icons.Eye />
-                            Preview
-                          </a>
-                          <a
-                            href={sub.evidence.url}
-                            download
-                            className="inline-flex items-center justify-center gap-2 px-3 py-1.5 bg-white/40 hover:bg-white/80 text-black border border-black/20 rounded-xl text-xs font-medium transition-all shadow-[0_4px_20px_0_rgba(131,18,56,0.05)]"
-                          >
-                            Download
+                            View Document
                           </a>
                         </div>
-                      </div>
-                      <div>
-                        <h3 className="text-xs font-bold uppercase tracking-wider text-black/50">
-                          AI Analysis
-                        </h3>
-                        <p className="mt-1 text-sm">
-                          <span className="font-medium text-black">Confidence: </span>
-                          <span
-                            className={
-                              sub.ai.confidenceScore < 50
-                                ? "text-red-700 font-bold"
-                                : sub.ai.confidenceScore < 70
-                                  ? "text-amber-700 font-bold"
-                                  : "text-green-700 font-bold"
-                            }
-                          >
-                            {sub.ai.confidenceScore}%
-                          </span>
-                        </p>
-                        <p className="mt-1 text-sm text-black">
-                          <span className="font-medium">Suggested action: </span>
-                          {sub.ai.suggestedAction}
-                        </p>
-                        <p className="mt-1 text-sm text-black">
-                          <span className="font-medium">Suggested points: </span>
-                          <span className={sub.ai.suggestedPoints >= 0 ? "text-green-700 font-bold" : "text-red-700 font-bold"}>
-                            {sub.ai.suggestedPoints >= 0 ? "+" : ""}
-                            {sub.ai.suggestedPoints}
-                          </span>
-                        </p>
-                        <p className="mt-2 rounded-xl bg-amber-500/10 border border-amber-500/30 px-3 py-2 text-xs text-amber-900 leading-relaxed font-medium">
-                          <span className="font-bold text-amber-800">Flag reason: </span>
-                          {sub.ai.flagReason}
-                        </p>
                       </div>
                     </div>
                   </div>
 
+                  {sub.status === "MANUAL_REVIEW" && (
+                    <>
                   {/* Editable points */}
                   <div className="mt-4 flex flex-wrap items-center gap-4 border-t border-black/10 pt-4">
                     <label className="flex items-center gap-2">
-                      <span className="text-sm font-medium text-black">Modify points:</span>
+                      <span className="text-sm font-medium text-black">Award Points:</span>
                       <input
                         type="number"
                         className="w-20 rounded-xl border border-black/20 bg-white/50 px-3 py-1.5 text-sm outline-none focus:ring-1 focus:ring-black/20 transition-all font-medium"
-                        placeholder={String(sub.ai.suggestedPoints)}
-                        value={pointsEdit[sub.id] ?? ""}
+                        placeholder={String(sub.activity.points_awarded)}
+                        value={pointsEdit[sub.id] !== undefined ? pointsEdit[sub.id] : String(sub.activity.points_awarded)}
                         onChange={(e) => setPointsEdit((prev) => ({ ...prev, [sub.id]: e.target.value }))}
                       />
                     </label>
@@ -550,28 +414,18 @@ export default function FacultyReviewQueuePage() {
                   {/* Faculty actions */}
                   <div className="mt-4 flex flex-wrap gap-3">
                     <button
+                      onClick={() => handleReview(sub.id, "APPROVED", pointsEdit[sub.id] !== undefined ? pointsEdit[sub.id] : String(sub.activity.points_awarded))}
                       type="button"
                       className="rounded-xl bg-green-600 px-4 py-2 text-sm font-bold text-white hover:bg-green-700 shadow-sm transition-colors"
                     >
                       Approve
                     </button>
                     <button
+                      onClick={() => handleReview(sub.id, "REJECTED", "0")}
                       type="button"
                       className="rounded-xl bg-red-600 px-4 py-2 text-sm font-bold text-white hover:bg-red-700 shadow-sm transition-colors"
                     >
                       Reject
-                    </button>
-                    <button
-                      type="button"
-                      className="rounded-xl border border-amber-500/50 bg-amber-50 px-4 py-2 text-sm font-bold text-amber-800 hover:bg-amber-100 transition-colors"
-                    >
-                      Add negative points
-                    </button>
-                    <button
-                      type="button"
-                      className="rounded-xl border border-black/20 bg-white/40 px-4 py-2 text-sm font-semibold text-black hover:bg-white/80 transition-colors"
-                    >
-                      Add comment
                     </button>
                   </div>
 
@@ -586,36 +440,11 @@ export default function FacultyReviewQueuePage() {
                       onChange={(e) => setComment((prev) => ({ ...prev, [sub.id]: e.target.value }))}
                     />
                   </div>
-
-                  {/* Expandable: Student history */}
-                  {expandedId === sub.id && (
-                    <div className="mt-4 rounded-xl bg-white/40 border border-black/10 p-5 backdrop-blur-sm">
-                      <h3 className="heading text-sm font-bold text-black border-b border-black/10 pb-2">
-                        Student history
-                      </h3>
-                      <ul className="mt-3 space-y-1.5 text-sm text-black/80 font-medium tracking-wide">
-                        <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-green-500"></span> Total reward points: {sub.student.totalRewardPoints}</li>
-                        <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-red-500"></span> Total penalty points: {sub.student.totalPenaltyPoints}</li>
-                        <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span> Past rejected submissions: {sub.student.previousRejections}</li>
-                      </ul>
-                      <p className="mt-3 text-xs text-black/50 bg-white/50 p-2 rounded-lg border border-black/5 italic">
-                        Faculty actions are logged (e.g. Faculty: Dr. Kumar, Action: Rejected, Reason: Duplicate
-                        certificate, Time: 05 Mar 2026 21:10).
-                      </p>
-                    </div>
+                  </>
                   )}
                 </article>
               ))}
             </section>
-
-            {filtered.length === 0 && (
-               <div className="card !rounded-2xl p-8 text-center text-black/50 border border-black/20">
-                 <div className="flex flex-col items-center justify-center gap-3">
-                   <Icons.Search />
-                   <p>No submissions match the current filters.</p>
-                 </div>
-               </div>
-            )}
           </div>
         </div>
     </>

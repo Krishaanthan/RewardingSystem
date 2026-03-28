@@ -3,26 +3,93 @@
 import { PortalLayout } from '@/components/ui/PortalLayout';
 import { adminNav } from '@/lib/nav';
 
-const history = [
-  {
-    id: 'BLK-001',
-    date: '2026-02-14',
-    type: 'Attendance Shortage',
-    success: '140 / 2',
-    total: '-2,800',
-    status: 'COMPLETED'
-  },
-  {
-    id: 'BLK-002',
-    date: '2026-01-28',
-    type: 'Malpractice',
-    success: '18 / 0',
-    total: '-900',
-    status: 'COMPLETED'
-  }
-];
+import { useState, useEffect } from "react";
+
+interface BatchHistory {
+  id: string;
+  date: string;
+  type: string;
+  success: string;
+  total: string;
+  status: string;
+}
 
 export default function AdminBulkDeductionsPage() {
+  const [history, setHistory] = useState<BatchHistory[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [file, setFile] = useState<File | null>(null);
+  const [category, setCategory] = useState("Attendance Shortage");
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadResult, setUploadResult] = useState<{success: number, errors: number, message: string} | null>(null);
+
+  const fetchHistory = async () => {
+    try {
+      const token = localStorage.getItem("access_token");
+      if (!token) return;
+      const res = await fetch("http://localhost:8000/api/admin/batch-deductions", {
+        headers: { "Authorization": `Bearer ${token}` }
+      });
+      if (res.ok) {
+        setHistory(await res.json());
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchHistory();
+  }, []);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setFile(e.target.files[0]);
+    }
+  };
+
+  const handleUpload = async () => {
+    if (!file) {
+      alert("Please select a file first.");
+      return;
+    }
+    setIsUploading(true);
+    setUploadResult(null);
+
+    const formData = new FormData();
+    formData.append("csv_file", file);
+    formData.append("category", category);
+
+    try {
+      const token = localStorage.getItem("access_token");
+      const res = await fetch("http://localhost:8000/api/admin/bulk-deductions", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${token}`
+        },
+        body: formData
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        setUploadResult({
+          success: data.success,
+          errors: data.errors,
+          message: data.message
+        });
+        setFile(null);
+        fetchHistory();
+      } else {
+        alert("Upload failed. Check format.");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Error uploading file.");
+    } finally {
+      setIsUploading(false);
+    }
+  };
   return (
     <PortalLayout
       title="Bulk Deductions"
@@ -60,20 +127,21 @@ export default function AdminBulkDeductionsPage() {
                 Drag &amp; drop your ERP export here to apply bulk negative points.
               </p>
 
-              <div className="mt-4 rounded-2xl border border-dashed border-brand-primary/30 bg-white px-6 py-10 text-center">
-                <div className="mx-auto mb-3 h-10 w-12 rounded-md bg-brand-primary/10" />
+              <label className="mt-4 block rounded-2xl border border-dashed border-brand-primary/30 bg-white px-6 py-10 text-center cursor-pointer hover:bg-black/5 transition">
+                <div className="mx-auto mb-3 h-10 w-12 rounded-md bg-brand-primary/10 flex items-center justify-center text-xl">📄</div>
                 <p className="text-sm font-semibold text-brand-text">
-                  Drag &amp; drop your CSV file here
+                  {file ? file.name : "Drag & drop or Click to select your CSV file"}
                 </p>
                 <p className="mt-1 text-xs text-brand-text/60">
-                  Supports .csv, .xlsx (Max 5MB)
+                  Supports .csv (Max 5MB)
                 </p>
-              </div>
+                <input type="file" accept=".csv" className="hidden" onChange={handleFileChange} />
+              </label>
 
               <div className="mt-5 grid gap-4 text-xs md:grid-cols-2">
                 <label className="space-y-1">
                   <span className="font-medium text-brand-text">Deduction Category</span>
-                  <select className="w-full rounded-xl border border-brand-primary/20 bg-white px-3 py-2">
+                  <select value={category} onChange={(e) => setCategory(e.target.value)} className="w-full rounded-xl border border-brand-primary/20 bg-white px-3 py-2">
                     <option>Attendance Shortage</option>
                     <option>Malpractice</option>
                     <option>Disciplinary Action</option>
@@ -96,12 +164,17 @@ export default function AdminBulkDeductionsPage() {
                 />
               </label>
 
-              <div className="mt-4 flex justify-end">
+              <div className="mt-4 flex justify-between items-center">
+                <span className="text-xs font-semibold text-emerald-600">
+                  {uploadResult && `${uploadResult.message} (${uploadResult.success} success, ${uploadResult.errors} errors)`}
+                </span>
                 <button
+                  onClick={handleUpload}
+                  disabled={isUploading || !file}
                   type="button"
-                  className="rounded-full bg-brand-primary px-6 py-2 text-sm font-semibold text-white"
+                  className="rounded-full bg-brand-primary px-6 py-2 text-sm font-semibold text-white disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Preview Data →
+                  {isUploading ? "Processing..." : "Submit Batch →"}
                 </button>
               </div>
             </div>
@@ -169,18 +242,32 @@ SB2022090,Attendance < 75%,20`}
                 </tr>
               </thead>
               <tbody>
-                {history.map((row) => (
-                  <tr key={row.id} className="border-b border-brand-primary/10 last:border-0">
-                    <td className="py-3 pr-4 font-semibold text-brand-primary">{row.id}</td>
-                    <td className="py-3 pr-4 text-sm text-brand-text/80">{row.date}</td>
-                    <td className="py-3 pr-4 text-sm text-brand-text/80">{row.type}</td>
-                    <td className="py-3 pr-4 text-sm text-brand-text/80">{row.success}</td>
-                    <td className="py-3 pr-4 text-sm font-semibold text-red-500">{row.total}</td>
-                    <td className="py-3 pr-4 text-xs font-semibold text-emerald-600">
-                      ● {row.status}
+                {isLoading ? (
+                  <tr>
+                    <td colSpan={6} className="py-8 text-center text-sm font-medium text-black/50">
+                      Loading history...
                     </td>
                   </tr>
-                ))}
+                ) : history.length === 0 ? (
+                  <tr>
+                    <td colSpan={6} className="py-8 text-center text-sm font-medium text-black/50">
+                      No bulk deductions found.
+                    </td>
+                  </tr>
+                ) : (
+                  history.map((row) => (
+                    <tr key={row.id} className="border-b border-brand-primary/10 last:border-0 hover:bg-black/5">
+                      <td className="py-3 pr-4 font-semibold text-brand-primary">{row.id}</td>
+                      <td className="py-3 pr-4 text-sm text-brand-text/80">{row.date}</td>
+                      <td className="py-3 pr-4 text-sm text-brand-text/80">{row.type}</td>
+                      <td className="py-3 pr-4 text-sm text-brand-text/80">{row.success}</td>
+                      <td className="py-3 pr-4 text-sm font-semibold text-red-500">{row.total}</td>
+                      <td className="py-3 pr-4 text-xs font-semibold text-emerald-600">
+                        ● {row.status}
+                      </td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>

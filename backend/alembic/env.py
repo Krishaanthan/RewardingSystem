@@ -21,6 +21,7 @@ from backend.app.models.user import User          # noqa: F401
 from backend.app.models.activity import Activity  # noqa: F401
 from backend.app.models.claim import Claim, ClaimFile  # noqa: F401
 from backend.app.models.badge import Badge        # noqa: F401
+from backend.app.models.batch_deduction import BatchDeduction # noqa: F401
 from backend.app.core.config import settings
 
 target_metadata = Base.metadata

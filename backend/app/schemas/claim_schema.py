@@ -22,6 +22,10 @@ class ClaimOut(BaseModel):
     rejection_reason: Optional[str] = None
     submitted_at: datetime
     files: list[ClaimFileOut] = []
+    student_name: str = ""
+    student_reg_no: str = ""
+    student_dept: str = ""
+    reviewer_name: Optional[str] = None
 
     model_config = ConfigDict(from_attributes=True)
 

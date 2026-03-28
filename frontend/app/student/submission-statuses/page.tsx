@@ -19,6 +19,7 @@ type Submission = {
   submitted_at: string;
   status: string;
   rejection_reason?: string;
+  reviewer_name?: string;
   files: ClaimFile[];
 };
 
@@ -186,7 +187,10 @@ export default function SubmissionStatusesPage() {
                               +{sub.activity_points} pts
                             </span>
                             <div className="scale-110 origin-right">
-                              <SubmissionStatusBadge status={STATUS_MAP[sub.status] ?? "ai-processing"} />
+                              <SubmissionStatusBadge 
+                                status={STATUS_MAP[sub.status] ?? "ai-processing"} 
+                                reviewerName={sub.reviewer_name}
+                              />
                             </div>
                           </div>
                         </div>

@@ -31,13 +31,13 @@ const pointsData = [
   { month: "Mar", points: 47 },
 ];
 
-const badges = [
-  { icon: "/assets/Badges/knowledge_seeker/bronzeKS.png", name: "Knowledge Seeker", desc: "Highest marks in term", earned: true },
-  { icon: "/assets/Badges/community_impact/bronzeCI.png", name: "Community Impact", desc: "7 days consecutive login", earned: true },
-  { icon: "/assets/Badges/campus_engagement/bronzeCE.png", name: "Campus Star", desc: "Read 10 library books", earned: true },
-  { icon: "/assets/Badges/Innovation_builder/bronzeIB.png", name: "Innovation Builder", desc: "Fastest quiz completion", earned: true },
-  { icon: "/assets/Badges/Leadership Badge/bronzeLB.png", name: "Leadership Architect", desc: "Nominated by teachers", earned: false },
-  { icon: "/assets/Badges/Hackathon Badge/bronzeHB.png", name: "Hackathon Hero", desc: "Perfect score on a test", earned: false },
+const staticBadges = [
+  { icon: "/assets/Badges/knowledge_seeker/bronzeKS.png", name: "Knowledge Seeker", desc: "Highest marks in term" },
+  { icon: "/assets/Badges/community_impact/bronzeCI.png", name: "Community Impact", desc: "7 days consecutive login" },
+  { icon: "/assets/Badges/campus_engagement/bronzeCE.png", name: "Campus Engagement", desc: "Read 10 library books" },
+  { icon: "/assets/Badges/Innovation_builder/bronzeIB.png", name: "Innovation Builder", desc: "Fastest quiz completion" },
+  { icon: "/assets/Badges/Leadership Badge/bronzeLB.png", name: "Leadership Badge", desc: "Nominated by teachers" },
+  { icon: "/assets/Badges/Hackathon Badge/bronzeHB.png", name: "Hackathon Badge", desc: "Perfect score on a test" },
 ];
 
 const ledgerData = [
@@ -121,8 +121,10 @@ function BackBtn({ onBack }: any) {
 ══════════════════════════════════════════════════════════════════════════ */
 
 /* ── BADGES PAGE ─────────────────────────────────────────────────────────── */
-function BadgesPage({ onBack }: any) {
+function BadgesPage({ onBack, dashboardData }: any) {
   const [hov, setHov] = useState<any>(null);
+  const earnedBadgeNames = dashboardData?.badges || [];
+  const badges = staticBadges.map(b => ({ ...b, earned: earnedBadgeNames.includes(b.name) }));
   const earned = badges.filter(b => b.earned);
   const locked = badges.filter(b => !b.earned);
 
@@ -179,11 +181,13 @@ function BadgesPage({ onBack }: any) {
 }
 
 /* ── MY LEDGER PAGE ──────────────────────────────────────────────────────── */
-function LedgerPage({ onBack }: any) {
+function LedgerPage({ onBack, dashboardData }: any) {
   const [filter, setFilter] = useState("all");
-  const rows = filter === "all" ? ledgerData : ledgerData.filter(r => r.type === filter);
-  const totalIn = ledgerData.filter(r => r.points > 0).reduce((a, r) => a + r.points, 0);
-  const totalOut = ledgerData.filter(r => r.points < 0).reduce((a, r) => a + r.points, 0);
+  const isNew = (dashboardData?.stats?.total_points || 0) === 0;
+  const activeLedgerData = isNew ? [] : ledgerData;
+  const rows = filter === "all" ? activeLedgerData : activeLedgerData.filter(r => r.type === filter);
+  const totalIn = activeLedgerData.filter(r => r.points > 0).reduce((a, r) => a + r.points, 0);
+  const totalOut = activeLedgerData.filter(r => r.points < 0).reduce((a, r) => a + r.points, 0);
 
   return (
     <div className="page-in">
@@ -457,8 +461,11 @@ function PointsChart() {
 }
 
 /* ── Badges Grid (dashboard widget — clickable, goes to badges page) ──────── */
-function BadgesWidget({ onNavigate }: any) {
+function BadgesWidget({ onNavigate, dashboardData }: any) {
   const [hov, setHov] = useState<any>(null);
+  const earnedBadgeNames = dashboardData?.badges || [];
+  const badges = staticBadges.map(b => ({ ...b, earned: earnedBadgeNames.includes(b.name) }));
+  const earnedCount = badges.filter(b => b.earned).length;
   return (
     <Card onClick={onNavigate} style={{ cursor: "pointer", position: "relative", overflow: "hidden" }}>
       {/* top accent */}
@@ -467,7 +474,7 @@ function BadgesWidget({ onNavigate }: any) {
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
         <Label style={{ marginBottom: 0 }}>Earned Badges</Label>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <span style={{ fontSize: 11, color: CGD }}>4 earned · 2 locked</span>
+          <span style={{ fontSize: 11, color: CGD }}>{earnedCount} earned · {badges.length - earnedCount} locked</span>
           <div style={{ background: PL, border: `1px solid ${PB}`, borderRadius: 8, padding: "4px 10px", fontSize: 12, fontWeight: 700, color: P }}>View All →</div>
         </div>
       </div>
@@ -520,9 +527,10 @@ function BadgesWidget({ onNavigate }: any) {
 }
 
 /* ── Progress Card ───────────────────────────────────────────────────────── */
-function ProgressCard() {
-  const cur = 47, tgt = 50;
-  const pct = Math.round((cur / tgt) * 100);
+function ProgressCard({ dashboardData }: any) {
+  const cur = dashboardData?.stats?.total_points || 0;
+  const tgt = 50;
+  const pct = Math.min(100, Math.round((cur / tgt) * 100));
   return (
     <Card>
       <Label>Next Badge Progress</Label>
@@ -560,8 +568,9 @@ function ProgressCard() {
 }
 
 /* ── My Ledger Widget ────────────────────────────────────────────────────── */
-function MyLedgerWidget({ onNavigate }: any) {
-  const recent = ledgerData.slice(0, 3);
+function MyLedgerWidget({ onNavigate, dashboardData }: any) {
+  const isNew = (dashboardData?.stats?.total_points || 0) === 0;
+  const recent = isNew ? [] : ledgerData.slice(0, 3);
   return (
     <Card onClick={onNavigate} style={{ position: "relative", overflow: "hidden" }}>
       <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${P}, ${PM})`, borderRadius: "18px 18px 0 0" }} />
@@ -877,13 +886,13 @@ export default function App() {
 
             {/* Row 2: Badges widget (clickable) + Progress */}
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 18, marginBottom: 18 }}>
-              <BadgesWidget onNavigate={() => goTo("badges")} />
-              <ProgressCard />
+              <BadgesWidget onNavigate={() => goTo("badges")} dashboardData={dashboardData} />
+              <ProgressCard dashboardData={dashboardData} />
             </div>
 
             {/* Row 3: My Ledger + Claim Points */}
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 18, marginBottom: 18 }}>
-              <MyLedgerWidget onNavigate={() => goTo("ledger")} />
+              <MyLedgerWidget onNavigate={() => goTo("ledger")} dashboardData={dashboardData} />
               <ClaimWidget onNavigate={() => goTo("claim")} />
             </div>
 

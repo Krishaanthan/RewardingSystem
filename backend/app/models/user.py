@@ -1,5 +1,5 @@
 import uuid
-from sqlalchemy import Column, String, Enum
+from sqlalchemy import Column, String, Enum, ForeignKey
 from sqlalchemy.dialects.postgresql import UUID
 from backend.app.db.base import Base
 import enum
@@ -20,3 +20,4 @@ class User(Base):
     section = Column(String, nullable=True)
     current_year = Column(String, nullable=True)
     role = Column(Enum(UserRole), default=UserRole.STUDENT, nullable=False)
+    assigned_faculty_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=True)

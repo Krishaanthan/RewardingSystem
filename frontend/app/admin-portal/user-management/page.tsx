@@ -3,10 +3,10 @@
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 
 // Types
-type Role = 'STUDENT' | 'VERIFIER';
+type Role = 'STUDENT' | 'VERIFIER' | 'ADMIN' | 'FACULTY';
 type Status = 'ACTIVE' | 'INACTIVE';
 
 interface User {
@@ -23,28 +23,17 @@ interface User {
   assignedFaculty?: string;
 }
 
-// 4. Dummy Data with extra fields
-const usersData: User[] = [
-  { id: '1', regNo: 'SB2021001', initials: 'AK', name: 'Arjun Kumar', dept: 'CSE', year: 4, section: 'A', points: 1840, role: 'STUDENT', status: 'ACTIVE', assignedFaculty: 'Dr. Ramesh Kumar' },
-  { id: '2', regNo: 'SB2021042', initials: 'PM', name: 'Priya Menon', dept: 'ECE', year: 4, section: 'B', points: 2310, role: 'VERIFIER', status: 'ACTIVE' },
-  { id: '3', regNo: 'SB2022055', initials: 'KR', name: 'Karthik Raja', dept: 'EEE', year: 3, section: 'A', points: 760, role: 'STUDENT', status: 'ACTIVE', assignedFaculty: 'Prof. Anita Desai' },
-  { id: '4', regNo: 'SB2023041', initials: 'VN', name: 'Vikram Nair', dept: 'CIVIL', year: 2, section: 'C', points: 520, role: 'STUDENT', status: 'INACTIVE' },
-  { id: '5', regNo: 'SB2024102', initials: 'SP', name: 'Sanjay Patel', dept: 'MECH', year: 1, section: 'A', points: 120, role: 'STUDENT', status: 'ACTIVE', assignedFaculty: 'Dr. Suresh V' },
-  { id: '6', regNo: 'SB2021088', initials: 'NJ', name: 'Neha Joshi', dept: 'CSE', year: 4, section: 'C', points: 3100, role: 'VERIFIER', status: 'ACTIVE' },
-  { id: '7', regNo: 'SB2022110', initials: 'RM', name: 'Rahul Menon', dept: 'IT', year: 3, section: 'B', points: 950, role: 'VERIFIER', status: 'ACTIVE' },
-  { id: '8', regNo: 'SB2023005', initials: 'AS', name: 'Aditi Sharma', dept: 'MBA', year: 2, section: 'A', points: 400, role: 'STUDENT', status: 'ACTIVE' },
-];
-
-const facultyList = [
-  { id: 'f1', name: 'Dr. Ramesh Kumar', dept: 'CSE' },
-  { id: 'f2', name: 'Prof. Anita Desai', dept: 'ECE' },
-  { id: 'f3', name: 'Dr. Suresh V', dept: 'MECH' },
-  { id: 'f4', name: 'Prof. Lakshmi N', dept: 'IT' },
-];
+interface Faculty {
+  id: string;
+  name: string;
+  dept: string;
+}
 
 export default function AdminUserManagementPage() {
   const pathname = usePathname();
-  const [users, setUsers] = useState<User[]>(usersData);
+  const [users, setUsers] = useState<User[]>([]);
+  const [facultyList, setFacultyList] = useState<Faculty[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   // Filter States
   const [searchQuery, setSearchQuery] = useState('');
@@ -78,6 +67,37 @@ export default function AdminUserManagementPage() {
     setSelectedSection('All');
   }
 
+  // Load backend data
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const token = localStorage.getItem("access_token");
+        if (!token) return;
+
+        const [usersRes, facultyRes] = await Promise.all([
+          fetch("http://localhost:8000/api/admin/users", {
+            headers: { "Authorization": `Bearer ${token}` }
+          }),
+          fetch("http://localhost:8000/api/admin/faculty", {
+            headers: { "Authorization": `Bearer ${token}` }
+          })
+        ]);
+
+        if (usersRes.ok && facultyRes.ok) {
+          const uData = await usersRes.json();
+          const fData = await facultyRes.json();
+          setUsers(uData);
+          setFacultyList(fData);
+        }
+      } catch (err) {
+        console.error("Error loading admin users:", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
   // 1. Live Search & Filtering
   const filteredUsers = useMemo(() => {
     return users.filter(u => {
@@ -109,26 +129,47 @@ export default function AdminUserManagementPage() {
     }
   };
 
-  const handleSaveAssignment = () => {
+  const handleSaveAssignment = async () => {
     if (!editingUser) return;
     setIsSaving(true);
     
-    // Simulate API call
-    setTimeout(() => {
-      setUsers(users.map(u => 
-        u.id === editingUser.id 
-          ? { 
-              ...u, 
-              role: newRole, 
-              assignedFaculty: newRole === 'STUDENT' ? selectedFaculty?.name : undefined 
-            } 
-          : u
-      ));
+    try {
+      const token = localStorage.getItem("access_token");
+      const bodyPayload = {
+        role: newRole,
+        assigned_faculty_id: newRole === 'STUDENT' && selectedFaculty ? selectedFaculty.id : null
+      };
+
+      const res = await fetch(`http://localhost:8000/api/admin/users/${editingUser.id}/role`, {
+        method: "PUT",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(bodyPayload)
+      });
+
+      if (res.ok) {
+        setUsers(users.map(u => 
+          u.id === editingUser.id 
+            ? { 
+                ...u, 
+                role: newRole, 
+                assignedFaculty: newRole === 'STUDENT' ? selectedFaculty?.name : undefined 
+              } 
+            : u
+        ));
+        setEditingUser(null);
+        setShowToast(true);
+        setTimeout(() => setShowToast(false), 3000);
+      } else {
+        console.error("Failed to update role");
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
       setIsSaving(false);
-      setEditingUser(null);
-      setShowToast(true);
-      setTimeout(() => setShowToast(false), 3000);
-    }, 800);
+    }
   };
 
   const filteredFaculty = facultyList.filter(f => 
@@ -170,6 +211,11 @@ export default function AdminUserManagementPage() {
               </div>
             </motion.header>
 
+            {isLoading ? (
+              <div className="flex justify-center items-center py-20">
+                 <div className="animate-spin w-8 h-8 border-4 border-primary rounded-full border-t-transparent" />
+              </div>
+            ) : (
             <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.5 }} className="card space-y-4 p-6 overflow-hidden mt-6">
               
               {/* Top bar: filters + count pill */}
@@ -374,6 +420,7 @@ export default function AdminUserManagementPage() {
                 </table>
               </div>
             </motion.section>
+            )}
           </div>
         </div>
       </div>
