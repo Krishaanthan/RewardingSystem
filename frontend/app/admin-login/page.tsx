@@ -33,7 +33,7 @@ export default function AdminLoginPage() {
       const data = await response.json();
       localStorage.setItem("access_token", data.access_token);
       localStorage.setItem("token_type", data.token_type);
-      router.push("/admin/dashboard");
+      router.push("/admin-portal/dashboard");
     } catch (err: any) {
       setError(err.message);
     } finally {

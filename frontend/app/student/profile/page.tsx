@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 
 // TIER BADGES CONFIG
 const TIER_BADGES_CONFIG: Record<string, { title: string; desc: string; basePath: string; unlockReq: string; images: Record<string, string> }> = {
@@ -219,7 +220,12 @@ export default function ProfileDashboard() {
                     <div className="mx-auto flex min-h-full max-w-6xl flex-col px-6 pb-12 pt-28 font-primary">
 
                         {/* 1. Student Profile Header */}
-                        <main className="card w-full p-8 md:p-10 mb-10 flex flex-col md:flex-row items-center md:items-start gap-8">
+                        <motion.main
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6 }}
+                            className="card w-full p-8 md:p-10 mb-10 flex flex-col md:flex-row items-center md:items-start gap-8"
+                        >
 
                             {/* Profile Picture (Initials) */}
                             <div className="relative shrink-0">
@@ -255,25 +261,44 @@ export default function ProfileDashboard() {
                                     </div>
                                 </div>
                             </div>
-                        </main>
+                        </motion.main>
 
                         {/* 2. Badge System Logic - Tier Upgrading Badges */}
-                        <div className="mb-6 flex items-center gap-3">
-                            <div className="h-8 w-1 rounded-full bg-primary"></div>
-                            <h2 className="heading text-2xl font-semibold tracking-wide text-black">Progression Tracks</h2>
-                        </div>
-                        <p className="mb-8 text-black/70 max-w-2xl">
-                            Level up your tier in these core academic and extracurricular tracks.
-                            Earn points in a specific category to upgrade your badge from Bronze to Diamond.
-                        </p>
+                        <motion.div
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: 0.2, duration: 0.5 }}
+                        >
+                            <div className="mb-6 flex items-center gap-3">
+                                <div className="h-8 w-1 rounded-full bg-primary"></div>
+                                <h2 className="heading text-2xl font-semibold tracking-wide text-black">Progression Tracks</h2>
+                            </div>
+                            <p className="mb-8 text-black/70 max-w-2xl">
+                                Level up your tier in these core academic and extracurricular tracks.
+                                Earn points in a specific category to upgrade your badge from Bronze to Diamond.
+                            </p>
+                        </motion.div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
-                            {tierBadges.map((badge) => {
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            whileInView={{ opacity: 1 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.3, duration: 0.5 }}
+                            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16"
+                        >
+                            {tierBadges.map((badge, idx) => {
                                 const colors = TIER_COLORS[badge.tier];
                                 const isLocked = badge.tier === "Locked";
 
                                 return (
-                                    <div key={badge.id} className="card badge-card relative flex flex-col p-6 overflow-hidden group cursor-pointer">
+                                    <motion.div
+                                        key={badge.id}
+                                        initial={{ opacity: 0, y: 20 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
+                                        viewport={{ once: true }}
+                                        transition={{ delay: 0.3 + idx * 0.1, duration: 0.5 }}
+                                        className={`badge-card relative flex flex-col p-6 overflow-hidden group cursor-pointer transition-all duration-300 rounded-[2rem] border ${isLocked ? 'bg-black/5 border-black/10 grayscale' : 'card'}`}
+                                    >
                                         {/* Tier Glow/Border Indicator */}
                                         {!isLocked && (
                                             <div className={`absolute -top-10 -right-10 h-32 w-32 rounded-full blur-3xl opacity-40 mix-blend-multiply ${colors.bg}`}></div>
@@ -292,16 +317,16 @@ export default function ProfileDashboard() {
                                                 <img
                                                     src={badge.image}
                                                     alt={badge.title}
-                                                    className={`badge-img h-full w-full object-contain ${isLocked ? "opacity-30 grayscale" : ""}`}
+                                                    className={`badge-img h-full w-full object-contain ${isLocked ? "opacity-60 grayscale" : ""}`}
                                                 />
                                             </div>
                                         </div>
 
                                         <div className="relative z-10 flex-1">
-                                            <h3 className={`text-lg font-bold ${isLocked ? "text-black/50" : "text-black"}`}>
+                                            <h3 className={`text-lg font-bold ${isLocked ? "text-black/70" : "text-black"}`}>
                                                 {badge.title}
                                             </h3>
-                                            <p className="mt-1 text-sm text-black/60">{badge.desc}</p>
+                                            <p className={`mt-1 text-sm ${isLocked ? "text-black/50" : "text-black/60"}`}>{badge.desc}</p>
                                         </div>
 
                                         {/* Progress Bar */}
@@ -341,24 +366,41 @@ export default function ProfileDashboard() {
                                                 </div>
                                             )}
                                         </div>
-                                    </div>
+                                    </motion.div>
                                 );
                             })}
-                        </div>
+                        </motion.div>
 
                         {/* 3. Individual Badges */}
-                        <div className="mb-6 flex items-center gap-3 mt-8">
-                            <div className="h-8 w-1 rounded-full bg-primary"></div>
-                            <h2 className="heading text-2xl font-semibold tracking-wide text-black">Special Achievements</h2>
-                        </div>
-                        <p className="mb-8 text-black/70 max-w-2xl">
-                            Standalone badges awarded for exceptional, one-time accomplishments.
-                        </p>
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.5, duration: 0.5 }}
+                        >
+                            <div className="mb-6 flex items-center gap-3 mt-8">
+                                <div className="h-8 w-1 rounded-full bg-primary"></div>
+                                <h2 className="heading text-2xl font-semibold tracking-wide text-black">Special Achievements</h2>
+                            </div>
+                            <p className="mb-8 text-black/70 max-w-2xl">
+                                Standalone badges awarded for exceptional, one-time accomplishments.
+                            </p>
+                        </motion.div>
 
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-                            {individualBadges.map((badge) => (
-                                <div
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            whileInView={{ opacity: 1 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.6, duration: 0.5 }}
+                            className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6"
+                        >
+                            {individualBadges.map((badge, idx) => (
+                                <motion.div
                                     key={badge.id}
+                                    initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                                    whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ delay: 0.6 + idx * 0.1, duration: 0.4 }}
                                     className={`badge-card relative flex flex-col items-center justify-center p-6 text-center transition-all duration-300 rounded-[2rem] border ${badge.earned ? 'bg-primary/5 border-primary/20 hover:border-primary/40 shadow-sm' : 'bg-black/5 border-black/10 opacity-60 grayscale'}`}
                                 >
                                     <div className="h-24 w-24 mb-4 drop-shadow-md flex items-center justify-center overflow-hidden">
@@ -383,9 +425,9 @@ export default function ProfileDashboard() {
                                             </svg>
                                         </div>
                                     )}
-                                </div>
+                                </motion.div>
                             ))}
-                        </div>
+                        </motion.div>
 
                         {/* Footer */}
                         <footer className="mt-16 py-8 text-center text-xs text-black/50 border-t border-black/10">
