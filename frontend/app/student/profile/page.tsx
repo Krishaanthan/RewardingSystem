@@ -3,91 +3,71 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-// TIER BADGES Mock Data
-const TIER_BADGES = [
-    {
-        id: "knowledge-seeker",
+// TIER BADGES CONFIG
+const TIER_BADGES_CONFIG: Record<string, { title: string; desc: string; basePath: string; unlockReq: string; images: Record<string, string> }> = {
+    "knowledge_seeker": {
         title: "Knowledge Seeker",
         desc: "Learning & Certifications",
-        tier: "Diamond",
-        image: "/assets/Badges/knowledge_seeker/diamond KS.png",
-        progress: 100, // max level
-        nextTier: null,
+        basePath: "/assets/Badges/knowledge_seeker",
+        unlockReq: "Complete 1 course",
+        images: { Bronze: "bronzeKS.png", Silver: "silverKS.png", Gold: "goldKS.png", Diamond: "diamond KS.png" }
     },
-    {
-        id: "community-impact",
+    "community_impact": {
         title: "Community Impact",
         desc: "Volunteering, NSS/NCC, Clubs",
-        tier: "Silver",
-        image: "/assets/Badges/community_impact/silverCI.png",
-        progress: 50,
-        nextTier: "Gold",
-        ptsToNext: 300,
+        basePath: "/assets/Badges/community_impact",
+        unlockReq: "Participate in 1 activity",
+        images: { Bronze: "bronzeCI.png", Silver: "silverCI.png", Gold: "goldCI.png", Diamond: "diamondCI.png" }
     },
-    {
-        id: "campus-star",
+    "campus_star": {
         title: "Campus Star",
         desc: "Cultural, Sports, College Events",
-        tier: "Gold",
-        image: "/assets/Badges/campus_engagement/gold CE.png",
-        progress: 85,
-        nextTier: "Diamond",
-        ptsToNext: 150,
+        basePath: "/assets/Badges/campus_engagement",
+        unlockReq: "1 participation",
+        images: { Bronze: "bronzeCE.png", Silver: "silverCE.png", Gold: "gold CE.png", Diamond: "diamondCE.png" }
     },
-    {
-        id: "hackathon-hero",
+    "hackathon_hero": {
         title: "Hackathon Hero",
         desc: "Hackathon participation and wins",
-        tier: "Bronze",
-        image: "/assets/Badges/Hackathon Badge/bronzeHB.png",
-        progress: 20,
-        nextTier: "Silver",
-        ptsToNext: 400,
+        basePath: "/assets/Badges/Hackathon Badge",
+        unlockReq: "Participate in 1 hackathon",
+        images: { Bronze: "bronzeHB.png", Silver: "silverHB.png", Gold: "gold HB.png", Diamond: "DiamondHB.png" }
     },
-    {
-        id: "innovation-builder",
+    "innovation_builder": {
         title: "Innovation Builder",
         desc: "Research, Projects, Funding",
-        tier: "Locked",
-        image: "/assets/Badges/Innovation_builder/bronzeIB.png",
-        progress: 0,
-        nextTier: "Bronze",
-        ptsToNext: 100,
+        basePath: "/assets/Badges/Innovation_builder",
+        unlockReq: "Complete 1 project",
+        images: { Bronze: "bronzeIB.png", Silver: "SiverIB.png", Gold: "GoldIB.png", Diamond: "diamondIB.png" }
     },
-    {
-        id: "leadership-architect",
+    "leadership_architect": {
         title: "Leadership Architect",
         desc: "Organizing events, workshops",
-        tier: "Locked",
-        image: "/assets/Badges/Leadership Badge/bronzeLB.png",
-        progress: 0,
-        nextTier: "Bronze",
-        ptsToNext: 100,
+        basePath: "/assets/Badges/Leadership Badge",
+        unlockReq: "Organise 1 event",
+        images: { Bronze: "bronzeLB.png", Silver: "silverLB.png", Gold: "gold LB.png", Diamond: "diamondLB.png" }
     },
-];
+};
 
-const INDIVIDUAL_BADGES = [
+const INDIVIDUAL_BADGES_CONFIG = [
     {
-        id: "academic-excellence",
+        id: "academic_excellence",
         title: "Academic Excellence",
         desc: "> 8.5 CGPA Achieved",
-        earned: true,
         image: "/assets/Badges/Academic Excellence.png",
         imageScale: 1.6,
     },
     {
-        id: "global-explorer",
+        id: "global_explorer",
         title: "Global Explorer",
         desc: "Study Summer Camp Abroad",
-        earned: false,
         image: "/assets/Badges/Global Exploror.png",
         imageScale: 1.6,
     },
     {
-        id: "startup-founder",
+        id: "startup_founder",
         title: "Startup Founder",
         desc: "Startup Funded & Approved",
-        earned: false,
         image: "/assets/Badges/Startup Founder.png",
     },
 ];
@@ -97,7 +77,7 @@ const TIER_COLORS: Record<string, { bg: string; text: string; border: string; gl
     Gold: { bg: "bg-yellow-50", text: "text-yellow-600", border: "border-yellow-400", glow: "shadow-[0_0_15px_rgba(234,179,8,0.3)]" },
     Silver: { bg: "bg-gray-100", text: "text-gray-600", border: "border-gray-400", glow: "shadow-[0_0_15px_rgba(156,163,175,0.3)]" },
     Bronze: { bg: "bg-orange-50", text: "text-orange-700", border: "border-orange-400", glow: "shadow-[0_0_15px_rgba(249,115,22,0.3)]" },
-    Locked: { bg: "bg-gray-50", text: "text-gray-400", border: "border-gray-200", glow: "" },
+    Locked: { bg: "bg-red-50", text: "text-red-600", border: "border-red-200", glow: "" },
 };
 
 export default function ProfileDashboard() {
@@ -157,6 +137,54 @@ export default function ProfileDashboard() {
         .map((n: string) => n[0])
         .join("")
         .toUpperCase();
+
+    // Dynamically calculate tier badges and special badges based on student data
+    const earnedBadgesMap = new Map<string, any>((student.badges || []).map((b: any) => [b.category, b]));
+
+    const tierBadges = Object.entries(TIER_BADGES_CONFIG).map(([id, config]) => {
+        const earned = earnedBadgesMap.get(id);
+        const isLocked = !earned;
+        const tier = earned ? earned.tier : "Locked";
+        const progress = earned && earned.next_required ? Math.round((earned.current / earned.next_required) * 100) : (earned ? 100 : 0);
+        
+        let nextTier = null;
+        let actsToNext = 0;
+        if (earned && earned.next_required) {
+            actsToNext = earned.next_required - earned.current;
+            const tiers = ["Bronze", "Silver", "Gold", "Diamond"];
+            const curIdx = tiers.indexOf(tier);
+            if (curIdx >= 0 && curIdx < tiers.length - 1) {
+                nextTier = tiers[curIdx + 1];
+            }
+        } else if (!earned) {
+            nextTier = "Bronze";
+            // For bronze, we assume the first target is generally threshold count 1
+            actsToNext = 1; 
+        }
+
+        const imageFile = isLocked ? config.images.Bronze : config.images[tier];
+        const image = `${config.basePath}/${imageFile}`;
+
+        return {
+            id,
+            title: config.title,
+            desc: config.desc,
+            unlockReq: config.unlockReq,
+            tier,
+            image,
+            progress,
+            nextTier,
+            actsToNext
+        };
+    });
+
+    const individualBadges = INDIVIDUAL_BADGES_CONFIG.map(config => {
+        const earned = earnedBadgesMap.has(config.id);
+        return {
+            ...config,
+            earned
+        };
+    });
 
     return (
         <>
@@ -240,7 +268,7 @@ export default function ProfileDashboard() {
                         </p>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
-                            {TIER_BADGES.map((badge) => {
+                            {tierBadges.map((badge) => {
                                 const colors = TIER_COLORS[badge.tier];
                                 const isLocked = badge.tier === "Locked";
 
@@ -252,7 +280,12 @@ export default function ProfileDashboard() {
                                         )}
 
                                         <div className="flex items-start justify-between mb-4 relative z-10">
-                                            <div className={`rounded-xl border px-3 py-1 text-xs font-bold uppercase tracking-wider ${colors.bg} ${colors.text} ${colors.border}`}>
+                                            <div className={`rounded-xl border px-3 py-1 text-xs font-bold uppercase tracking-wider flex items-center gap-1 ${colors.bg} ${colors.text} ${colors.border}`}>
+                                                {isLocked && (
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5">
+                                                        <path fillRule="evenodd" d="M10 1a4.5 4.5 0 00-4.5 4.5V9H5a2 2 0 00-2 2v6a2 2 0 002 2h10a2 2 0 002-2v-6a2 2 0 00-2-2h-.5V5.5A4.5 4.5 0 0010 1zm3 8V5.5a3 3 0 10-6 0V9h6z" clipRule="evenodd" />
+                                                    </svg>
+                                                )}
                                                 {badge.tier}
                                             </div>
                                             <div className="h-24 w-24 shrink-0 drop-shadow-lg flex items-center justify-center overflow-hidden">
@@ -274,17 +307,23 @@ export default function ProfileDashboard() {
                                         {/* Progress Bar */}
                                         <div className="mt-6 relative z-10">
                                             {isLocked ? (
-                                                <div className="flex items-center gap-2 text-xs font-semibold text-black/40">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
-                                                        <path fillRule="evenodd" d="M10 1a4.5 4.5 0 00-4.5 4.5V9H5a2 2 0 00-2 2v6a2 2 0 002 2h10a2 2 0 002-2v-6a2 2 0 00-2-2h-.5V5.5A4.5 4.5 0 0010 1zm3 8V5.5a3 3 0 10-6 0V9h6z" clipRule="evenodd" />
-                                                    </svg>
-                                                    Unlock by participating
-                                                </div>
+                                                <>
+                                                    <div className="flex justify-between text-xs font-bold mb-2">
+                                                        <span className="text-black/50">{badge.unlockReq}</span>
+                                                        <span className="text-black/40">0/1</span>
+                                                    </div>
+                                                    <div className="h-2 w-full rounded-full bg-black/5 overflow-hidden">
+                                                        <div
+                                                            className={`h-full rounded-full bg-gray-300 transition-all duration-1000`}
+                                                            style={{ width: `0%` }}
+                                                        ></div>
+                                                    </div>
+                                                </>
                                             ) : badge.nextTier ? (
                                                 <>
                                                     <div className="flex justify-between text-xs font-bold mb-2">
                                                         <span className="text-black">{badge.progress}% to {badge.nextTier}</span>
-                                                        <span className="text-primary">{"ptsToNext" in badge ? (badge as any).ptsToNext : 0} pts left</span>
+                                                        <span className="text-primary">{badge.actsToNext} acts left</span>
                                                     </div>
                                                     <div className="h-2 w-full rounded-full bg-black/10 overflow-hidden">
                                                         <div
@@ -317,7 +356,7 @@ export default function ProfileDashboard() {
                         </p>
 
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-                            {INDIVIDUAL_BADGES.map((badge) => (
+                            {individualBadges.map((badge) => (
                                 <div
                                     key={badge.id}
                                     className={`badge-card relative flex flex-col items-center justify-center p-6 text-center transition-all duration-300 rounded-[2rem] border ${badge.earned ? 'bg-primary/5 border-primary/20 hover:border-primary/40 shadow-sm' : 'bg-black/5 border-black/10 opacity-60 grayscale'}`}

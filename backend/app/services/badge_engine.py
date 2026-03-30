@@ -57,40 +57,40 @@ from typing import Optional
 # so the first match is always the best unlocked tier.
 
 CATEGORY_THRESHOLDS: dict[str, list[tuple[int, str, str]]] = {
-    "knowledge-seeker": [
+    "knowledge_seeker": [
         (8, "Diamond", "♦"),
         (5, "Gold",    "🥇"),
         (3, "Silver",  "🥈"),
         (1, "Bronze",  "🥉"),
     ],
-    "community-impact": [
+    "community_impact": [
         (8, "Diamond", "♦"),
         (5, "Gold",    "🥇"),
         (3, "Silver",  "🥈"),
         (1, "Bronze",  "🥉"),
     ],
-    "campus-star": [
+    "campus_star": [
         (8, "Diamond", "♦"),
         (5, "Gold",    "🥇"),
         (3, "Silver",  "🥈"),
         (1, "Bronze",  "🥉"),
     ],
     # ⚠ Tighter scale — Silver=2, Gold=3, Diamond=4
-    "innovation-builder": [
+    "innovation_builder": [
         (4, "Diamond", "♦"),
         (3, "Gold",    "🥇"),
         (2, "Silver",  "🥈"),
         (1, "Bronze",  "🥉"),
     ],
     # ⚠ Tighter scale — Silver=2, Gold=3, Diamond=4
-    "leadership-architect": [
+    "leadership_architect": [
         (4, "Diamond", "♦"),
         (3, "Gold",    "🥇"),
         (2, "Silver",  "🥈"),
         (1, "Bronze",  "🥉"),
     ],
     # ⚠ Tighter scale — Silver=2, Gold=3 (win), Diamond=4 (win multiple)
-    "hackathon-hero": [
+    "hackathon_hero": [
         (4, "Diamond", "♦"),
         (3, "Gold",    "🥇"),
         (2, "Silver",  "🥈"),
@@ -99,18 +99,18 @@ CATEGORY_THRESHOLDS: dict[str, list[tuple[int, str, str]]] = {
 }
 
 TIERED_BADGE_NAMES: dict[str, str] = {
-    "knowledge-seeker":     "Knowledge Seeker",
-    "community-impact":     "Community Impact",
-    "campus-star":          "Campus Star",
-    "innovation-builder":   "Innovation Builder",
-    "leadership-architect": "Leadership Architect",
-    "hackathon-hero":       "Hackathon Hero",
+    "knowledge_seeker":     "Knowledge Seeker",
+    "community_impact":     "Community Impact",
+    "campus_star":          "Campus Star",
+    "innovation_builder":   "Innovation Builder",
+    "leadership_architect": "Leadership Architect",
+    "hackathon_hero":       "Hackathon Hero",
 }
 
 SPECIAL_BADGE_NAMES: dict[str, str] = {
-    "academic-excellence": "Academic Excellence",
-    "global-explorer":     "Global Explorer",
-    "startup-founder":     "Startup Founder",
+    "academic_excellence": "Academic Excellence",
+    "global_explorer":     "Global Explorer",
+    "startup_founder":     "Startup Founder",
 }
 
 

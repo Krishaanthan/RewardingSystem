@@ -34,10 +34,10 @@ const pointsData = [
 const staticBadges = [
   { icon: "/assets/Badges/knowledge_seeker/bronzeKS.png", name: "Knowledge Seeker", desc: "Highest marks in term" },
   { icon: "/assets/Badges/community_impact/bronzeCI.png", name: "Community Impact", desc: "7 days consecutive login" },
-  { icon: "/assets/Badges/campus_engagement/bronzeCE.png", name: "Campus Engagement", desc: "Read 10 library books" },
+  { icon: "/assets/Badges/campus_engagement/bronzeCE.png", name: "Campus Star", desc: "Read 10 library books" },
   { icon: "/assets/Badges/Innovation_builder/bronzeIB.png", name: "Innovation Builder", desc: "Fastest quiz completion" },
-  { icon: "/assets/Badges/Leadership Badge/bronzeLB.png", name: "Leadership Badge", desc: "Nominated by teachers" },
-  { icon: "/assets/Badges/Hackathon Badge/bronzeHB.png", name: "Hackathon Badge", desc: "Perfect score on a test" },
+  { icon: "/assets/Badges/Leadership Badge/bronzeLB.png", name: "Leadership Architect", desc: "Nominated by teachers" },
+  { icon: "/assets/Badges/Hackathon Badge/bronzeHB.png", name: "Hackathon Hero", desc: "Perfect score on a test" },
 ];
 
 const ledgerData = [
@@ -123,7 +123,7 @@ function BackBtn({ onBack }: any) {
 /* ── BADGES PAGE ─────────────────────────────────────────────────────────── */
 function BadgesPage({ onBack, dashboardData }: any) {
   const [hov, setHov] = useState<any>(null);
-  const earnedBadgeNames = dashboardData?.badges || [];
+  const earnedBadgeNames = dashboardData?.badges?.map((b: any) => b.name) || [];
   const badges = staticBadges.map(b => ({ ...b, earned: earnedBadgeNames.includes(b.name) }));
   const earned = badges.filter(b => b.earned);
   const locked = badges.filter(b => !b.earned);
@@ -170,9 +170,14 @@ function BadgesPage({ onBack, dashboardData }: any) {
         {locked.map((b, i) => (
           <div key={i} style={{ background: "#F9FAFB", border: `2px dashed ${CG}`, borderRadius: 16, padding: "24px 14px 18px", textAlign: "center", opacity: 0.55 }}>
             <div style={{ marginBottom: 10, display: "flex", justifyContent: "center", filter: "grayscale(1)" }}><img src={b.icon} alt={b.name} style={{ width: 44, height: 44, objectFit: "contain" }} /></div>
-            <div style={{ fontSize: 13, fontWeight: 700, color: CGD, marginBottom: 4 }}>{b.name}</div>
+            <div style={{ fontSize: 13, fontWeight: 700, color: RED, marginBottom: 4 }}>{b.name}</div>
             <div style={{ fontSize: 11, color: CGD, lineHeight: 1.4 }}>{b.desc}</div>
-            <div style={{ marginTop: 10, display: "inline-block", background: CG, color: "#fff", fontSize: 9, fontWeight: 700, padding: "2px 9px", borderRadius: 99, letterSpacing: "0.05em" }}>LOCKED</div>
+            <div style={{ marginTop: 10, display: "inline-flex", alignItems: "center", gap: 4, background: "#FEF2F2", color: RED, fontSize: 9, fontWeight: 700, padding: "2px 9px", borderRadius: 99, border: "1px solid #FECACA", letterSpacing: "0.05em" }}>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" style={{ width: 10, height: 10 }}>
+                <path fillRule="evenodd" d="M10 1a4.5 4.5 0 00-4.5 4.5V9H5a2 2 0 00-2 2v6a2 2 0 002 2h10a2 2 0 002-2v-6a2 2 0 00-2-2h-.5V5.5A4.5 4.5 0 0010 1zm3 8V5.5a3 3 0 10-6 0V9h6z" clipRule="evenodd" />
+              </svg>
+              LOCKED
+            </div>
           </div>
         ))}
       </div>
@@ -463,7 +468,7 @@ function PointsChart() {
 /* ── Badges Grid (dashboard widget — clickable, goes to badges page) ──────── */
 function BadgesWidget({ onNavigate, dashboardData }: any) {
   const [hov, setHov] = useState<any>(null);
-  const earnedBadgeNames = dashboardData?.badges || [];
+  const earnedBadgeNames = dashboardData?.badges?.map((b: any) => b.name) || [];
   const badges = staticBadges.map(b => ({ ...b, earned: earnedBadgeNames.includes(b.name) }));
   const earnedCount = badges.filter(b => b.earned).length;
   return (
@@ -507,9 +512,16 @@ function BadgesWidget({ onNavigate, dashboardData }: any) {
               <div style={{ position: "absolute", top: 7, right: 7, width: 16, height: 16, borderRadius: "50%", background: P, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 8, color: "#fff", fontWeight: 800 }}>✓</div>
             )}
             <div style={{ marginBottom: 7, display: "flex", justifyContent: "center", filter: b.earned ? "none" : "grayscale(1)" }}><img src={b.icon} alt={b.name} style={{ width: 34, height: 34, objectFit: "contain" }} /></div>
-            <div style={{ fontSize: 10.5, fontWeight: 700, color: b.earned ? P : CGD, lineHeight: 1.3 }}>{b.name}</div>
-            {b.earned && (
+            <div style={{ fontSize: 10.5, fontWeight: 700, color: b.earned ? P : RED, lineHeight: 1.3 }}>{b.name}</div>
+            {b.earned ? (
               <div style={{ marginTop: 5, display: "inline-block", background: P, color: "#fff", fontSize: 8.5, fontWeight: 700, padding: "1px 7px", borderRadius: 99, letterSpacing: "0.05em" }}>EARNED</div>
+            ) : (
+              <div style={{ marginTop: 5, display: "inline-flex", alignItems: "center", gap: 3, background: "#FEF2F2", color: RED, fontSize: 8, fontWeight: 700, padding: "1px 7px", borderRadius: 99, border: "1px solid #FECACA", letterSpacing: "0.05em" }}>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" style={{ width: 9, height: 9 }}>
+                  <path fillRule="evenodd" d="M10 1a4.5 4.5 0 00-4.5 4.5V9H5a2 2 0 00-2 2v6a2 2 0 002 2h10a2 2 0 002-2v-6a2 2 0 00-2-2h-.5V5.5A4.5 4.5 0 0010 1zm3 8V5.5a3 3 0 10-6 0V9h6z" clipRule="evenodd" />
+                </svg>
+                LOCKED
+              </div>
             )}
             {/* tooltip */}
             {hov === i && b.earned && (
