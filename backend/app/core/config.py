@@ -13,6 +13,8 @@ class Settings(BaseSettings):
     POSTGRES_PASSWORD: str = "1695"
     POSTGRES_DB: str = "student_rewards"
     DATABASE_URL: Optional[str] = None
+    SUPABASE_URL: Optional[str] = None
+    SUPABASE_KEY: Optional[str] = None
 
     @property
     def async_database_url(self) -> str:

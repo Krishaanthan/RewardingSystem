@@ -15,5 +15,6 @@ dependencies = [
     "python-jose[cryptography]>=3.5.0",
     "python-multipart>=0.0.22",
     "sqlalchemy[asyncio]>=2.0.48",
+    "supabase>=2.31.0",
     "uvicorn>=0.41.0",
 ]

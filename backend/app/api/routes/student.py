@@ -100,7 +100,7 @@ async def submit_claim(
         file_type = upload.filename.rsplit(".", 1)[0] if upload.filename else "Proof"
         saved_path = await save_upload_file(
             reg_no=current_user.registration_number,
-            activity_id=activity_id,
+            activity_title=activity.title,
             file_type=file_type,
             file=upload,
         )
