@@ -2,15 +2,41 @@
 frontend/node_modules/
 frontend/.next/
 frontend/tsconfig.tsbuildinfo
+frontend/out/
+frontend/build/
+frontend/.env*.local
 
 # Python
-backend/.venv/
-backend/__pycache__/
+**/__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+ENV/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
 
 # Environment
 .env
 .env.*
 
+# Storage
 storage/*
 storage
 storage/
+
+# Logs / Temporary
+*.log
+*error.txt
+
+# IDEs & System
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Agent / CLI Tools
+.claude/
+.agent/
