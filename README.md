@@ -82,8 +82,14 @@ The API will be available at `http://localhost:8000`.
 
 ### Start the Frontend Server
 
-From the `frontend/` directory:
+You can run the frontend server from the project root:
 ```powershell
+npm run dev
+```
+
+Alternatively, you can run it from the `frontend/` directory:
+```powershell
+cd frontend
 npm run dev
 ```
 Open [http://localhost:3000](http://localhost:3000) in your browser.

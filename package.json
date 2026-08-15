@@ -1,0 +1,12 @@
+{
+  "name": "rdsys-root",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "npm --prefix frontend run dev",
+    "build": "npm --prefix frontend run build",
+    "start": "npm --prefix frontend run start",
+    "lint": "npm --prefix frontend run lint",
+    "backend": "uv run uvicorn backend.app.main:app --reload"
+  }
+}
