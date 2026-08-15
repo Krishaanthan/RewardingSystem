@@ -1,3 +1,11 @@
+import sys
+from pathlib import Path
+
+# Dynamically add project root to python path
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
 from logging.config import fileConfig
 
 from sqlalchemy import engine_from_config
@@ -21,6 +29,7 @@ from backend.app.models.user import User          # noqa: F401
 from backend.app.models.activity import Activity  # noqa: F401
 from backend.app.models.claim import Claim, ClaimFile  # noqa: F401
 from backend.app.models.badge import Badge        # noqa: F401
+from backend.app.models.batch_deduction import BatchDeduction # noqa: F401
 from backend.app.core.config import settings
 
 target_metadata = Base.metadata

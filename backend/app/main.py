@@ -1,8 +1,16 @@
+import sys
+from pathlib import Path
+
+# Dynamically add project root to python path
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
 import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from backend.app.api.routes import auth, student, claims, faculty
+from backend.app.api.routes import auth, student, claims, faculty, admin
 from backend.app.core.config import settings
 
 app = FastAPI(
@@ -30,6 +38,9 @@ app.include_router(claims.router, prefix=f"{settings.API_V1_STR}/claims", tags=[
 
 # Faculty review routes
 app.include_router(faculty.router, prefix=f"{settings.API_V1_STR}/faculty", tags=["faculty"])
+
+# Admin routes
+app.include_router(admin.router, prefix=f"{settings.API_V1_STR}/admin", tags=["admin"])
 
 
 @app.get("/")

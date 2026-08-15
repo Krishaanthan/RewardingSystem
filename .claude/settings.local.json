@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(du -sh /d/GitHub/RDSYS/storage/43110481/* /d/GitHub/RDSYS/storage/43110482/*)",
+      "Skill(update-config)"
+    ]
+  }
+}

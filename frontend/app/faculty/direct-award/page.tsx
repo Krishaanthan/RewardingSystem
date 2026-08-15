@@ -7,6 +7,40 @@ export default function FacultyDirectAwardPage() {
   const [studentRegNo, setStudentRegNo] = useState("");
   const [reason, setReason] = useState("");
   const [points, setPoints] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    try {
+      const token = localStorage.getItem("access_token");
+      const res = await fetch("http://localhost:8000/api/faculty/direct-award", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          registration_number: studentRegNo,
+          reason,
+          points: parseInt(points, 10)
+        })
+      });
+      if (res.ok) {
+        alert("Points awarded successfully!");
+        setStudentRegNo(""); 
+        setReason(""); 
+        setPoints("");
+      } else {
+        alert("Failed to award points. Please check student registration number.");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Network error.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <>
@@ -49,7 +83,7 @@ export default function FacultyDirectAwardPage() {
                 <h2 className="heading text-2xl font-semibold tracking-wide text-black">Award Points Form</h2>
               </div>
 
-              <form className="space-y-6">
+              <form className="space-y-6" onSubmit={handleSubmit}>
                 <div>
                   <label className="mb-2 block text-sm font-medium text-black">
                     Student Registration Number <span className="text-primary">*</span>
@@ -96,9 +130,10 @@ export default function FacultyDirectAwardPage() {
                 <div className="pt-4">
                   <button
                     type="submit"
-                    className="group flex items-center gap-2 rounded-xl bg-primary px-8 py-3.5 font-semibold text-secondary transition-all hover:bg-primary/80 hover:shadow-[0_0_20px_rgba(131,18,56,0.5)] focus:outline-none focus:ring-2 focus:ring-[#8F113B] focus:ring-offset-2 focus:ring-offset-black/50"
+                    disabled={isSubmitting}
+                    className="group flex items-center gap-2 rounded-xl bg-primary px-8 py-3.5 font-semibold text-secondary transition-all hover:bg-primary/80 hover:shadow-[0_0_20px_rgba(131,18,56,0.5)] focus:outline-none focus:ring-2 focus:ring-[#8F113B] focus:ring-offset-2 focus:ring-offset-black/50 disabled:opacity-50"
                   >
-                    Award Points
+                    {isSubmitting ? "Awarding..." : "Award Points"}
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="h-4 w-4 transition-transform group-hover:translate-x-1">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
                     </svg>

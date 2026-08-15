@@ -23,7 +23,6 @@ from backend.app.models.claim import Claim, ClaimFile, ClaimStatus
 from backend.app.schemas.activity_schema import ActivityOut
 from backend.app.schemas.claim_schema import ClaimOut, ClaimFileOut
 from backend.app.services.storage import save_upload_file
-from backend.app.services.ai_processing import ocr_verification_script
 from backend.app.services.badge_engine import compute_all_badges
 
 router = APIRouter()
@@ -39,6 +38,7 @@ async def _build_claim_out(claim: Claim, db: AsyncSession) -> ClaimOut:
         select(ClaimFile).where(ClaimFile.claim_id == claim.id)
     )
     files = files_result.scalars().all()
+    reviewer = await db.get(User, claim.reviewer_id) if claim.reviewer_id else None
 
     return ClaimOut(
         id=claim.id,
@@ -49,6 +49,7 @@ async def _build_claim_out(claim: Claim, db: AsyncSession) -> ClaimOut:
         rejection_reason=claim.rejection_reason,
         submitted_at=claim.submitted_at,
         files=[ClaimFileOut.model_validate(f) for f in files],
+        reviewer_name=reviewer.name if reviewer else None
     )
 
 
@@ -88,7 +89,7 @@ async def submit_claim(
     claim = Claim(
         student_id=current_user.id,
         activity_id=activity_id,
-        status=ClaimStatus.AI_PROCESSING,
+        status=ClaimStatus.MANUAL_REVIEW,
     )
     db.add(claim)
     await db.flush()  # get claim.id before adding files
@@ -99,7 +100,7 @@ async def submit_claim(
         file_type = upload.filename.rsplit(".", 1)[0] if upload.filename else "Proof"
         saved_path = await save_upload_file(
             reg_no=current_user.registration_number,
-            activity_id=activity_id,
+            activity_title=activity.title,
             file_type=file_type,
             file=upload,
         )
@@ -108,13 +109,13 @@ async def submit_claim(
     await db.commit()
     await db.refresh(claim)
 
-    # Trigger the dummy AI background task
-    background_tasks.add_task(ocr_verification_script, claim.id)
+    # Skipped AI Background processing
+    # background_tasks.add_task(ocr_verification_script, claim.id)
 
     return {
         "claim_id": str(claim.id),
         "status": claim.status,
-        "message": "Submission received. AI is processing your files.",
+        "message": "Submission received. It is now pending manual review.",
     }
 
 

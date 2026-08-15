@@ -73,6 +73,22 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
+## 🔑 Test Credentials
+
+To quickly test the application's Faculty and Admin portals without manually seeding the database, you can use the following default test accounts:
+
+### Admin Portal
+- **Login URL:** `/admin-login`
+- **Registration Number:** `admin`
+- **Password:** `password123`
+
+### Faculty Portal
+- **Login URL:** `/faculty-login`
+- **Registration Number:** `faculty1`
+- **Password:** `password123`
+
+---
+
 ## 📦 Dependencies
 
 ### Backend

@@ -1,9 +1,21 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { facultyNav } from "@/lib/nav";
 // We use inline SVGs as icons to avoid external dependencies.
+
+type AuditSubmission = {
+  id: string;
+  studentName: string;
+  activityType: string;
+  description: string;
+  pointsAwarded: number;
+  badgeAllocated: string;
+  status: string;
+  date: string;
+  proofUrl: string | null;
+};
 
 export default function FacultyAuditLog() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -12,28 +24,42 @@ export default function FacultyAuditLog() {
   const [filterBadge, setFilterBadge] = useState("All");
   const [expandedRow, setExpandedRow] = useState<string | null>(null);
   const [previewProof, setPreviewProof] = useState<string | null>(null);
+  const [submissions, setSubmissions] = useState<AuditSubmission[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Mock data representing AI-approved submissions
-  const mockSubmissions = [
-    { id: "SUB-1001", studentName: "Alex Chen", activityType: "Winning Hackathon", description: "First place in National AI Hackathon with project 'EcoSort'", pointsAwarded: 4, badgeAllocated: "Gold", status: "Auto Approved", date: "2024-03-08", proofUrl: "https://images.unsplash.com/photo-1568228136371-12c820def0d1?auto=format&fit=crop&q=80&w=800" },
-    { id: "SUB-1002", studentName: "Sarah Jenkins", activityType: "Coursera Course", description: "Completed Advanced Machine Learning Specialization", pointsAwarded: 6, badgeAllocated: "Silver", status: "Manual Review", date: "2024-03-07", proofUrl: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&q=80&w=800" },
-    { id: "SUB-1003", studentName: "Michael Chang", activityType: "Hackathon Participation", description: "Attended Web3 Founders Workshop", pointsAwarded: 5, badgeAllocated: "None", status: "Auto Approved", date: "2024-03-07", proofUrl: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80&w=800" },
-    { id: "SUB-1004", studentName: "Emily Rivera", activityType: "Global Certificate", description: "Published paper on Quantum Encryption in IEEE", pointsAwarded: 12, badgeAllocated: "Gold", status: "Auto Approved", date: "2024-03-06", proofUrl: "https://images.unsplash.com/photo-1589330694653-efa648338b6b?auto=format&fit=crop&q=80&w=800" },
-    { id: "SUB-1005", studentName: "David Kim", activityType: "Volunteering", description: "Organized campus clean-up drive", pointsAwarded: 6, badgeAllocated: "Bronze", status: "Auto Approved", date: "2024-03-05", proofUrl: "https://images.unsplash.com/photo-1593113565694-c6b6537ea7b2?auto=format&fit=crop&q=80&w=800" },
-    { id: "SUB-1006", studentName: "Jessica Wong", activityType: "Swayam / NPTEL Course", description: "Completed IoT Programming Course with 95%", pointsAwarded: 8, badgeAllocated: "Silver", status: "Manual Review", date: "2024-03-05", proofUrl: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=800" },
-    { id: "SUB-1007", studentName: "Rahul Sharma", activityType: "Sports Activities", description: "Runner up in Inter-college Badminton Tournament", pointsAwarded: 5, badgeAllocated: "Bronze", status: "Auto Approved", date: "2024-03-04", proofUrl: "https://images.unsplash.com/photo-1515523110800-9415d13b84a8?auto=format&fit=crop&q=80&w=800" },
-    { id: "SUB-1008", studentName: "Priya Patel", activityType: "Conducting Workshop", description: "Conducted React.js bootcamp for juniors", pointsAwarded: 10, badgeAllocated: "Gold", status: "Auto Approved", date: "2024-03-04", proofUrl: "https://images.unsplash.com/photo-1544531586-fde5298cdd40?auto=format&fit=crop&q=80&w=800" },
-    { id: "SUB-1009", studentName: "James Wilson", activityType: "Organizing Event", description: "Core organizing committee for TechFest 2024", pointsAwarded: 8, badgeAllocated: "Silver", status: "Manual Review", date: "2024-03-03", proofUrl: "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&q=80&w=800" },
-    { id: "SUB-1010", studentName: "Anita Desai", activityType: "Cultural Participation", description: "Performed classical dance at Annual Day", pointsAwarded: 4, badgeAllocated: "None", status: "Auto Approved", date: "2024-03-03", proofUrl: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&q=80&w=800" },
-    { id: "SUB-1011", studentName: "Tom Hardy", activityType: "NCC / NSS Activities", description: "Participated in Blood Donation Camp", pointsAwarded: 6, badgeAllocated: "Bronze", status: "Auto Approved", date: "2024-03-02", proofUrl: "https://images.unsplash.com/photo-1615461715566-a6111fdb51cb?auto=format&fit=crop&q=80&w=800" },
-    { id: "SUB-1012", studentName: "Sophia Martinez", activityType: "Conducting Coding Contest", description: "Hosted an Algorithm Coding Challenge on HackerRank", pointsAwarded: 9, badgeAllocated: "Silver", status: "Auto Approved", date: "2024-03-02", proofUrl: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&q=80&w=800" },
-    { id: "SUB-1013", studentName: "William Clark", activityType: "Club Activities", description: "Weekly meeting coordination for Robotics Club", pointsAwarded: 3, badgeAllocated: "None", status: "Auto Approved", date: "2024-03-01", proofUrl: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=800" },
-    { id: "SUB-1014", studentName: "Emma Lewis", activityType: "Student Chapter Activity", description: "Organized IEEE guest lecture on Machine Learning", pointsAwarded: 7, badgeAllocated: "Silver", status: "Manual Review", date: "2024-03-01", proofUrl: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80&w=800" },
-    { id: "SUB-1015", studentName: "Lucas Brown", activityType: "Other College Event", description: "Represented college in Inter-College Debate", pointsAwarded: 5, badgeAllocated: "Bronze", status: "Auto Approved", date: "2024-02-28", proofUrl: "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&q=80&w=800" }
-  ];
+  useEffect(() => {
+    const fetchAuditLog = async () => {
+      try {
+        const token = localStorage.getItem("access_token");
+        if (!token) return;
+        const res = await fetch("http://localhost:8000/api/faculty/audit-log", {
+          headers: { "Authorization": `Bearer ${token}` }
+        });
+        if (res.ok) {
+          const data = await res.json();
+          const mapped = data.map((item: any) => ({
+            id: item.id,
+            studentName: `${item.student_name} (${item.student_reg_no})`,
+            activityType: item.activity_title,
+            description: item.rejection_reason || "Faculty reviewed claim",
+            pointsAwarded: item.activity_points,
+            badgeAllocated: "N/A",
+            status: item.status === "APPROVED" ? "Approved" : item.status === "REJECTED" ? "Rejected" : "Manual Review",
+            date: new Date(item.submitted_at).toLocaleDateString(),
+            proofUrl: item.files?.length > 0 ? item.files[0].file_path : null
+          }));
+          setSubmissions(mapped);
+        }
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchAuditLog();
+  }, []);
 
-  // Filtering Logic
-  const filteredSubmissions = mockSubmissions.filter((sub) => {
+  const filteredSubmissions = submissions.filter((sub) => {
     const matchesSearch = sub.studentName.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesActivity = filterActivity === "All" || sub.activityType === filterActivity;
     const matchesBadge = filterBadge === "All" || sub.badgeAllocated === filterBadge;
@@ -107,8 +133,8 @@ export default function FacultyAuditLog() {
                   <Icons.Audit />
                 </div>
                 <div>
-                  <p className="text-sm text-black font-medium">Total Submissions</p>
-                  <p className="text-2xl font-bold text-black">{mockSubmissions.length}</p>
+                  <p className="text-sm text-black font-medium">Total Reviews</p>
+                  <p className="text-2xl font-bold text-black">{submissions.length}</p>
                 </div>
               </div>
 
@@ -117,8 +143,8 @@ export default function FacultyAuditLog() {
                   <Icons.CheckCircle />
                 </div>
                 <div>
-                  <p className="text-sm text-black font-medium">AI Approved</p>
-                  <p className="text-2xl font-bold text-black">{mockSubmissions.filter(s => s.status === 'Auto Approved').length}</p>
+                  <p className="text-sm text-black font-medium">Approved</p>
+                  <p className="text-2xl font-bold text-black">{submissions.filter(s => s.status === 'Auto Approved').length}</p>
                 </div>
               </div>
 
@@ -127,8 +153,8 @@ export default function FacultyAuditLog() {
                   <Icons.Search />
                 </div>
                 <div>
-                  <p className="text-sm text-black font-medium">Manual Review Needed</p>
-                  <p className="text-2xl font-bold text-black">{mockSubmissions.filter(s => s.status === 'Manual Review').length}</p>
+                  <p className="text-sm text-black font-medium">Rejected</p>
+                  <p className="text-2xl font-bold text-black">{submissions.filter(s => s.status === 'Rejected').length}</p>
                 </div>
               </div>
             </div>
@@ -222,13 +248,17 @@ export default function FacultyAuditLog() {
                             </td>
                             <td className="p-4 text-sm text-black/60">{sub.date}</td>
                             <td className="p-4 text-center">
-                              <button
-                                onClick={() => setPreviewProof(sub.proofUrl)}
-                                className="inline-flex items-center justify-center gap-2 px-3 py-1.5 bg-white/40 hover:bg-white/80 text-black border border-black/20 rounded-xl text-xs font-medium transition-all shadow-[0_4px_20px_0_rgba(131,18,56,0.05)] hover:shadow-[0_4px_20px_0_rgba(131,18,56,0.15)]"
-                              >
-                                <Icons.Eye />
-                                View
-                              </button>
+                              {sub.proofUrl ? (
+                                <button
+                                  onClick={() => setPreviewProof(sub.proofUrl)}
+                                  className="inline-flex items-center justify-center gap-2 px-3 py-1.5 bg-white/40 hover:bg-white/80 text-black border border-black/20 rounded-xl text-xs font-medium transition-all shadow-[0_4px_20px_0_rgba(131,18,56,0.05)] hover:shadow-[0_4px_20px_0_rgba(131,18,56,0.15)]"
+                                >
+                                  <Icons.Eye />
+                                  View
+                                </button>
+                              ) : (
+                                <span className="text-xs text-black/50">No doc</span>
+                              )}
                             </td>
                           </tr>
                           {/* Expanded Row */}
@@ -291,7 +321,7 @@ export default function FacultyAuditLog() {
               {/* Pagination Mock */}
               <div className="px-6 py-4 border-t border-black/20 flex items-center justify-between bg-white/20">
                 <p className="text-sm text-black/60">
-                  Showing <span className="font-semibold text-black">1</span> to <span className="font-semibold text-black">{filteredSubmissions.length}</span> of <span className="font-semibold text-black">{mockSubmissions.length}</span> entries
+                  Showing <span className="font-semibold text-black">1</span> to <span className="font-semibold text-black">{filteredSubmissions.length}</span> of <span className="font-semibold text-black">{submissions.length}</span> entries
                 </p>
                 <div className="flex items-center gap-2">
                   <button className="px-3 py-1.5 border border-black/20 bg-white/40 rounded-xl text-sm text-black hover:bg-white/80 transition-colors disabled:opacity-50">Previous</button>

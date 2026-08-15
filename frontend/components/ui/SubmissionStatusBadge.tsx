@@ -61,7 +61,8 @@ const config: Record<
     className: "bg-blue-100 text-blue-700 border-blue-200",
   },
   approved: {
-    label: "Approved by AI",
+    label: "Approved", // dynamic override below
+
     icon: <CheckIcon />,
     className: "bg-emerald-100 text-emerald-700 border-emerald-200",
   },
@@ -85,14 +86,20 @@ const config: Record<
   },
 };
 
-export function SubmissionStatusBadge({ status }: { status: SubmissionStatus }) {
+export function SubmissionStatusBadge({ status, reviewerName }: { status: SubmissionStatus; reviewerName?: string }) {
   const { label, icon, className } = config[status];
+  
+  let finalLabel = label;
+  if (status === "approved") {
+    finalLabel = reviewerName ? `Approved by ${reviewerName}` : "Approved by Faculty";
+  }
+
   return (
     <span
       className={`inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-semibold ${className}`}
     >
       {icon}
-      {label}
+      {finalLabel}
     </span>
   );
 }

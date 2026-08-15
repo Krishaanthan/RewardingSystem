@@ -23,14 +23,16 @@ export function AuthLayout({
   fields,
   buttonLabel,
   links,
-  activePortal
+  activePortal,
+  children
 }: {
   title: string;
-  subtitle: string;
-  fields: string[];
-  buttonLabel: string;
-  links: CtaLink[];
+  subtitle?: string;
+  fields?: string[];
+  buttonLabel?: string;
+  links?: CtaLink[];
   activePortal?: PortalId;
+  children?: React.ReactNode;
 }) {
   const currentPortal = activePortal || "admin";
 
@@ -80,51 +82,54 @@ export function AuthLayout({
                     ) : null}
                   </motion.div>
 
-                  {/* Form */}
-                  <motion.form
-                    className="space-y-5"
-                    initial={{ opacity: 0, y: 16 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.25, duration: 0.45, ease: "easeOut" }}
-                  >
-                    {fields.map((field, i) => (
-                      <motion.div
-                        key={field}
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.3 + i * 0.07, duration: 0.35 }}
-                      >
-                        <label className="mb-1.5 block text-sm text-black font-primary">
-                          {field}
-                        </label>
-                        <input
-                          type={field.toLowerCase().includes("password") || field.toLowerCase().includes("code") ? "password" : "text"}
-                          className="block w-full rounded-xl border border-black/20 bg-white/40 px-4 py-3 text-black outline-none transition placeholder:text-black/40 focus:border-black/50 focus:ring-1 focus:ring-black/50 font-primary"
-                          placeholder={`Enter ${field.toLowerCase()}`}
-                        />
-                      </motion.div>
-                    ))}
-
-                    <motion.button
-                      type="button"
-                      className="group mt-2 flex w-full items-center justify-center gap-2 rounded-xl bg-[#8F113B] px-4 py-3.5 font-semibold text-white transition-all hover:bg-[#a61a49] hover:shadow-[0_0_20px_rgba(131,18,56,0.5)] focus:outline-none focus:ring-2 focus:ring-[#8F113B] focus:ring-offset-2 focus:ring-offset-white/50 font-primary"
-                      initial={{ opacity: 0, y: 8 }}
+                  {children ? (
+                    children
+                  ) : (
+                    <motion.form
+                      className="space-y-5"
+                      initial={{ opacity: 0, y: 16 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.3 + fields.length * 0.07, duration: 0.35 }}
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
+                      transition={{ delay: 0.25, duration: 0.45, ease: "easeOut" }}
                     >
-                      {buttonLabel}
-                    </motion.button>
-
-                    <p className="mt-4 flex flex-col items-center gap-2 text-center text-xs text-black/60 font-primary">
-                      {links.map((link) => (
-                        <Link key={link.href} href={link.href} className="font-semibold text-[#8F113B] hover:underline">
-                          {link.label}
-                        </Link>
+                      {fields?.map((field, i) => (
+                        <motion.div
+                          key={field}
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: 0.3 + i * 0.07, duration: 0.35 }}
+                        >
+                          <label className="mb-1.5 block text-sm text-black font-primary">
+                            {field}
+                          </label>
+                          <input
+                            type={field.toLowerCase().includes("password") || field.toLowerCase().includes("code") ? "password" : "text"}
+                            className="block w-full rounded-xl border border-black/20 bg-white/40 px-4 py-3 text-black outline-none transition placeholder:text-black/40 focus:border-black/50 focus:ring-1 focus:ring-black/50 font-primary"
+                            placeholder={`Enter ${field.toLowerCase()}`}
+                          />
+                        </motion.div>
                       ))}
-                    </p>
-                  </motion.form>
+
+                      <motion.button
+                        type="button"
+                        className="group mt-2 flex w-full items-center justify-center gap-2 rounded-xl bg-[#8F113B] px-4 py-3.5 font-semibold text-white transition-all hover:bg-[#a61a49] hover:shadow-[0_0_20px_rgba(131,18,56,0.5)] focus:outline-none focus:ring-2 focus:ring-[#8F113B] focus:ring-offset-2 focus:ring-offset-white/50 font-primary"
+                        initial={{ opacity: 0, y: 8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.3 + (fields?.length || 0) * 0.07, duration: 0.35 }}
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                      >
+                        {buttonLabel}
+                      </motion.button>
+
+                      <p className="mt-4 flex flex-col items-center gap-2 text-center text-xs text-black/60 font-primary">
+                        {links?.map((link) => (
+                          <Link key={link.href} href={link.href} className="font-semibold text-[#8F113B] hover:underline">
+                            {link.label}
+                          </Link>
+                        ))}
+                      </p>
+                    </motion.form>
+                  )}
                 </motion.div>
               </div>
             </div>

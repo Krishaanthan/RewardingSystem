@@ -1,5 +1,9 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from typing import Optional
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
+ENV_FILE = BASE_DIR / ".env"
 
 class Settings(BaseSettings):
     PROJECT_NAME: str = "RDSYS"
@@ -13,6 +17,8 @@ class Settings(BaseSettings):
     POSTGRES_PASSWORD: str = "1695"
     POSTGRES_DB: str = "student_rewards"
     DATABASE_URL: Optional[str] = None
+    SUPABASE_URL: Optional[str] = None
+    SUPABASE_KEY: Optional[str] = None
 
     @property
     def async_database_url(self) -> str:
@@ -20,6 +26,11 @@ class Settings(BaseSettings):
             return self.DATABASE_URL.replace("postgresql://", "postgresql+asyncpg://")
         return f"postgresql+asyncpg://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@{self.POSTGRES_SERVER}:5432/{self.POSTGRES_DB}"
 
-    model_config = SettingsConfigDict(case_sensitive=True, env_file=".env")
+    model_config = SettingsConfigDict(
+        case_sensitive=True,
+        env_file=str(ENV_FILE) if ENV_FILE.exists() else ".env",
+        extra="ignore"
+    )
 
 settings = Settings()
+
