@@ -2,7 +2,7 @@
 
 **Team Name:** CoffeeCompiled
 
-CampusCred is a gamified, AI-assisted platform for colleges to award points to students for academic and extracurricular activities. Uploaded proof documents are processed via an AI pipeline to auto-approve or route claims to faculty for manual review.
+CampusCred is a gamified, AI-assisted platform for colleges to award points to students for academic and extracurricular activities. Uploaded proof documents (PDFs/images) are processed via an AI pipeline (OpenAI + OCR) to auto-approve or route claims to faculty for manual review.
 
 ---
 
@@ -12,9 +12,9 @@ CampusCred is a gamified, AI-assisted platform for colleges to award points to s
 
 Ensure you have the following installed:
 - **Node.js** (v18.x or higher)
-- **Python** (v3.11.x or higher)
-- **PostgreSQL** (Desktop Version)
-- **uv** (Python package manager)
+- **Python** (v3.12.x or higher)
+- **PostgreSQL** (Local Desktop or Docker Version, or remote Supabase instance)
+- **uv** (An extremely fast Python package manager)
 
 ---
 
@@ -29,17 +29,24 @@ Ensure you have the following installed:
    ```
 
 2. **Database Configuration:**
-   Ensure your local PostgreSQL server is running and update the credentials in `backend/app/core/config.py`:
-   - `POSTGRES_USER`: `postgres`
-   - `POSTGRES_PASSWORD`: `1695`
-   - `POSTGRES_DB`: `student_rewards`
+   Create a `.env` file in the project root folder to configure database access:
+   ```env
+   DATABASE_URL="postgresql://<user>:<password>@<host>:<port>/<db_name>"
+   ```
+   *Note: If no `.env` file is present, the server defaults to connecting to a local PostgreSQL instance at `localhost:5432` with username `postgres` and password `1695`.*
 
 3. **Run Migrations:**
-   Initialize the database schema:
-   ```powershell
-   cd backend
-   uv run alembic upgrade head
-   ```
+   You can run migrations from either the project root or the `backend/` directory:
+
+   * **From the Project Root:**
+     ```powershell
+     uv run alembic -c backend/alembic.ini upgrade head
+     ```
+   * **From the `backend/` Directory:**
+     ```powershell
+     cd backend
+     uv run alembic upgrade head
+     ```
 
 ### Frontend (Next.js)
 
@@ -57,14 +64,24 @@ Ensure you have the following installed:
 
 ## 🏃 Running the Application
 
+Both the server and migration scripts can be executed from either the project root or the backend subdirectory:
+
 ### Start the Backend Server
-From the project root:
-```powershell
-uv run uvicorn backend.app.main:app --reload
-```
+
+* **From the Project Root:**
+  ```powershell
+  uv run uvicorn backend.app.main:app --reload
+  ```
+* **From the `backend/` Directory:**
+  ```powershell
+  cd backend
+  uv run uvicorn app.main:app --reload
+  ```
+
 The API will be available at `http://localhost:8000`.
 
 ### Start the Frontend Server
+
 From the `frontend/` directory:
 ```powershell
 npm run dev
